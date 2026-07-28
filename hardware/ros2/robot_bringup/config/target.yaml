@@ -1,0 +1,3 @@
+target_shape_class: "dodecahedron"
+target_fruit_class: "banana"
+match_duration_sec: 180

@@ -1,0 +1,39 @@
+MIT License
+
+Copyright (c) 2026 Team 14, AI ROBOT CHALLENGE 2026
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------------
+
+This repository bundles and depends on third-party components that carry their
+own licenses. See NOTICE for the full list. In particular:
+
+  * third_party/sllidar_ros2/ — Slamtec RPLIDAR ROS 2 driver, BSD 2-Clause.
+    Redistributed under its own license, not MIT.
+
+  * The Dynamixel2Arduino library used by the OpenRB-150 gripper firmware is
+    Apache License 2.0 and is NOT vendored here; install it via the Arduino
+    library manager.
+
+  * The trained perception models are derivatives of Ultralytics YOLO, which is
+    licensed AGPL-3.0. The weights are therefore distributed separately (as
+    GitHub Release assets) under AGPL-3.0, NOT under this MIT license. The MIT
+    license above covers this repository's own source code and documentation.
+    See perception/models/MODEL_CARD.md.

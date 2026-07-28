@@ -1,0 +1,61 @@
+cff-version: 1.2.0
+title: "DDONGGAE: an autonomous polyhedron-collecting robot"
+message: If you use this work, please cite it using these metadata.
+type: software
+abstract: >-
+  DDONGGAE (똥개, "DNN-based Detection of Objects with Navigation and
+  Goal-oriented Grasping for Autonomous Errands") is a ROS 2 Humble
+  autonomous mobile manipulator that searches a
+  4 m x 4 m arena, recognises printed-face polyhedral objects with a two-stage
+  YOLO segmentation pipeline trained entirely on Blender-synthesised data, drives
+  to them without Nav2 using known-map LiDAR localisation, grasps them and
+  deposits them in a storage bin within three-minute rounds. First place out of
+  16 teams at the SNU AI ROBOT CHALLENGE 2026.
+license: MIT
+repository-code: https://github.com/YenCho/ddonggae
+keywords:
+  - robotics
+  - ROS 2
+  - mecanum drive
+  - instance segmentation
+  - synthetic data
+  - sim-to-real
+  - Isaac Sim
+  - autonomous manipulation
+
+authors:
+  - given-names: Yeonwoo
+    family-names: Cho
+    alias: YenCho
+    website: https://github.com/YenCho
+    affiliation: Seoul National University
+  - given-names: Jaeyoung
+    family-names: Kim
+    alias: jaeyoungi2006
+    website: https://github.com/jaeyoungi2006
+    affiliation: Seoul National University
+  - given-names: Minjun
+    family-names: Jang
+    alias: laufemj
+    website: https://github.com/laufemj
+    affiliation: Seoul National University
+  - given-names: Junhwan
+    family-names: Lim
+    alias: Junhwaannn
+    website: https://github.com/Junhwaannn
+    affiliation: Seoul National University
+  - given-names: Minseok
+    family-names: Kim
+    alias: kqwertyms
+    website: https://github.com/kqwertyms
+    affiliation: Seoul National University
+  - given-names: Junseo
+    family-names: Kim
+    alias: rlawnstj06-snu
+    website: https://github.com/rlawnstj06-snu
+    affiliation: Seoul National University
+  - given-names: Seojun
+    family-names: Han
+    alias: HSJ1127
+    website: https://github.com/HSJ1127
+    affiliation: Seoul National University

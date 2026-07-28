@@ -1,0 +1,59 @@
+{
+  "created": "2026-07-20 21:25:31",
+  "label": "arena",
+  "mast": "up",
+  "applied": {
+    "exposure": 200,
+    "gain": 64,
+    "white_balance_top": 4600,
+    "white_balance_near": 4600,
+    "power_line_frequency": 2
+  },
+  "measured": {
+    "band_rows": [
+      419,
+      480
+    ],
+    "y_top": 107.63004144467213,
+    "y_near": 113.82411828893443,
+    "dY": -6.194076844262298,
+    "dRG": 0.14531636651380442,
+    "dBG": 0.0620381075961276,
+    "sat_top_pct": 0.0,
+    "sat_near_pct": 0.0,
+    "p99_top": 152.09433000000004,
+    "p99_near": 167.028,
+    "y_band_left": 112.15900007696452,
+    "y_band_right": 109.68428384514738
+  },
+  "pass": false,
+  "artifacts": "logs/real_validation/photometry_arena_20260720_212251",
+  "candidates": [
+    {
+      "exposure": 120,
+      "y_mid": 87.0,
+      "sat_pct": 0.0
+    },
+    {
+      "exposure": 160,
+      "y_mid": 95.2,
+      "sat_pct": 0.0
+    },
+    {
+      "exposure": 200,
+      "y_mid": 109.6,
+      "sat_pct": 0.0
+    },
+    {
+      "exposure": 240,
+      "y_mid": 122.0,
+      "sat_pct": 0.0
+    },
+    {
+      "exposure": 300,
+      "y_mid": 138.8,
+      "sat_pct": 0.0
+    }
+  ],
+  "note": "match-wb 가 고른 4200 은 무효 — WB 는 이 카메라들의 색차에 영향 없음이 확정되어 4600 으로 정정 (2026-07-20)"
+}

@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team14 Match HUD</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #05070a;
+      --panel: rgba(15, 19, 25, 0.92);
+      --panel-2: rgba(23, 27, 34, 0.82);
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #f4f7fb;
+      --muted: #8f9aa9;
+      --cyan: #39d5ff;
+      --green: #6de37f;
+      --amber: #ffcc4a;
+      --red: #ff5d5d;
+      --violet: #b68cff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: #020304;
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    .hud {
+      position: relative;
+      width: min(100vw, 1920px);
+      height: min(100vh, 462px);
+      aspect-ratio: 1920 / 462;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(57, 213, 255, 0.09), transparent 28%),
+        linear-gradient(270deg, rgba(255, 204, 74, 0.08), transparent 30%),
+        var(--bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .scanline {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 5px,
+        rgba(255, 255, 255, 0.018) 6px
+      );
+      opacity: 0.55;
+    }
+
+    .hud-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 410px 470px 456px 1fr;
+      grid-template-rows: 62px 1fr;
+      gap: 12px;
+      width: 100%;
+      height: 100%;
+      padding: 12px;
+    }
+
+    .topbar {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 410px 1fr 330px 260px;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .brand,
+    .top-chip,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 16px;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .brand-title {
+      display: grid;
+      gap: 2px;
+    }
+
+    .brand-title strong {
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .brand-title span,
+    .label,
+    .micro {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .top-chip {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      min-width: 0;
+    }
+
+    .top-chip .value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .status-light {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 18px var(--green);
+    }
+
+    .panel {
+      min-width: 0;
+      min-height: 0;
+      padding: 14px;
+    }
+
+    .timer-panel {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .timer-ring {
+      position: relative;
+      width: 176px;
+      height: 176px;
+      display: grid;
+      place-items: center;
+    }
+
+    .timer-ring svg {
+      position: absolute;
+      inset: 0;
+      transform: rotate(-90deg);
+    }
+
+    .timer-ring circle {
+      fill: none;
+      stroke-width: 12;
+    }
+
+    .timer-bg {
+      stroke: rgba(255, 255, 255, 0.09);
+    }
+
+    .timer-fg {
+      stroke: var(--cyan);
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease;
+    }
+
+    .time-text {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 2px;
+    }
+
+    .time-text strong {
+      font-variant-numeric: tabular-nums;
+      font-size: 46px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .phase-stack {
+      display: grid;
+      gap: 12px;
+      align-content: center;
+      min-width: 0;
+    }
+
+    .phase {
+      font-size: 40px;
+      line-height: 0.95;
+      font-weight: 950;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .next-action {
+      min-height: 44px;
+      color: #c8d2df;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .tiny-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .tiny-stat {
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--panel-2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tiny-stat strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 19px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .target-panel {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .target-visual {
+      height: 190px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(57, 213, 255, 0.18), rgba(255, 204, 74, 0.08)),
+        #0c1017;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .fruit-icon {
+      position: relative;
+      width: 112px;
+      height: 112px;
+      border-radius: 28px 34px 36px 32px;
+      background: var(--red);
+      box-shadow: 0 0 34px rgba(255, 93, 93, 0.28);
+    }
+
+    .fruit-icon::before {
+      content: "";
+      position: absolute;
+      left: 54px;
+      top: -22px;
+      width: 10px;
+      height: 34px;
+      border-radius: 8px;
+      background: #6c4425;
+      transform: rotate(14deg);
+    }
+
+    .fruit-icon::after {
+      content: "";
+      position: absolute;
+      left: 68px;
+      top: -8px;
+      width: 34px;
+      height: 18px;
+      border-radius: 100% 0 100% 0;
+      background: var(--green);
+      transform: rotate(-20deg);
+    }
+
+    .shape-icon {
+      width: 126px;
+      height: 126px;
+      background: #edf3ff;
+      clip-path: polygon(50% 0, 96% 22%, 88% 76%, 50% 100%, 12% 76%, 4% 22%);
+      box-shadow: 0 0 34px rgba(244, 247, 251, 0.24);
+    }
+
+    .target-copy {
+      min-width: 0;
+    }
+
+    .target-name {
+      margin-top: 8px;
+      font-size: 52px;
+      line-height: 0.95;
+      font-weight: 950;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .target-meta {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .map-panel {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 8px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .panel-head strong {
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    #arena {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      border-radius: 8px;
+      background: #080b0f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .progress-panel {
+      position: relative;
+      display: grid;
+      overflow: hidden;
+      padding: 0;
+      background:
+        linear-gradient(130deg, rgba(255, 204, 74, 0.13), transparent 42%),
+        linear-gradient(300deg, rgba(182, 140, 255, 0.17), transparent 45%),
+        var(--panel);
+    }
+
+    .sponsor-board {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-content: center;
+      justify-items: center;
+      gap: 16px;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      padding: 28px 30px;
+      min-width: 0;
+    }
+
+    .sponsor-board::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 6px;
+    }
+
+    .sponsor-board::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
+      opacity: 0.35;
+    }
+
+    .sponsor-copy {
+      position: relative;
+      z-index: 1;
+      align-self: center;
+      display: grid;
+      justify-items: center;
+      gap: 13px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .sponsor-board strong {
+      position: relative;
+      max-width: 100%;
+      font-size: 58px;
+      line-height: 0.92;
+      text-align: center;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .sponsor-board span {
+      position: relative;
+      color: #d9e0ea;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .sponsor-kicker {
+      position: relative;
+      z-index: 1;
+      justify-self: stretch;
+      padding: 10px 14px;
+      border-radius: 6px;
+      color: var(--cyan);
+      background: rgba(3, 5, 8, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .sponsor-strip {
+      position: relative;
+      z-index: 1;
+      justify-self: stretch;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      min-height: 42px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: #d5dbe5;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .sponsor-strip span {
+      white-space: nowrap;
+      animation: ticker 24s linear infinite;
+    }
+
+    @keyframes ticker {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    .attract {
+      position: absolute;
+      inset: 12px;
+      z-index: 3;
+      display: none;
+      grid-template-columns: 1fr 440px;
+      gap: 14px;
+      padding: 26px;
+      background:
+        linear-gradient(115deg, rgba(57, 213, 255, 0.15), transparent 42%),
+        linear-gradient(290deg, rgba(255, 204, 74, 0.18), transparent 45%),
+        rgba(5, 7, 10, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+    }
+
+    .attract.show {
+      display: grid;
+    }
+
+    .attract-title {
+      align-self: center;
+    }
+
+    .attract-title .label {
+      color: var(--cyan);
+    }
+
+    .attract-title h1 {
+      margin: 10px 0 16px;
+      font-size: 96px;
+      line-height: 0.88;
+      letter-spacing: 0;
+    }
+
+    .attract-title p {
+      margin: 0;
+      max-width: 900px;
+      color: #d4dce8;
+      font-size: 25px;
+      line-height: 1.25;
+    }
+
+    .attract-card {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 24px;
+    }
+
+    .attract-card strong {
+      font-size: 50px;
+      line-height: 1;
+    }
+
+    .attract-card span {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 1200px) {
+      .hud {
+        width: 100vw;
+        height: calc(100vw * 462 / 1920);
+      }
+
+      .hud-grid {
+        transform-origin: top left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="hud" aria-label="Team14 match HUD preview">
+    <div class="hud-grid">
+      <section class="topbar">
+        <div class="brand">
+          <div class="brand-mark">T14</div>
+          <div class="brand-title">
+            <strong>SNU Physical AI</strong>
+            <span>Autonomous collection robot</span>
+          </div>
+        </div>
+        <div class="top-chip">
+          <span class="label">Current target</span>
+          <strong class="value" id="top-target">APPLE</strong>
+        </div>
+        <div class="top-chip">
+          <span class="label">Mode</span>
+          <strong class="value" id="top-mode">SEARCH</strong>
+        </div>
+        <div class="top-chip">
+          <span class="label">Collected</span>
+          <strong class="value" id="top-collected">0 / 7</strong>
+        </div>
+        <div class="top-chip">
+          <span class="status-light" id="safety-light"></span>
+          <strong class="value" id="safety-text">READY</strong>
+        </div>
+      </section>
+
+      <section class="panel timer-panel">
+        <div class="timer-ring">
+          <svg viewBox="0 0 176 176" aria-hidden="true">
+            <circle class="timer-bg" cx="88" cy="88" r="76"></circle>
+            <circle class="timer-fg" id="timer-fg" cx="88" cy="88" r="76"></circle>
+          </svg>
+          <div class="time-text">
+            <span class="label">Match time</span>
+            <strong id="timer">02:13</strong>
+          </div>
+        </div>
+        <div class="phase-stack">
+          <span class="label">Robot phase</span>
+          <strong class="phase" id="phase">SEARCH</strong>
+          <div class="next-action" id="next-action">Sweeping the arena for the selected target.</div>
+          <div class="tiny-grid">
+            <div class="tiny-stat"><span class="micro">X</span><strong id="pose-x">3.10</strong></div>
+            <div class="tiny-stat"><span class="micro">Y</span><strong id="pose-y">1.40</strong></div>
+            <div class="tiny-stat"><span class="micro">Yaw</span><strong id="pose-yaw">182</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel target-panel">
+        <div class="target-visual">
+          <div id="target-icon" class="fruit-icon"></div>
+        </div>
+        <div class="target-copy">
+          <span class="label">Lock-on packet</span>
+          <div class="target-name" id="target-name">APPLE</div>
+          <div class="target-meta">
+            <div class="tiny-stat"><span class="micro">Confidence</span><strong id="confidence">0.86</strong></div>
+            <div class="tiny-stat"><span class="micro">Distance</span><strong id="distance">1.20m</strong></div>
+            <div class="tiny-stat"><span class="micro">Age</span><strong id="target-age">0.2s</strong></div>
+            <div class="tiny-stat"><span class="micro">Gripper</span><strong id="gripper">OPEN</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel map-panel">
+        <div class="panel-head">
+          <strong>Arena map</strong>
+          <span class="micro">4m x 4m / map frame</span>
+        </div>
+        <canvas id="arena" width="420" height="300"></canvas>
+      </section>
+
+      <section class="panel progress-panel">
+        <div class="sponsor-board" id="sponsor">
+          <div class="sponsor-kicker">Sponsor / partner display</div>
+          <div class="sponsor-copy">
+            <span>Now featuring</span>
+            <strong id="sponsor-title">TEAM 14</strong>
+            <span id="sponsor-subtitle">Physical AI Challenge</span>
+          </div>
+          <div class="sponsor-strip">
+            <span>TEAM14 HUD READY - YOLOv8-SEG - LIDAR LOCALIZATION - DUAL REALSENSE - OPENRB GRIPPER - JETSON ORIN NANO - TEAM14 HUD READY - YOLOv8-SEG - LIDAR LOCALIZATION - DUAL REALSENSE - OPENRB GRIPPER - JETSON ORIN NANO -</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="attract" id="attract">
+      <div class="attract-title">
+        <span class="label">Autonomous collection robot</span>
+        <h1>TEAM 14<br>READY</h1>
+        <p>Target recognition, navigation, grasping, and drop-off run fully on the robot.</p>
+      </div>
+      <div class="attract-card">
+        <strong id="attract-sponsor">SNU Physical AI</strong>
+        <span>standby display</span>
+      </div>
+    </section>
+    <div class="scanline"></div>
+  </main>
+
+  <script>
+    const MATCH_DURATION = 180;
+    const DEMO_OFFSET_SEC = 52;
+    const RING_RADIUS = 76;
+    const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+    const FRUITS = new Set(["apple", "orange", "banana", "pineapple"]);
+    const SPONSORS = [
+      ["TEAM 14", "Physical AI Challenge"],
+      ["YOLOv8-seg", "Vision target lock"],
+      ["LiDAR Localization", "Known-map direct control"],
+      ["Jetson Orin Nano", "Onboard compute"]
+    ];
+
+    const elements = {
+      timerFg: document.querySelector("#timer-fg"),
+      timer: document.querySelector("#timer"),
+      phase: document.querySelector("#phase"),
+      nextAction: document.querySelector("#next-action"),
+      target: document.querySelector("#target-name"),
+      topTarget: document.querySelector("#top-target"),
+      topMode: document.querySelector("#top-mode"),
+      topCollected: document.querySelector("#top-collected"),
+      confidence: document.querySelector("#confidence"),
+      distance: document.querySelector("#distance"),
+      targetAge: document.querySelector("#target-age"),
+      gripper: document.querySelector("#gripper"),
+      poseX: document.querySelector("#pose-x"),
+      poseY: document.querySelector("#pose-y"),
+      poseYaw: document.querySelector("#pose-yaw"),
+      safetyLight: document.querySelector("#safety-light"),
+      safetyText: document.querySelector("#safety-text"),
+      targetIcon: document.querySelector("#target-icon"),
+      sponsorTitle: document.querySelector("#sponsor-title"),
+      sponsorSubtitle: document.querySelector("#sponsor-subtitle"),
+      attract: document.querySelector("#attract"),
+      attractSponsor: document.querySelector("#attract-sponsor"),
+      canvas: document.querySelector("#arena")
+    };
+
+    elements.timerFg.style.strokeDasharray = `${RING_CIRCUMFERENCE}`;
+    elements.timerFg.style.strokeDashoffset = "0";
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function formatTime(seconds) {
+      const safe = Math.max(0, Math.round(seconds));
+      const minutes = Math.floor(safe / 60);
+      const rest = safe % 60;
+      return `${String(minutes).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
+    }
+
+    function titleCase(value) {
+      const text = String(value || "unknown").replace(/[_-]+/g, " ").trim();
+      if (!text) return "UNKNOWN";
+      return text.toUpperCase();
+    }
+
+    function phaseCopy(phase) {
+      // 현행 러너 페이즈(SEARCH/GO_TO_TARGET/FINE_APPROACH/GRIP/RETREAT/TRANSPORT/PLACE) + 구 스택 이름
+      const key = String(phase || "").toUpperCase();
+      if (key.includes("SEARCH")) return "Sweeping the arena for the selected target.";
+      if (key.includes("TARGET") || key.includes("APPROACH") || key.includes("NAV")) return "Driving to a safe approach pose.";
+      if (key.includes("GRIP") || key.includes("GRASP") || key.includes("PICK")) return "Final alignment and gripper close.";
+      if (key.includes("RETREAT") || key.includes("BACK")) return "Backing out with the payload secured.";
+      if (key.includes("TRANSPORT") || key.includes("PLACE") || key.includes("DROP") || key.includes("RETURN") || key.includes("DELIVER")) return "Transporting payload to the storage zone.";
+      if (key.includes("FAILED") || key.includes("ERROR")) return "Operator attention required.";
+      if (key.includes("DONE") || key.includes("COMPLETE")) return "Run complete. Showing standby slate soon.";
+      if (key.includes("IDLE")) return "Standing by for match start.";
+      return "Waiting for match telemetry.";
+    }
+
+    function demoState(now) {
+      const cycle = ((now / 1000) + DEMO_OFFSET_SEC) % MATCH_DURATION;
+      const remaining = MATCH_DURATION - cycle;
+      const phases = ["SEARCH", "NAV_TO_TARGET", "FINAL_APPROACH", "GRASPING", "DROPOFF", "BACKING_OUT"];
+      const phase = phases[Math.floor(cycle / 8) % phases.length];
+      const targets = ["apple", "dodecahedron", "pineapple", "octahedron"];
+      const target = targets[Math.floor(cycle / 12) % targets.length];
+      const completed = Math.min(6, Math.floor(cycle / 28));
+      const angle = cycle * 0.035;
+      // 중심원점 ±2m (현행 arena 좌표계)
+      const pose = {
+        x: clamp(Math.cos(angle) * 1.35, -1.8, 1.8),
+        y: clamp(Math.sin(angle * 1.2) * 1.25, -1.8, 1.8),
+        yaw: angle + Math.PI
+      };
+      // 데모용 알려진 객체 맵 (탐색 완료 후 전략이 아는 물체 배치 시연)
+      const demoLayout = [
+        ["apple", -0.9, 1.1], ["banana", 0.3, 1.4], ["cube", 1.2, 0.7],
+        ["pineapple", -1.3, 0.1], ["octahedron", 0.8, -0.4],
+        ["orange", -0.4, -0.9], ["dodecahedron", 1.4, -1.1]
+      ];
+      const knownObjects = demoLayout.map(([cls, x, y], i) => ({
+        class: cls, x, y,
+        status: i < completed ? "done" : (i === completed ? "current" : "pending")
+      }));
+      return {
+        source: "demo",
+        phase,
+        targetClass: target,
+        remainingSec: remaining,
+        completedCount: completed,
+        score: completed * 10 + Math.max(0, completed - 4) * 10,
+        pose,
+        goal: null,
+        knownObjects,
+        objects: [],
+        target: {
+          confidence: 0.73 + 0.2 * Math.abs(Math.sin(angle * 1.8)),
+          distanceM: 0.42 + 1.1 * Math.abs(Math.cos(angle)),
+          ageSec: 0.2 + 0.6 * Math.abs(Math.sin(angle))
+        },
+        safetyStop: false,
+        gripper: phase === "GRASPING" ? "CLOSE" : "OPEN"
+      };
+    }
+
+    function poseFromMission(mission, pick) {
+      if (Array.isArray(mission.pose) && mission.pose.length >= 3) {
+        return {x: Number(mission.pose[0]), y: Number(mission.pose[1]), yaw: Number(mission.pose[2])};
+      }
+      const robotPose = pick && pick.robot_pose;
+      if (robotPose && typeof robotPose === "object") {
+        return {x: Number(robotPose.x), y: Number(robotPose.y), yaw: Number(robotPose.yaw)};
+      }
+      return null;
+    }
+
+    function targetFromPayload(mission, competition, pick) {
+      const target = mission.target || pick.target || {};
+      const className = mission.target_class || competition.target_class || target.class_name || target.candidate_class;
+      const confidence = Number(target.confidence ?? competition.confidence ?? 0);
+      let distanceM = Number(competition.distance_m ?? target.distance_m ?? NaN);
+      if (!Number.isFinite(distanceM) && target.position && Array.isArray(mission.pose)) {
+        const dx = Number(target.position.x) - Number(mission.pose[0]);
+        const dy = Number(target.position.y) - Number(mission.pose[1]);
+        distanceM = Math.hypot(dx, dy);
+      }
+      const ageSec = Number(mission.target_age_sec ?? competition.target_age_sec ?? NaN);
+      return {className, confidence, distanceM, ageSec};
+    }
+
+    function normalizeStatus(raw, fallback) {
+      // 현행 스택 우선: arena=/arena_lightweight/status, match=/match/state, detections=/semantic/objects
+      const mission = raw.mission || {};
+      const competition = raw.competition || {};
+      const pick = raw.pick || {};
+      const arena = raw.arena || {};
+      const match = raw.match || {};
+      const detections = (raw.detections && raw.detections.objects) || [];
+      const ages = raw._age_sec || {};
+      const gripper = raw.gripper || mission.gripper_status || {};
+      const target = targetFromPayload(mission, competition, pick);
+      const targetClass = match.object || mission.target_class || competition.target_class || target.className || fallback.targetClass;
+
+      let best = null;
+      for (const obj of detections) {
+        if (!obj || String(obj.class_name || "").toLowerCase() !== String(targetClass).toLowerCase()) continue;
+        if (!best || Number(obj.confidence) > Number(best.confidence)) best = obj;
+      }
+      const confidence = Number(best ? best.confidence : target.confidence);
+      const distanceM = Number(best ? best.ground_distance_m : target.distanceM);
+      const ageSec = Number(ages.detections ?? target.ageSec);
+
+      let pose = null;
+      if (arena.pose && typeof arena.pose === "object") {
+        pose = {x: Number(arena.pose.x), y: Number(arena.pose.y), yaw: Number(arena.pose.yaw)};
+      }
+      pose = pose || poseFromMission(mission, pick) || fallback.pose;
+      const goal = arena.goal && typeof arena.goal === "object"
+        ? {x: Number(arena.goal.x), y: Number(arena.goal.y)} : null;
+
+      const phase = match.state || competition.state || pick.state || mission.state || fallback.phase;
+      let completed = Number(match.index);
+      if (Number.isFinite(completed)) {
+        completed -= 1;
+        if (String(phase).toUpperCase() === "DONE") completed += 1;
+      } else {
+        completed = Number(competition.completed_count ?? (pick.dropoff && pick.dropoff.completed_count) ?? pick.completed_count ?? fallback.completedCount);
+      }
+      const remaining = Number(competition.remaining_sec ?? matchClock(phase));
+      const gripperText = gripper.command || (gripper.object_detected ? "HOLD" : fallback.gripper);
+
+      // 알려진 객체 맵: 러너 타깃 목록(수거 순서) 우선, 없으면 YOLO 통합 월드맵
+      const knownObjects = [];
+      const curIndex = Number(match.index) || 0;
+      const isDone = ["DONE", "COMPLETE"].includes(String(phase).toUpperCase());
+      if (Array.isArray(match.targets) && match.targets.length) {
+        match.targets.forEach((t, i) => {
+          if (!t || !Array.isArray(t.xy) || t.xy.length < 2) return;
+          const order = i + 1;
+          knownObjects.push({
+            class: String(t.class || "?"),
+            x: Number(t.xy[0]) || 0,
+            y: Number(t.xy[1]) || 0,
+            status: (isDone || order < curIndex) ? "done"
+              : (order === curIndex ? "current" : "pending")
+          });
+        });
+      } else {
+        const mapObjects = (raw.map_objects && raw.map_objects.objects) || [];
+        for (const obj of mapObjects) {
+          if (!obj) continue;
+          const pos = obj.position || obj.xy;
+          if (!Array.isArray(pos) || pos.length < 2) continue;
+          const cls = String(obj.class_name || obj.label || obj.identity || "?");
+          knownObjects.push({
+            class: cls,
+            x: Number(pos[0]) || 0,
+            y: Number(pos[1]) || 0,
+            status: cls.toLowerCase() === String(targetClass).toLowerCase() ? "current" : "pending"
+          });
+        }
+      }
+      return {
+        source: "api",
+        phase,
+        targetClass,
+        remainingSec: Number.isFinite(remaining) ? remaining : fallback.remainingSec,
+        completedCount: Number.isFinite(completed) ? completed : fallback.completedCount,
+        score: completed * 10 + Math.max(0, completed - 4) * 10,
+        pose,
+        goal,
+        knownObjects,
+        objects: detections.map((obj) => ({
+          class: obj.class_name,
+          forward: Number(obj.forward_m) || 0,
+          left: Number(obj.left_m) || 0
+        })),
+        target: {
+          confidence: Number.isFinite(confidence) && confidence > 0 ? confidence : fallback.target.confidence,
+          distanceM: Number.isFinite(distanceM) ? distanceM : fallback.target.distanceM,
+          ageSec: Number.isFinite(ageSec) ? ageSec : fallback.target.ageSec
+        },
+        safetyStop: Boolean(mission.safety_stop),
+        gripper: String(gripperText || fallback.gripper).replace(/^SET_DEG\s+/i, "")
+      };
+    }
+
+    // 스택이 remaining_sec 을 안 주므로 IDLE→활성 전이로 경기 시계를 추정
+    const clockState = {start: null, frozen: null};
+    function matchClock(phase) {
+      const key = String(phase || "").toUpperCase();
+      const now = performance.now() / 1000;
+      if (key === "IDLE") {
+        clockState.start = null;
+        clockState.frozen = null;
+      } else if (["DONE", "FAILED", "COMPLETE"].includes(key)) {
+        if (clockState.frozen === null && clockState.start !== null) {
+          clockState.frozen = Math.max(0, MATCH_DURATION - (now - clockState.start));
+        }
+      } else if (clockState.start === null) {
+        clockState.start = now;
+      }
+      if (clockState.frozen !== null) return clockState.frozen;
+      if (clockState.start !== null) return Math.max(0, MATCH_DURATION - (now - clockState.start));
+      return MATCH_DURATION;
+    }
+
+    async function readState() {
+      const fallback = demoState(performance.now());
+      try {
+        const response = await fetch("/api/status", {cache: "no-store"});
+        if (!response.ok) return fallback;
+        const raw = await response.json();
+        return normalizeStatus(raw, fallback);
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function drawArena(state) {
+      const canvas = elements.canvas;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const w = rect.width;
+      const h = rect.height;
+      const pad = 18;
+      const size = Math.min(w - pad * 2, h - pad * 2);
+      const ox = (w - size) / 2;
+      const oy = (h - size) / 2;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#0a0e13";
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(ox, oy, size, size);
+
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 4; i += 1) {
+        const p = ox + (size * i) / 4;
+        ctx.beginPath();
+        ctx.moveTo(p, oy);
+        ctx.lineTo(p, oy + size);
+        ctx.stroke();
+        const q = oy + (size * i) / 4;
+        ctx.beginPath();
+        ctx.moveTo(ox, q);
+        ctx.lineTo(ox + size, q);
+        ctx.stroke();
+      }
+
+      // 현행 arena 좌표계: 중심원점 ±2m (competition_layout.py)
+      function mapX(x) {
+        return ox + (clamp(x, -2, 2) + 2) / 4 * size;
+      }
+
+      function mapY(y) {
+        return oy + size - (clamp(y, -2, 2) + 2) / 4 * size;
+      }
+
+      // STORAGE 좌하단(태극기), START 우하단
+      ctx.fillStyle = "rgba(109,227,127,0.26)";
+      ctx.fillRect(mapX(-2.0), mapY(-1.6), size * 0.1, size * 0.1);
+      ctx.fillStyle = "rgba(255,204,74,0.23)";
+      ctx.fillRect(mapX(1.6), mapY(-1.6), size * 0.1, size * 0.1);
+
+      const yaw = Number(state.pose.yaw) || 0;
+
+      if (state.goal) {
+        const gx = mapX(state.goal.x);
+        const gy = mapY(state.goal.y);
+        ctx.strokeStyle = "#ffcc4a";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(gx - 6, gy - 6);
+        ctx.lineTo(gx + 6, gy + 6);
+        ctx.moveTo(gx - 6, gy + 6);
+        ctx.lineTo(gx + 6, gy - 6);
+        ctx.stroke();
+      }
+
+      const targetLower = String(state.targetClass).toLowerCase();
+      const known = state.knownObjects || [];
+      if (known.length) {
+        // 알려진 객체 (탐색 후 전략 타깃 목록, world 좌표) — 있으면 이것만 그림
+        ctx.font = "700 12px Segoe UI, Arial";
+        for (const obj of known) {
+          const dx = mapX(obj.x);
+          const dy = mapY(obj.y);
+          const initial = String(obj.class || "?").charAt(0).toUpperCase();
+          if (obj.status === "current") {
+            // 지금 가지러 가는 물체: 빨강 + 맥동 링 강조
+            const pulse = 11 + 4 * Math.abs(Math.sin(performance.now() / 333));
+            ctx.strokeStyle = "#ffcc4a";
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.arc(dx, dy, pulse, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = "#ff5d5d";
+            ctx.beginPath();
+            ctx.arc(dx, dy, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = "#ffcc4a";
+            ctx.fillText(initial, dx + 13, dy - 8);
+          } else if (obj.status === "done") {
+            // 수거 완료: 녹색 (흐리게)
+            ctx.fillStyle = "rgba(109,227,127,0.55)";
+            ctx.beginPath();
+            ctx.arc(dx, dy, 5, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            // 대기: 밝은 점 + 클래스 이니셜
+            ctx.fillStyle = "rgba(210,218,230,0.9)";
+            ctx.beginPath();
+            ctx.arc(dx, dy, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = "rgba(200,206,216,0.65)";
+            ctx.fillText(initial, dx + 9, dy - 7);
+          }
+        }
+      } else {
+        // 폴백: 라이브 인식 객체 (로봇상대 forward/left → 맵 좌표)
+        for (const obj of state.objects || []) {
+          const wx = state.pose.x + obj.forward * Math.cos(yaw) - obj.left * Math.sin(yaw);
+          const wy = state.pose.y + obj.forward * Math.sin(yaw) + obj.left * Math.cos(yaw);
+          const isTarget = String(obj.class || "").toLowerCase() === targetLower;
+          ctx.fillStyle = isTarget ? "#ff5d5d" : "rgba(200,206,216,0.75)";
+          ctx.beginPath();
+          ctx.arc(mapX(wx), mapY(wy), isTarget ? 7 : 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      const px = mapX(state.pose.x);
+      const py = mapY(state.pose.y);
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(-yaw);
+      ctx.fillStyle = "#39d5ff";
+      ctx.beginPath();
+      ctx.moveTo(14, 0);
+      ctx.lineTo(-10, -8);
+      ctx.lineTo(-6, 0);
+      ctx.lineTo(-10, 8);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.font = "700 11px Segoe UI, Arial";
+      ctx.fillText("STORAGE", mapX(-1.95), mapY(-1.35));
+      ctx.fillText("START", mapX(1.1), mapY(-1.35));
+    }
+
+    function render(state) {
+      const remaining = clamp(state.remainingSec, 0, MATCH_DURATION);
+      const ratio = remaining / MATCH_DURATION;
+      const phase = titleCase(state.phase);
+      const target = titleCase(state.targetClass);
+      const sponsor = SPONSORS[Math.floor(performance.now() / 4200) % SPONSORS.length];
+      const isIdle = ["IDLE", "COMPLETE", "DONE"].includes(String(state.phase).toUpperCase());
+
+      elements.timer.textContent = formatTime(remaining);
+      elements.timerFg.style.strokeDashoffset = `${RING_CIRCUMFERENCE * (1 - ratio)}`;
+      elements.timerFg.style.stroke = remaining <= 30 ? "var(--red)" : remaining <= 90 ? "var(--amber)" : "var(--cyan)";
+      elements.phase.textContent = phase;
+      elements.topMode.textContent = phase;
+      elements.topCollected.textContent = `${Math.max(0, Number(state.completedCount) || 0)} / 7`;
+      elements.nextAction.textContent = phaseCopy(state.phase);
+      elements.target.textContent = target;
+      elements.topTarget.textContent = target;
+      elements.confidence.textContent = Number(state.target.confidence).toFixed(2);
+      elements.distance.textContent = `${Number(state.target.distanceM).toFixed(2)}m`;
+      elements.targetAge.textContent = `${Number(state.target.ageSec).toFixed(1)}s`;
+      elements.gripper.textContent = titleCase(state.gripper).slice(0, 12);
+      elements.poseX.textContent = Number(state.pose.x).toFixed(2);
+      elements.poseY.textContent = Number(state.pose.y).toFixed(2);
+      elements.poseYaw.textContent = `${Math.round((Number(state.pose.yaw) || 0) * 180 / Math.PI)}`;
+      elements.sponsorTitle.textContent = sponsor[0];
+      elements.sponsorSubtitle.textContent = sponsor[1];
+      elements.attractSponsor.textContent = sponsor[0];
+      elements.attract.classList.toggle("show", isIdle && state.source !== "demo");
+
+      elements.safetyLight.style.background = state.safetyStop ? "var(--red)" : "var(--green)";
+      elements.safetyLight.style.boxShadow = state.safetyStop ? "0 0 18px var(--red)" : "0 0 18px var(--green)";
+      elements.safetyText.textContent = state.safetyStop ? "STOP" : "READY";
+
+      elements.targetIcon.className = FRUITS.has(String(state.targetClass).toLowerCase()) ? "fruit-icon" : "shape-icon";
+      drawArena(state);
+    }
+
+    async function tick() {
+      render(await readState());
+    }
+
+    window.addEventListener("resize", () => tick());
+    tick();
+    setInterval(tick, 500);
+  </script>
+</body>
+</html>

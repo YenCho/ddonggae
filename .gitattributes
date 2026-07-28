@@ -1,0 +1,19 @@
+# No Git LFS in this repository, deliberately.
+#
+# The whole tree is ~11 MB with a 3.5 MB largest file, so LFS would buy nothing
+# and would cost every cloner an extra dependency plus a bandwidth quota. The
+# only genuinely large artifacts are the trained model weights, and those are
+# published as GitHub Release assets instead — see scripts/fetch_models.sh.
+
+# Keep line endings sane for firmware sketches and shell scripts.
+*.ino text eol=lf
+*.sh  text eol=lf
+*.py  text eol=lf
+
+# Treat binary assets as binary so git does not attempt to diff them.
+*.usd  binary
+*.usda binary
+*.stl  binary
+*.pgm  binary
+*.png  binary
+*.jpg  binary

@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robot Pickup Control</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1018;
+      --panel: #151d29;
+      --line: #2a3749;
+      --text: #eef4fb;
+      --muted: #99a9bb;
+      --accent: #45d6a8;
+      --danger: #ff6b6b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #172438, var(--bg) 55%);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+    }
+    main { width: min(980px, calc(100% - 28px)); margin: 32px auto; }
+    h1 { margin: 0 0 6px; font-size: clamp(28px, 5vw, 46px); }
+    .subtitle { margin: 0 0 24px; color: var(--muted); }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
+    .panel {
+      background: color-mix(in srgb, var(--panel) 94%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 18px 40px #0005;
+    }
+    label { display: block; color: var(--muted); margin-bottom: 8px; }
+    select, input, button {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 13px 14px;
+      background: #0f1621;
+      color: var(--text);
+      font: inherit;
+    }
+    button { cursor: pointer; font-weight: 700; }
+    button:hover { border-color: var(--accent); }
+    button:disabled { cursor: not-allowed; opacity: 0.45; }
+    .launch { margin-top: 12px; background: var(--accent); color: #07130f; }
+    .stop { margin-top: 10px; border-color: #713838; color: #ffb0b0; }
+    .estop {
+      margin-top: 10px;
+      background: var(--danger);
+      color: #210607;
+      border-color: #ffb0b0;
+    }
+    .status {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .metric { background: #0f1621; border-radius: 12px; padding: 12px; }
+    .metric span { display: block; color: var(--muted); font-size: 12px; }
+    .metric strong { display: block; margin-top: 4px; overflow-wrap: anywhere; }
+    .detected {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+    }
+    .object-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 10px;
+      align-items: center;
+      background: #0f1621;
+      border: 1px solid #223044;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+    .object-row strong { font-size: 15px; }
+    .object-row span { color: var(--muted); font-size: 12px; }
+    .object-row.selected { border-color: var(--accent); }
+    .empty { color: var(--muted); font-size: 13px; }
+    .manual-head { display: flex; gap: 10px; align-items: center; }
+    .manual-head button { width: auto; flex: 1; }
+    .pad {
+      width: min(300px, 100%);
+      margin: 18px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .pad button { aspect-ratio: 1.2; font-size: 22px; touch-action: none; }
+    .pad .forward { grid-column: 2; }
+    .pad .left { grid-column: 1; }
+    .pad .halt { grid-column: 2; color: var(--danger); }
+    .pad .right { grid-column: 3; }
+    .pad .back { grid-column: 2; }
+    .gripper { display: flex; gap: 8px; margin-top: 14px; }
+    .smoke-tests { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .config-status { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+    .key-help { color: var(--muted); font-size: 13px; text-align: center; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Robot Pickup Control</h1>
+    <p class="subtitle">물체를 선택하고 Launch를 누르면 접근, 파지, 복귀를 수행합니다.</p>
+    <div class="grid">
+      <section class="panel">
+        <label for="target">Target object</label>
+        <select id="target">
+          <option>banana</option>
+          <option>orange</option>
+          <option>pineapple</option>
+          <option>apple</option>
+          <option>cube</option>
+          <option>octahedron</option>
+          <option>dodecahedron</option>
+          <option>icosahedron</option>
+        </select>
+        <button class="launch" id="launch">Launch</button>
+        <button class="stop" id="stop">Stop mission</button>
+        <button class="estop" id="estop">Emergency stop</button>
+        <div class="status" style="margin-top:18px">
+          <div class="metric"><span>Mission</span><strong id="state">-</strong></div>
+          <div class="metric"><span>Mode</span><strong id="mission-mode">-</strong></div>
+          <div class="metric"><span>Run profile</span><strong id="run-profile">-</strong></div>
+          <div class="metric"><span>Target</span><strong id="active-target">-</strong></div>
+          <div class="metric"><span>Selected seen</span><strong id="selected-seen">-</strong></div>
+          <div class="metric"><span>Readiness</span><strong id="readiness">-</strong></div>
+          <div class="metric"><span>Base feedback</span><strong id="feedback">-</strong></div>
+          <div class="metric"><span>Safety stop</span><strong id="safety">-</strong></div>
+          <div class="metric"><span>Perception</span><strong id="perception">-</strong></div>
+          <div class="metric"><span>Gripper</span><strong id="gripper">-</strong></div>
+          <div class="metric"><span>Object F / L</span><strong id="object-pos">-</strong></div>
+          <div class="metric"><span>PWM L / R</span><strong id="pwm">-</strong></div>
+          <div class="metric"><span>PWM calibration</span><strong id="calibration">-</strong></div>
+          <div class="metric"><span>Error</span><strong id="error">-</strong></div>
+          <div class="metric"><span>Next action</span><strong id="next-action">-</strong></div>
+        </div>
+        <label style="margin-top:18px">Detected objects</label>
+        <div class="detected" id="detected-objects">
+          <div class="empty">Waiting for detections...</div>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="manual-head">
+          <button id="manual-on">Manual ON</button>
+          <button id="manual-off">Auto/Idle</button>
+        </div>
+        <div class="pad">
+          <button class="forward" data-key="forward">↑</button>
+          <button class="left" data-key="left">←</button>
+          <button class="halt" data-key="stop">■</button>
+          <button class="right" data-key="right">→</button>
+          <button class="back" data-key="back">↓</button>
+        </div>
+        <p class="key-help">
+          방향키나 패드를 누르면 Manual mode로 전환됩니다.
+        </p>
+        <label style="margin-top:14px">Base smoke test</label>
+        <div class="smoke-tests">
+          <button data-test="forward">Forward test</button>
+          <button data-test="turn_left">Turn test</button>
+        </div>
+        <div class="gripper">
+          <button id="gripper-open">Gripper Open</button>
+          <button id="gripper-close">Gripper Close</button>
+          <button id="gripper-stop">Gripper Stop</button>
+        </div>
+        <label style="margin-top:18px">Config</label>
+        <div class="config-grid">
+          <div>
+            <label for="drive-scale">Forward scale</label>
+            <input
+              id="drive-scale"
+              type="number"
+              min="0.001"
+              step="0.01"
+              value="5.6496"
+            >
+          </div>
+          <div>
+            <label for="turn-scale">Turn scale</label>
+            <input
+              id="turn-scale"
+              type="number"
+              min="0.001"
+              step="0.01"
+              value="0.63"
+            >
+          </div>
+        </div>
+        <button id="apply-config" style="margin-top:10px">Apply config</button>
+        <p class="config-status" id="config-status">현재 미션 보정값을 표시합니다.</p>
+      </section>
+    </div>
+  </main>
+  <script>
+    const post = (path, body) => fetch(path, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    });
+    let manualActive = false;
+    let manualMotionReady = false;
+    let manualBlockReason = "Waiting for base motion readiness";
+    let repeatTimer = null;
+    const setManual = enabled => {
+      manualActive = enabled;
+      return post("/api/manual", {enabled});
+    };
+    const driveScaleInput = document.querySelector("#drive-scale");
+    const turnScaleInput = document.querySelector("#turn-scale");
+    const configStatus = document.querySelector("#config-status");
+    const setConfigInput = (input, value) => {
+      if (!Number.isFinite(value)) return;
+      if (document.activeElement === input) return;
+      input.value = String(value);
+    };
+    const applyConfig = async () => {
+      const driveScale = Number(driveScaleInput.value);
+      const turnScale = Number(turnScaleInput.value);
+      if (
+        !Number.isFinite(driveScale) ||
+        !Number.isFinite(turnScale) ||
+        driveScale <= 0 ||
+        turnScale <= 0
+      ) {
+        configStatus.textContent = "양수 숫자만 입력하세요.";
+        return;
+      }
+      try {
+        const response = await post("/api/config", {
+          open_loop_drive_scale: driveScale,
+          open_loop_turn_scale: turnScale
+        });
+        configStatus.textContent = response.ok ?
+          "적용됨" : `적용 실패 (${response.status})`;
+      } catch (_) {
+        configStatus.textContent = "적용 실패";
+      }
+    };
+    const clearMoveTimer = () => {
+      clearInterval(repeatTimer);
+      repeatTimer = null;
+    };
+    const markAuto = () => {
+      manualActive = false;
+      clearMoveTimer();
+    };
+    document.querySelector("#launch").onclick = () => {
+      markAuto();
+      return post("/api/mission", {
+        command: "start", target: document.querySelector("#target").value
+      });
+    };
+    document.querySelector("#stop").onclick = () => {
+      markAuto();
+      return post("/api/mission", {command: "cancel"});
+    };
+    document.querySelector("#estop").onclick = () => {
+      markAuto();
+      return post("/api/estop", {});
+    };
+    document.querySelector("#manual-on").onclick = () => setManual(true);
+    document.querySelector("#manual-off").onclick = () => {
+      markAuto();
+      post("/api/cmd_vel", {linear: 0, angular: 0});
+      return setManual(false);
+    };
+    document.querySelector("#gripper-open").onclick = () =>
+      post("/api/gripper", {command: "OPEN"});
+    document.querySelector("#gripper-close").onclick = () =>
+      post("/api/gripper", {command: "CLOSE"});
+    document.querySelector("#gripper-stop").onclick = () =>
+      post("/api/gripper", {command: "STOP"});
+    document.querySelector("#apply-config").onclick = applyConfig;
+    document.querySelectorAll("[data-test]").forEach(button => {
+      button.onclick = () => post("/api/mission", {
+        command: "base_test", mode: button.dataset.test
+      });
+    });
+
+    const moves = {
+      forward: {linear: 0.18, angular: 0},
+      back: {linear: -0.14, angular: 0},
+      left: {linear: 0, angular: 0.75},
+      right: {linear: 0, angular: -0.75},
+      stop: {linear: 0, angular: 0}
+    };
+    const sendMove = key => post("/api/cmd_vel", moves[key]);
+    const startMove = key => {
+      clearMoveTimer();
+      if (key === "stop") {
+        sendMove(key);
+        return;
+      }
+      if (!manualMotionReady) {
+        document.querySelector("#next-action").textContent = manualBlockReason;
+        return;
+      }
+      if (!manualActive) setManual(true);
+      sendMove(key);
+      repeatTimer = setInterval(() => sendMove(key), 150);
+    };
+    const stopMove = () => {
+      clearMoveTimer();
+      sendMove("stop");
+    };
+    document.querySelectorAll("[data-key]").forEach(button => {
+      const key = button.dataset.key;
+      button.onpointerdown = event => {
+        event.preventDefault();
+        startMove(key);
+      };
+      button.onpointerup = stopMove;
+      button.onpointerleave = stopMove;
+      button.onpointercancel = stopMove;
+    });
+    const keyMap = {
+      ArrowUp: "forward", ArrowDown: "back",
+      ArrowLeft: "left", ArrowRight: "right"
+    };
+    const pressed = new Set();
+    window.onkeydown = event => {
+      const move = keyMap[event.key];
+      if (!move || pressed.has(event.key)) return;
+      event.preventDefault();
+      pressed.add(event.key);
+      startMove(move);
+    };
+    window.onkeyup = event => {
+      if (!keyMap[event.key]) return;
+      pressed.delete(event.key);
+      stopMove();
+    };
+
+    const objectClass = item =>
+      String(item.class_name || item.class || item.label || "-").trim();
+    const normalizeClass = value =>
+      String(value || "").trim().toLocaleLowerCase().split(/\s+/).join(" ");
+    const targetSelect = () => document.querySelector("#target");
+    const setTargetByClass = cls => {
+      const select = targetSelect();
+      const normalized = normalizeClass(cls);
+      const option = [...select.options].find(item =>
+        normalizeClass(item.value) === normalized
+      );
+      if (option) {
+        select.value = option.value;
+        return;
+      }
+      const created = document.createElement("option");
+      created.value = cls;
+      created.textContent = cls;
+      select.appendChild(created);
+      select.value = cls;
+    };
+    const ensureTargetOptions = items => {
+      if (!Array.isArray(items)) return;
+      const select = targetSelect();
+      const selected = select.value;
+      const existing = new Map(
+        [...select.options].map(option => [
+          normalizeClass(option.value), option.value
+        ])
+      );
+      [...new Set(items.map(objectClass).filter(cls => cls !== "-"))]
+        .sort()
+        .forEach(cls => {
+          const normalized = normalizeClass(cls);
+          if (existing.has(normalized)) return;
+          const option = document.createElement("option");
+          option.value = cls;
+          option.textContent = cls;
+          select.appendChild(option);
+          existing.set(normalized, cls);
+        });
+      const normalizedSelected = normalizeClass(selected);
+      if (existing.has(normalizedSelected)) {
+        select.value = existing.get(normalizedSelected);
+      }
+    };
+    const fmt = value => Number.isFinite(value) ? value.toFixed(2) : "-";
+    const pct = value => Number.isFinite(value) ?
+      `${Math.round(value * 100)}%` : "-";
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[char]));
+    const fmtAge = value => Number.isFinite(value) ?
+      `${value.toFixed(1)}s` : "WAIT";
+    const streamLabel = (age, staleSec = 1.5) => {
+      if (!Number.isFinite(age)) return "WAIT";
+      return age <= staleSec ? `OK ${fmtAge(age)}` : `STALE ${fmtAge(age)}`;
+    };
+    const liveBaseCalibrationOverride = ({base, readiness}) =>
+      readiness.required &&
+      readiness.required.loaded_pwm_calibration === false &&
+      !base.dry_run;
+    const missionModeLabel = mission =>
+      mission.return_home_after_grasp ? "Pickup + return" : "Pickup only";
+    const dryRunPreview = ({base, gripper}) =>
+      Boolean(base.dry_run || gripper.dry_run);
+    const runProfileLabel = ({base, gripper}) =>
+      dryRunPreview({base, gripper}) ? "DRY-RUN preview" : "LIVE hardware";
+    const activeMission = mission => [
+      "SEARCHING", "APPROACHING", "GRASP_WAIT", "RETURNING", "HOME_ALIGN"
+    ].includes(mission.state);
+    const nextAction = ({
+      mission, base, gripper, readiness, calibration, selectedDetection,
+      runtimeGuard
+    }) => {
+      if (mission.last_error) return `Resolve error: ${mission.last_error}`;
+      if (runtimeGuard.active && !runtimeGuard.ok) {
+        return `Mission stopped: ${(runtimeGuard.reasons || []).join(", ")}`;
+      }
+      if (activeMission(mission)) return `Mission running: ${mission.state}`;
+      if (mission.state === "COMPLETE") {
+        return mission.return_home_after_grasp ?
+          "Mission complete: object grasped and returned" :
+          "Mission complete: object grasped";
+      }
+      if (mission.state === "MANUAL") return "Manual mode active";
+      if (mission.safety_stop) return "Clear safety stop area";
+      if (!readiness.odom_ok) return "Wait/check base odometry";
+      if (!readiness.base_available) return "Connect Arduino base USB";
+      if (!readiness.base_status_fresh) return "Wait/check base status";
+      if (!readiness.gripper_available) return "Connect OpenRB gripper USB";
+      if (!readiness.gripper_status_fresh) return "Wait/check gripper status";
+      if (!readiness.perception_ok) return "Wait/check cameras and YOLO";
+      if (
+        readiness.required &&
+        readiness.required.loaded_pwm_calibration &&
+        !calibration.ok
+      ) {
+        return "Run loaded PWM calibration";
+      }
+      if (base.serial_error) return `Fix base serial: ${base.serial_error}`;
+      if (gripper.serial_error) {
+        return `Fix gripper serial: ${gripper.serial_error}`;
+      }
+      if (liveBaseCalibrationOverride({base, readiness})) {
+        return "Calibration override with live base: use floor_demo or dry-run";
+      }
+      if (
+        !dryRunPreview({base, gripper}) &&
+        readiness.required &&
+        readiness.required.loaded_pwm_calibration === false &&
+        calibration.loaded &&
+        !calibration.ok
+      ) {
+        return "PWM calibration override active: bench/no-motion only";
+      }
+      if (!readiness.ok) {
+        return (readiness.reasons || []).join(", ") || "Waiting for readiness";
+      }
+      if (!selectedDetection) return "Ready: Launch will search for target";
+      if (dryRunPreview({base, gripper})) {
+        return mission.return_home_after_grasp ?
+          "Dry-run ready: Launch simulates pickup + return" :
+          "Dry-run ready: Launch simulates pickup only";
+      }
+      return "Ready: press Launch";
+    };
+    async function refresh() {
+      try {
+        const data = await fetch("/api/status").then(response => response.json());
+        const mission = data.mission || {};
+        const base = data.base || {};
+        const gripper = data.gripper || {};
+        const detections = data.detections || {};
+        const age = data._age_sec || {};
+        const target = mission.target || {};
+        const readiness = mission.readiness || {};
+        const runtimeGuard = mission.runtime_guard || {};
+        const config = mission.config || {};
+        const launchButton = document.querySelector("#launch");
+        setConfigInput(
+          driveScaleInput,
+          Number(config.open_loop_drive_scale)
+        );
+        setConfigInput(
+          turnScaleInput,
+          Number(config.open_loop_turn_scale)
+        );
+        manualActive = mission.state === "MANUAL";
+        document.querySelector("#state").textContent = mission.state || "-";
+        document.querySelector("#mission-mode").textContent =
+          missionModeLabel(mission);
+        document.querySelector("#run-profile").textContent =
+          runProfileLabel({base, gripper});
+        document.querySelector("#active-target").textContent =
+          mission.target_class || "-";
+        document.querySelector("#readiness").textContent =
+          readiness.ok ? "OK" : ((readiness.reasons || []).join(", ") || "WAIT");
+        const calibration = base.calibration || {};
+        const detectionItems = detections.detections || [];
+        ensureTargetOptions(detectionItems);
+        const selectedDetection = closestSelectedDetection(detectionItems);
+        const launchBlockedByOverride = liveBaseCalibrationOverride({
+          base, readiness
+        });
+        const launchBlockedByActiveMission = activeMission(mission);
+        const launchBlockedByManual = mission.state === "MANUAL";
+        launchButton.disabled = !readiness.ok ||
+          launchBlockedByOverride ||
+          launchBlockedByActiveMission ||
+          launchBlockedByManual;
+        launchButton.title = launchBlockedByActiveMission ?
+          `Mission already running: ${mission.state}` :
+          launchBlockedByManual ?
+          "Manual mode active: switch to Auto/Idle before Launch" :
+          launchBlockedByOverride ?
+          "Calibration override is bench/dry-run only with a live base" :
+          dryRunPreview({base, gripper}) ?
+          "Dry-run preview: no physical base or gripper motion" :
+          (readiness.ok ? "" :
+            ((readiness.reasons || []).join(", ") || "Waiting for readiness"));
+        const baseTestBlockedByCalibration = !base.dry_run && (
+          liveBaseCalibrationOverride({base, readiness}) ||
+          (
+            readiness.required &&
+            readiness.required.loaded_pwm_calibration &&
+            !calibration.ok
+          )
+        );
+        manualMotionReady = Boolean(readiness.odom_ok) &&
+          Boolean(readiness.base_status_fresh) &&
+          Boolean(readiness.base_available) &&
+          !baseTestBlockedByCalibration &&
+          !mission.safety_stop;
+        manualBlockReason = baseTestBlockedByCalibration ?
+          "Manual drive requires loaded PWM calibration" :
+          "Manual drive requires odometry, base status, and clear safety";
+        const manualOnButton = document.querySelector("#manual-on");
+        manualOnButton.disabled = !manualMotionReady;
+        manualOnButton.title = manualMotionReady ? "" : manualBlockReason;
+        const baseTestReady = Boolean(readiness.odom_ok) &&
+          Boolean(readiness.base_status_fresh) &&
+          Boolean(readiness.base_available) &&
+          !baseTestBlockedByCalibration &&
+          !mission.safety_stop;
+        document.querySelectorAll("[data-test]").forEach(button => {
+          button.disabled = !baseTestReady;
+          button.title = baseTestReady ? "" :
+            "Base test requires odometry, base status, and loaded PWM calibration";
+        });
+        document.querySelectorAll("[data-key]").forEach(button => {
+          const isStop = button.dataset.key === "stop";
+          button.disabled = !manualMotionReady && !isStop;
+          button.title = isStop ? "Send zero manual velocity" :
+            (manualMotionReady ? "" : manualBlockReason);
+        });
+        const baseState = base.dry_run ? "DRY" :
+          (base.connected ? (base.feedback_ok ? "OK" : "WAIT") : "OFF");
+        document.querySelector("#feedback").textContent =
+          `${baseState} ${streamLabel(age.base)}`;
+        document.querySelector("#safety").textContent =
+          mission.safety_stop ? "STOP" : "clear";
+        const detectionCount = Array.isArray(detectionItems) ?
+          detectionItems.length : "-";
+        document.querySelector("#perception").textContent =
+          `${detectionCount} objects, ${streamLabel(age.detections)}`;
+        document.querySelector("#selected-seen").textContent =
+          selectedDetection ? selectedSummary(selectedDetection) : "not visible";
+        renderDetections(detectionItems);
+        const gripperState = gripper.dry_run ? "DRY" :
+          (gripper.connected ? "OK" : "OFF");
+        const gripperCommand = gripper.command || "-";
+        const gripperFeedback = Number.isFinite(gripper.present_deg) ?
+          `, pos ${gripper.present_deg.toFixed(1)}deg` :
+          (Number.isFinite(gripper.present_raw) ?
+            `, raw ${gripper.present_raw}` : "");
+        const gripperCurrent = Number.isFinite(gripper.current_raw) ?
+          `, cur ${gripper.current_raw}` : "";
+        const gripperTorque =
+          gripper.torque_enabled === true ? ", torque on" :
+          (gripper.torque_enabled === false ? ", torque off" : "");
+        document.querySelector("#gripper").textContent =
+          `${gripperState}, ${gripperCommand}${gripperFeedback}` +
+          `${gripperCurrent}${gripperTorque}, ${streamLabel(age.gripper)}`;
+        document.querySelector("#object-pos").textContent =
+          `${fmt(target.forward_m)} / ${fmt(target.left_m)}`;
+        document.querySelector("#pwm").textContent =
+          Array.isArray(base.pwm) ? base.pwm.join(" / ") : "-";
+        document.querySelector("#calibration").textContent =
+          calibration.ok ? "OK" :
+          (calibration.error || (calibration.loaded ? "check failed" : "WAIT"));
+        const errors = [
+          mission.last_error,
+          runtimeGuard.active && !runtimeGuard.ok ?
+            (runtimeGuard.reasons || []).join(", ") : "",
+          base.serial_error ? `base: ${base.serial_error}` : "",
+          gripper.serial_error ? `gripper: ${gripper.serial_error}` : ""
+        ].filter(Boolean);
+        document.querySelector("#error").textContent =
+          errors.length ? errors.join(" | ") : "-";
+        document.querySelector("#next-action").textContent = nextAction({
+          mission, base, gripper, readiness, calibration, selectedDetection,
+          runtimeGuard
+        });
+      } catch (_) {}
+    }
+    function renderDetections(items) {
+      const container = document.querySelector("#detected-objects");
+      const selected = document.querySelector("#target").value;
+      if (!Array.isArray(items) || items.length === 0) {
+        container.innerHTML = '<div class="empty">No objects detected.</div>';
+        return;
+      }
+      const sorted = [...items].sort((a, b) =>
+        (a.forward_m ?? 999) - (b.forward_m ?? 999)
+      );
+      container.innerHTML = sorted.slice(0, 8).map(item => {
+        const cls = objectClass(item);
+        const selectedClass = normalizeClass(cls) === normalizeClass(selected) ?
+          " selected" : "";
+        return `
+          <div class="object-row${selectedClass}" data-target="${escapeHtml(cls)}">
+            <strong>${escapeHtml(cls)}</strong>
+            <strong>${pct(Number(item.confidence))}</strong>
+            <span>F ${fmt(Number(item.forward_m))} m</span>
+            <span>L ${fmt(Number(item.left_m))} m</span>
+          </div>`;
+      }).join("");
+      container.querySelectorAll("[data-target]").forEach(row => {
+        row.onclick = () => {
+          setTargetByClass(row.dataset.target);
+          renderDetections(items);
+        };
+      });
+    }
+    function closestSelectedDetection(items) {
+      const selected = targetSelect().value;
+      if (!Array.isArray(items)) return null;
+      return items.filter(item =>
+        normalizeClass(objectClass(item)) === normalizeClass(selected)
+      ).sort((a, b) =>
+        (a.forward_m ?? 999) - (b.forward_m ?? 999)
+      )[0] || null;
+    }
+    function selectedSummary(item) {
+      return [
+        pct(Number(item.confidence)),
+        `F ${fmt(Number(item.forward_m))} m`,
+        `L ${fmt(Number(item.left_m))} m`
+      ].join(", ");
+    }
+    setInterval(refresh, 400);
+    refresh();
+  </script>
+</body>
+</html>

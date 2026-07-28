@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Team14 GT 배치 생성기</title>
+<style>
+  body { font-family: 'Noto Sans KR', sans-serif; margin: 16px; background: #fafafa; color: #222; }
+  h1 { font-size: 22px; margin: 0 0 10px; }
+  .wrap { display: flex; gap: 20px; flex-wrap: wrap; }
+  canvas { background: #e8dcc8; border: 3px solid #8a7050; border-radius: 6px; cursor: pointer; }
+  .panel { min-width: 320px; max-width: 460px; }
+  label { display: inline-block; margin: 2px 8px 2px 0; }
+  input[type=number] { width: 52px; }
+  button { font-size: 15px; padding: 6px 14px; margin: 4px 4px 4px 0; border-radius: 6px;
+           border: 1px solid #888; background: #2c3e50; color: #fff; cursor: pointer; }
+  button.secondary { background: #fff; color: #222; }
+  textarea { width: 100%; height: 110px; font-family: monospace; font-size: 12px; }
+  .inv { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 8px 10px; margin: 8px 0; }
+  .hint { color: #666; font-size: 13px; }
+  .sel { color: #c0392b; font-weight: bold; }
+  #menu { position: absolute; display: none; z-index: 10; background: #fff;
+          border: 1px solid #888; border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,.25);
+          padding: 4px 0; min-width: 150px; }
+  #menu div { padding: 5px 12px; cursor: pointer; font-size: 14px; }
+  #menu div:hover { background: #eef3f8; }
+  #menu .hd { font-weight: bold; color: #666; cursor: default; font-size: 12px;
+              border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+  #menu .hd:hover { background: #fff; }
+  #menu .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+               margin-right: 7px; vertical-align: middle; }
+  #menu .out { color: #c0392b; }
+</style>
+</head>
+<body>
+<div id="menu"></div>
+<h1>🎲 GT 배치 생성기 — 42격자 랜덤 배치 (경기 규칙 준수)</h1>
+<div class="wrap">
+  <div>
+    <canvas id="cv" width="640" height="640"></canvas>
+    <div class="hint">공식좌표 cm. 원점=좌하(보관함⬛), 출발=우하(🚩). y&lt;100은 하이웨이(객체 없음).<br>
+    ✋ 물체 클릭 → 다른 격자점 클릭 = 이동/교환 (실물과 안 맞을 때 수동 조정)<br>
+    ➕ <b>빈 격자점 클릭</b> = 물체 목록에서 골라 추가 · <b>물체 우클릭</b> = 삭제</div>
+  </div>
+  <div class="panel">
+    <div class="inv">
+      <b>인벤토리</b> (실물 보유 수량으로 조정 가능)<br>
+      <label>plain <input type="number" id="n_plain" value="4" min="0"></label>
+      <label>octa <input type="number" id="n_octahedron" value="4" min="0"></label>
+      <label>dodeca <input type="number" id="n_dodecahedron" value="4" min="0"></label>
+      <label>icosa <input type="number" id="n_icosahedron" value="4" min="0"></label><br>
+      <label>🍎apple <input type="number" id="n_apple" value="3" min="0"></label>
+      <label>🍊orange <input type="number" id="n_orange" value="3" min="0"></label><br>
+      <label>🍌banana <input type="number" id="n_banana" value="3" min="0"></label>
+      <label>🍍pineapple <input type="number" id="n_pineapple" value="3" min="0"></label>
+      <span class="hint">합계 <span id="total">28</span>/42</span>
+    </div>
+    <label>시드 <input type="number" id="seed" value="1" min="0" style="width:80px"></label>
+    <button onclick="roll(true)">🎲 새 랜덤 (시드+1)</button>
+    <button class="secondary" onclick="roll(false)">현재 시드로 재생성</button>
+    <div class="inv">
+      <b>E2E 파라미터</b> (복사되는 명령어에 그대로 반영)<br>
+      <label>수거 개수 <input type="number" id="p_max" value="1" min="1" max="28"></label>
+      <label>속도 <select id="p_speed">
+        <option value="safe" selected>safe</option>
+        <option value="normal">normal</option>
+        <option value="fast">fast</option></select></label>
+<br>
+      <div style="border-top:1px dashed #bbb; margin:6px 0 4px; padding-top:6px">
+      <b>실전 2세트 타깃</b> <span class="hint">(룰북 §5/§7 — 지정 시 '수거 개수' 무시,
+      비타깃 수거 금지·quota 자동. 지도에 금테 표시. 미지정 = 전체 최근접)</span><br>
+      <label>형상 <select id="p_tshape">
+        <option value="" selected>없음</option>
+        <option value="cube">cube(=plain)</option>
+        <option>octahedron</option><option>dodecahedron</option>
+        <option>icosahedron</option></select></label>
+      <label>x<input type="number" id="p_shapeq" value="4" min="1" max="8" style="width:44px"></label>
+      <label>과일 <select id="p_tfruit">
+        <option value="" selected>없음</option>
+        <option>apple</option><option>orange</option>
+        <option>banana</option><option>pineapple</option></select></label>
+      <label>x<input type="number" id="p_fruitq" value="3" min="1" max="8" style="width:44px"></label><br>
+      <label>순서 <select id="p_order">
+        <option value="nearest" selected>nearest(최근접)</option>
+        <option value="fruit-first">fruit-first(20점 우선)</option>
+        <option value="shape-first">shape-first</option></select></label>
+      </div>
+      <label>셀 확정 K <input type="number" id="p_votesk" value="1" min="1" max="9"></label>
+      <label>과일 K <input type="number" id="p_fruitk" value="1" min="1" max="9"></label>
+      <label>pair <select id="p_pair">
+        <option value="on" selected>on</option><option value="off">off</option></select></label><br>
+      <label>스캔 <select id="p_scanmode">
+        <option value="step" selected>step(정지)</option>
+        <option value="continuous">continuous(연속회전)</option></select></label>
+      <label>분할 수 <input type="number" id="p_shots" value="8" min="2" max="24"></label>
+      <label>위치추정 <select id="p_range">
+        <option value="depth" selected>depth</option>
+        <option value="ground">ground(RGB)</option></select></label>
+      <label>스캔 마스트 <select id="p_scanmast">
+        <option value="up" selected>up(풀업)</option>
+        <option value="mid">mid(절반·근접사각 완화)</option></select></label><br>
+      <label>스캔 정착 s <input type="number" id="p_scansettle" value="0.35"
+        min="0" max="2" step="0.05"></label>
+      <label>투하 개방 tick <input type="number" id="p_releaseticks" value="450"
+        min="50" max="2000" step="50" style="width:64px"></label><br>
+      <label><input type="checkbox" id="p_noplace" checked> 적재 생략(--no-place)</label>
+      <label><input type="checkbox" id="p_gtmap"> 스캔 생략, GT를 지도로(--gt-map)</label>
+      <label><input type="checkbox" id="p_placeanyway"> 파지 실패해도 적재 진행(--place-anyway)</label>
+    </div>
+    <p><b>--gt-text 문자열</b> (같은 시드 = 같은 배치, 재현 가능):</p>
+    <textarea id="gt" readonly onclick="this.select()"></textarea>
+    <button onclick="copyGt()">📋 GT 복사</button>
+    <button class="secondary" onclick="copyCmd()">📋 E2E 명령어 복사</button>
+    <span id="copied" class="sel"></span>
+    <p class="hint">절차: ① 시드 굴리기 → ② 지도 보고 실물 배치 → ③ E2E 명령어 복사해 실행.<br>
+    지도는 위가 북쪽(+y). 로봇 출발 방향 기준으로 보면 됨.</p>
+  </div>
+</div>
+<script>
+const CLASSES = ["plain","octahedron","dodecahedron","icosahedron",
+                 "apple","orange","banana","pineapple"];
+const COLOR = { plain:"#2ca02c", octahedron:"#1e90ff", dodecahedron:"#1e50e6",
+                icosahedron:"#781ec8", apple:"#e60000", orange:"#ff8c00",
+                banana:"#e6d200", pineapple:"#ff69b4" };
+const SHORT = { plain:"PL", octahedron:"O8", dodecahedron:"O12", icosahedron:"O20",
+                apple:"AP", orange:"OR", banana:"BA", pineapple:"PI" };
+// 42 격자점: x 50..350(7) × y 100..350(6)
+const GRID = [];
+for (let y=100; y<=350; y+=50) for (let x=50; x<=350; x+=50) GRID.push([x,y]);
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
+  let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
+  return((t^t>>>14)>>>0)/4294967296;}}
+
+let placement = []; // [{cls, x, y}]
+let selected = -1;
+
+function inventory(){
+  const inv = [];
+  for (const c of CLASSES){
+    const n = +document.getElementById("n_"+c).value || 0;
+    for (let i=0;i<n;i++) inv.push(c);
+  }
+  document.getElementById("total").textContent = inv.length;
+  return inv;
+}
+
+function roll(bump){
+  const seedEl = document.getElementById("seed");
+  if (bump) seedEl.value = +seedEl.value + 1;
+  const rng = mulberry32(+seedEl.value);
+  const inv = inventory();
+  if (inv.length > 42){ alert("합계가 42를 넘음"); return; }
+  const pts = GRID.slice();
+  // Fisher–Yates
+  for (let i=pts.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [pts[i],pts[j]]=[pts[j],pts[i]]; }
+  const objs = inv.slice();
+  for (let i=objs.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [objs[i],objs[j]]=[objs[j],objs[i]]; }
+  placement = objs.map((c,i)=>({cls:c, x:pts[i][0], y:pts[i][1]}));
+  selected = -1;
+  render();
+}
+
+function toCanvas(x,y,cv){ // 공식 cm → 캔버스 px (400cm 아레나, y축 뒤집기)
+  const s = cv.width/400;
+  return [x*s, cv.height - y*s];
+}
+
+function render(){
+  const cv = document.getElementById("cv"), g = cv.getContext("2d");
+  g.clearRect(0,0,cv.width,cv.height);
+  const s = cv.width/400;
+  // 하이웨이 띠
+  g.fillStyle = "rgba(120,180,120,0.25)";
+  g.fillRect(0, cv.height-100*s+25*s, cv.width, 75*s);
+  // 보관함/출발
+  g.fillStyle="#333"; g.fillRect(2, cv.height-60*s, 58*s, 58*s);
+  g.fillStyle="#fff"; g.font="14px sans-serif"; g.fillText("보관함", 8, cv.height-25*s);
+  g.strokeStyle="#c0392b"; g.lineWidth=2;
+  g.strokeRect(cv.width-58*s, cv.height-58*s, 56*s, 56*s);
+  g.fillStyle="#c0392b"; g.fillText("출발🚩", cv.width-55*s, cv.height-25*s);
+  // 격자점
+  for (const [x,y] of GRID){
+    const [px,py]=toCanvas(x,y,cv);
+    g.fillStyle="#a89578"; g.beginPath(); g.arc(px,py,3,0,7); g.fill();
+  }
+  // 물체 (실전 타깃은 금테 강조)
+  const tset = targetSet();
+  placement.forEach((o,i)=>{
+    const [px,py]=toCanvas(o.x,o.y,cv);
+    if (tset.has(o.cls)){ g.strokeStyle="#d4af37"; g.lineWidth=4;
+      g.beginPath(); g.arc(px,py,20,0,7); g.stroke(); }
+    g.fillStyle=COLOR[o.cls];
+    g.beginPath(); g.arc(px,py,15,0,7); g.fill();
+    if (i===selected){ g.strokeStyle="#000"; g.lineWidth=3; g.stroke(); }
+    g.fillStyle="#fff"; g.font="bold 11px sans-serif"; g.textAlign="center";
+    g.fillText(SHORT[o.cls], px, py+4);
+    g.textAlign="left";
+  });
+  // GT 문자열
+  const gt = placement.map(o=>`${o.cls}:${o.x},${o.y}`).join(";");
+  document.getElementById("gt").value = gt;
+}
+
+// 클릭 지점 → 가장 가까운 격자점 인덱스 (멀면 -1)
+function pickGrid(ev){
+  const cv = document.getElementById("cv"), r = cv.getBoundingClientRect();
+  const mx = (ev.clientX-r.left)*cv.width/r.width, my=(ev.clientY-r.top)*cv.height/r.height;
+  let best=-1, bd=1e9;
+  GRID.forEach((p,i)=>{ const [px,py]=toCanvas(p[0],p[1],cv);
+    const d=(px-mx)**2+(py-my)**2; if(d<bd){bd=d;best=i;} });
+  return bd > 30**2 ? -1 : best;
+}
+
+// 인벤토리 대비 이미 배치된 수 — 초과분은 목록에서 빨갛게 표시
+function usedCount(cls){ return placement.filter(o=>o.cls===cls).length; }
+
+function hideMenu(){ document.getElementById("menu").style.display="none"; }
+
+// 빈 격자점 좌클릭 → 물체 목록 드롭다운 → 고르면 추가
+function showAddMenu(ev, gx, gy){
+  const m = document.getElementById("menu");
+  m.innerHTML = "";
+  const hd = document.createElement("div");
+  hd.className = "hd"; hd.textContent = `(${gx}, ${gy}) 에 추가`;
+  m.appendChild(hd);
+  for (const c of CLASSES){
+    const have = +document.getElementById("n_"+c).value || 0;
+    const used = usedCount(c);
+    const row = document.createElement("div");
+    if (used >= have) row.className = "out";
+    row.innerHTML = `<span class="dot" style="background:${COLOR[c]}"></span>`
+                  + `${c} <span style="color:#888">(${used}/${have})</span>`;
+    row.onclick = () => {
+      placement.push({cls:c, x:gx, y:gy});
+      // 실물 수량과 어긋나지 않도록 인벤토리도 같이 올려준다
+      if (used >= have) document.getElementById("n_"+c).value = used + 1;
+      inventory(); hideMenu(); selected = -1; render();
+    };
+    m.appendChild(row);
+  }
+  m.style.left = (window.scrollX + ev.clientX + 6) + "px";
+  m.style.top  = (window.scrollY + ev.clientY + 6) + "px";
+  m.style.display = "block";
+}
+
+document.getElementById("cv").addEventListener("click", ev=>{
+  hideMenu();
+  const best = pickGrid(ev);
+  if (best < 0){ selected = -1; render(); return; }
+  const [gx,gy] = GRID[best];
+  const hit = placement.findIndex(o=>o.x===gx&&o.y===gy);
+  if (selected<0){
+    if (hit>=0) selected=hit;         // 물체 집기
+    else { showAddMenu(ev, gx, gy); return; }   // 빈칸 → 추가 메뉴
+  }
+  else {
+    if (hit>=0 && hit!==selected){ // 교환
+      const a=placement[selected], b=placement[hit];
+      [a.x,b.x]=[b.x,a.x]; [a.y,b.y]=[b.y,a.y];
+    } else if (hit<0){ placement[selected].x=gx; placement[selected].y=gy; }
+    selected=-1;
+  }
+  render();
+});
+
+// 물체 우클릭 → 삭제
+document.getElementById("cv").addEventListener("contextmenu", ev=>{
+  ev.preventDefault(); hideMenu();
+  const best = pickGrid(ev);
+  if (best < 0) return;
+  const [gx,gy] = GRID[best];
+  const hit = placement.findIndex(o=>o.x===gx&&o.y===gy);
+  if (hit>=0){ placement.splice(hit,1); selected=-1; render(); }
+});
+
+document.addEventListener("click", ev=>{
+  if (!ev.target.closest("#menu") && ev.target.id !== "cv") hideMenu();
+});
+
+function flash(msg){ const el=document.getElementById("copied");
+  el.textContent=msg; setTimeout(()=>el.textContent="",1500); }
+function copyGt(){ navigator.clipboard.writeText(document.getElementById("gt").value)
+  .then(()=>flash("복사됨!")); }
+// 실전 2세트 타깃의 지각 identity 집합 (cube는 과일면 없는 큐브 = plain)
+function targetSet(){
+  const s = new Set();
+  const ts = document.getElementById("p_tshape").value;
+  const tf = document.getElementById("p_tfruit").value;
+  if (ts) s.add(ts === "cube" ? "plain" : ts);
+  if (tf) s.add(tf);
+  return s;
+}
+function copyCmd(){
+  const v = id => document.getElementById(id).value;
+  const gt = v("gt");
+  let cmd = `python3 scripts/dev/field_ops/e2e_match_test.py --gt-text "${gt}"`
+    + ` --speed-profile ${v("p_speed")}`
+    + ` --votes-k ${v("p_votesk")} --fruit-k ${v("p_fruitk")}`
+    + ` --pair ${v("p_pair")} --scan-mode ${v("p_scanmode")}`
+    + ` --scan-shots ${v("p_shots")} --range-mode ${v("p_range")}`
+    + ` --scan-settle ${v("p_scansettle")} --release-ticks ${v("p_releaseticks")}`;
+  if (v("p_scanmast") !== "up") cmd += ` --scan-mast ${v("p_scanmast")}`;
+  const ts = v("p_tshape"), tf = v("p_tfruit");
+  if (ts || tf){
+    // 실전 모드: --max-objects/--target-class 미발행 (러너가 quota합+5 자동)
+    if (ts) cmd += ` --target-shape ${ts} --shape-quota ${v("p_shapeq")}`;
+    if (tf) cmd += ` --target-fruit ${tf} --fruit-quota ${v("p_fruitq")}`;
+    if (v("p_order") !== "nearest") cmd += ` --order ${v("p_order")}`;
+  } else {
+    cmd += ` --max-objects ${v("p_max")}`;
+  }
+  if (document.getElementById("p_noplace").checked) cmd += " --no-place";
+  if (document.getElementById("p_gtmap").checked) cmd += " --gt-map";
+  if (document.getElementById("p_placeanyway").checked) cmd += " --place-anyway";
+  navigator.clipboard.writeText(cmd).then(()=>flash("명령어 복사됨!"));
+}
+for (const c of CLASSES) document.getElementById("n_"+c).addEventListener("change", ()=>roll(false));
+for (const id of ["p_tshape","p_tfruit"])
+  document.getElementById(id).addEventListener("change", render);
+roll(false);
+</script>
+</body>
+</html>

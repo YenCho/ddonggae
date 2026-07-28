@@ -1,0 +1,35 @@
+# ROS 2 / colcon
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Model weights are distributed as GitHub Release assets, not in the tree.
+# Run scripts/fetch_models.sh to populate perception/models/.
+perception/models/**/*.pt
+perception/models/**/*.onnx
+perception/models/**/*.engine
+
+# Run artifacts
+runs/
+!media/runs/
+outputs/
+*.log
+
+# Large captures and rendered datasets are never committed. See
+# perception/docs/synthetic-data.md section 10 for what they were.
+data/
+datasets/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
