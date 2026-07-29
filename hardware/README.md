@@ -34,8 +34,8 @@ to the storage box, repeat.
 | Cameras | Intel RealSense D435 (top) + D435i (near) — both ride the mast | `ros2/robot_bringup/launch/real_competition_bridge.launch.py` |
 | LiDAR | Slamtec RPLIDAR A2M12, 256000 baud, mounted at `base_link` z = 0.262 m, yaw = π | `ros2/robot_bringup/launch/real_competition_bridge.launch.py:192-212` |
 | Gyro | The D435i's IMU (`enable_bottom_imu` default `true`, remapped to `/imu/data`) — used by the localizer to make arena yaw observable | `ros2/robot_bringup/launch/real_competition_bridge.launch.py:57-58,150` |
-| Compute | NVIDIA Jetson Orin Nano — all three USB devices hang off it | — |
-| Power | 12 V battery → both MDD10A boards; encoders and logic off the Arduino 5 V rail; common ground is mandatory | [`docs/wiring-and-firmware.md`](docs/wiring-and-firmware.md) |
+| Compute | NVIDIA Jetson Orin Nano — the two RealSense units and the LiDAR plug into it directly; the UNO and the OpenRB-150 go through a powered USB hub, which held their ttys far more reliably than the Jetson's own ports did | [`docs/wiring-and-firmware.md`](docs/wiring-and-firmware.md#2-boards-buses-and-who-owns-what) |
+| Power | 12 V battery → both MDD10A boards; encoders and logic off the Arduino 5 V rail; common ground is mandatory. Boot the Jetson with the 12 V kill switch **off** and switch it on afterwards, or the OpenRB-150 will not enumerate reliably | [`docs/wiring-and-firmware.md`](docs/wiring-and-firmware.md#boot-the-jetson-with-the-12-v-kill-switch-off) |
 
 <p align="center">
   <img src="../media/renders/mast-up-down.webp" width="900" alt="The robot rendered from the side with the camera mast lowered and raised, at the same scale and ground line">
@@ -44,6 +44,18 @@ to the storage box, repeat.
 (right), same scale, same ground line. The stroke is 148.9 mm measured. Both RealSense units ride the
 top plate, so the two heights are two camera extrinsics and two stitch calibrations — most of what
 <a href="../perception/README.md">perception/</a> has to keep straight follows from this picture.</em></p>
+
+It goes up for exactly one thing: the centre scan. What separates a 20-point fruit cube from a
+10-point plain one is a photograph on three of its six faces — the **top** face and one opposing
+pair of sides. Only the top face is visible from every direction: the two fruit sides face away
+half the time, depending on how the cube was set down. And from chassis height the top face is
+edge-on, contributing a few pixels at the 1–2 m ranges the scan works at. So a mast-down scan is
+left guessing on cube identity from an unlucky yaw. The 148.9 mm lift steepens the look-down enough
+to read the top faces regardless of yaw, and buys less mutual occlusion between objects across a
+2.15 m scan radius on the way. Everything else in the match runs mast-down — the pre-shot and the
+pre-grasp re-check are both short-range work for the near camera — which is why the descent is
+commanded the instant the last scan frame is taken. Full argument, with the measured fruit-face
+hit rates: [`perception/docs/grid-voting.md`](../perception/docs/grid-voting.md).
 
 Deck geometry, as modelled in `cad/urdf/robot_mk3_mecanum_sim_80mm.urdf` (collision boxes,
 so these are the plate outlines, not machining drawings):

@@ -126,7 +126,8 @@ back-projected object range.
 `generate_competition_stadium_layout.py --layout grid42 --seed 14 --target-size-m 0.08
 --random-yaw` places 28 objects (4 cubes × 4 polyhedra classes, 3 each of apple / orange /
 banana / pineapple faces) on 28 of the 42 official 50 cm grid points, applies random yaw,
-and enforces the arena's face rule (the three blank faces are fixed to the cube's bottom).
+and enforces the arena's face rule (fruit on the front, top and back; blank on the left, right
+and bottom).
 It emits a JSON inventory that is the ground truth for every parity measurement, and
 `logs`-free ground-truth text that `mission/match_runner.py --gt-file` reads directly.
 

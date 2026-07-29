@@ -76,7 +76,7 @@ documented at the same level of detail as the wins:
   the OpenRB board went quiet mid-match: one octahedron was carried and released without the grasp
   ever being confirmed (almost certainly an empty hand, and it scored nothing), and two more were
   refused outright because the gripper actively declared itself empty. Landing that one grasp would
-  have made the match 70, not 90 — the run's own estimate. We also went 189.8 s against a 180 s
+  have made the match 70, not 60 — the run's own estimate. We also went 189.8 s against a 180 s
   budget, and the runner crashed on a seventh object seconds after it was dropped in.
 - **Final 2** — **ran out of time.** The 180 s timeout expired while the last object was being
   grasped, and only what is inside the box at time-up scores.
@@ -161,7 +161,13 @@ fallback we kept for the legacy route (`--nav legacy`).
 <img src="media/renders/robot-strip.webp" width="420" align="right" alt="The DDONGGAE robot rendered from three angles 120 degrees apart, mast raised">
 
 A 4-wheel mecanum base with a three-deck plate stack, a servo-driven camera mast carrying both
-RealSense units, and one parallel gripper. Two microcontrollers own all motion primitives: an
+RealSense units, and one parallel gripper. The mast exists for one reason: it goes up for the
+centre scan. A fruit cube's three photographed faces are its top and one opposing pair of sides,
+so the **top** face is the only one visible from every direction — from chassis height it is
+edge-on and contributes nothing, and whether you see a photograph at all comes down to which way
+the cube happens to be turned. The 148.9 mm of stroke puts the top camera at 0.4986 m and steepens
+the look-down enough to read those top faces, while also cutting how much the objects occlude each
+other. Two microcontrollers own all motion primitives: an
 Arduino UNO runs the four wheel-velocity PIDs and synchronised trapezoidal position moves
 (`d dx dy dyaw` → `DONE,move`), and an OpenRB-150 owns the gripper and the mast lift on a single
 tty. The headline fact is that two of the drive constants are **fitted, not measured** —
@@ -360,7 +366,7 @@ it directly):
 ```bibtex
 @software{ddonggae_2026,
   title  = {DDONGGAE: an autonomous polyhedron-collecting robot},
-  author = {Cho, Yeonwoo and Kim, Jaeyoung and Jang, Minjun and Lim, Junhwan
+  author = {Cho, Yeonwoo and Kim, Jaeyoung and Jang, Minjoon and Lim, Junhwan
             and Kim, Minseok and Kim, Junseo and Han, Seojun},
   year   = {2026},
   url    = {https://github.com/YenCho/ddonggae},

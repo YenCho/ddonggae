@@ -38,13 +38,17 @@ day, the *only* thing that changes is two command-line arguments (`--target-shap
 
 Order matters, and it is the reverse of what people usually do.
 
+0. **Kill switch OFF before the Jetson is booted.** The 12 V rail must be dead while the Jetson
+   comes up and enumerates USB. Booting with the switch already on is what produced most of our
+   "the OpenRB isn't there" and "the gripper node just died" incidents — see the note below.
 1. **Jetson on.** Wait for the desktop/SSH to come up. Nothing else is powered yet.
 2. **USB devices seated** — LiDAR, both RealSense cameras, the Arduino, the OpenRB-150. Confirm
    before applying motor power, because a USB reconnect *while running* resets the Arduino and
    loses its RAM-held PID configuration ([`06-troubleshooting.md` §2](06-troubleshooting.md)).
-3. **Kill switch / drive battery ON.** The OpenRB-150 is powered from this rail. If the switch is
-   off, the board does not enumerate at all and the gripper and mast are simply absent — this was
-   the entire cause of a "dead board" panic on 2026-07-21.
+3. **Kill switch / drive battery ON**, now that the boards have already enumerated. The
+   OpenRB-150's Dynamixel bus is powered from this rail. If the switch is off, the servos are
+   simply absent and every `LIFT_*` and gripper command does nothing — this was the entire cause
+   of a "dead board" panic on 2026-07-21.
 4. **Robot placed on the floor, mast at the bottom.** Always power-cycle the OpenRB with the mast
    *down*: mast home lives in the board's RAM and is captured on the first lift command after boot.
 5. Only now run the bringup (§2).
@@ -54,7 +58,17 @@ lsusb | grep -i -e intel -e arduino -e robotis     # 2x RealSense, Arduino, Open
 ls -l /dev/rplidar                                  # the udev symlink the launch opens
 ```
 
-Four devices, four lines. If the OpenRB is missing, go back to step 3 before touching software.
+Four devices, four lines. If the OpenRB is missing, go back to step 0: switch the 12 V rail off,
+reboot the Jetson with it off, and only then switch it on.
+
+> **Why step 0 exists.** Boot the Jetson with the kill switch already on and the OpenRB-150 either
+> fails to enumerate or enumerates and then disappears under load, taking `gripper_bridge_node`
+> with it. Boot with the rail dead and the same board is reliable. We never instrumented the cause,
+> so treat this as an observed rule with a guess attached: the working theory is that with 12 V
+> live at boot the board backfeeds current into the shared ground/USB path, and the Jetson's port
+> protection cuts the port rather than powering a device it reads as faulty. What is certain is the
+> symptom and that the ordering fixes it. Full write-up in
+> [`06-troubleshooting.md` §2](06-troubleshooting.md#the-openrb-is-missing-or-drops-out-after-booting-with-12-v-live).
 
 ---
 

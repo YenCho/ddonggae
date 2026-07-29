@@ -129,12 +129,16 @@ Fruit-face placement follows the arena rule (2026-07-18):
 
 ```python
 FRUIT_FACE_NORMALS = [("pos_z", (0,0,1)), ("pos_y", (0,1,0)), ("neg_y", (0,-1,0))]
-# Competition rule: a fruit cube has its single blank face fixed to the BOTTOM,
-# so top is always fruit and the robot's top camera is the reliable fruit channel.
 ```
 
+`+Z` is the top; `+Y` and `−Y` are an opposing pair of sides. That is the competition rule
+exactly — fruit on the top and on one opposing side pair, blank on the bottom and the other
+side pair ([`docs/01-competition-and-rules.md` §3](../../docs/01-competition-and-rules.md)) —
+and it makes the robot's top camera the one fruit channel that does not depend on how the
+cube was set down.
+
 Cubes are kept mostly upright to match — per-tier tilt of 12°/22°/30°, only 8 % fully
-tumbled. The earlier `{+X, −X, +Y}` normals put the blank face on *top*, making the
+tumbled. The earlier `{+X, −X, +Y}` normals put a blank face on *top*, making the
 synthetic top-camera distribution the exact inverse of the real arena's.
 
 White polyhedra get randomised off-white colour and roughness rather than one pure white,

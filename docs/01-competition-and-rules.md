@@ -74,24 +74,15 @@ GRID_XS_CM = tuple(range(50, 351, 50))   # 50,100,150,200,250,300,350
 GRID_YS_CM = tuple(range(100, 351, 50))  # 100,150,200,250,300,350
 ```
 
-```text
- y=400 ┌───────────────────────────────────────────┐
-       │                                           │
- y=350 │   ·    ·    ·    ·    ·    ·    ·         │  row 6
- y=300 │   ·    ·    ·    ·    ·    ·    ·         │
- y=250 │   ·    ·    ·    ·    ·    ·    ·         │   42 candidate points
- y=200 │   ·    ·    ·    ·    ·    ·    ·         │   28 of them occupied
- y=150 │   ·    ·    ·    ·    ·    ·    ·         │
- y=100 │   ·    ·    ·    ·    ·    ·    ·         │  row 1
-       │                                           │
-       │        ←── always empty: y < 100 ──→      │  the "bottom highway"
-  y=40 ├──────┐                           ┌────────┤
-       │STORAGE                           │ START  │
-   y=0 └──────┴───────────────────────────┴────────┘
-      x=0    x=40                      x=360     x=400
-             ↑                                 ↑
-           x=50 …………… 50 cm pitch ………… x=350
-```
+<p align="center">
+  <img src="assets/arena-grid-official.png" width="620" alt="The organisers' arena diagram: a square field with 7 columns by 6 rows of candidate points at 50 cm pitch, 50 cm from the top and left walls, a 100 cm empty band along the bottom, the storage point in the bottom-left corner and the starting point in the bottom-right">
+</p>
+<p align="center"><em>The organisers' own arena figure. Seven columns × six rows = 42 candidate points at
+50 cm pitch, 28 of them occupied on the day. Storage bottom-left, start bottom-right, and the
+100 cm band along the bottom wall that never holds an object.</em></p>
+
+In our map frame the top row of that figure is `y = 350` cm and the bottom row `y = 100` cm;
+the left column is `x = 50` cm and the right column `x = 350` cm.
 
 Two consequences fall straight out of this geometry, and both are load-bearing in our code:
 
@@ -128,6 +119,29 @@ One target shape is announced on the **morning of the match day** and does not c
 
 White cubes with a fruit photograph applied to **three of their six faces**. The three photos on
 one cube may be different pictures but are always the same fruit.
+
+**Where the three photographed faces sit** — this is the load-bearing detail, and it is fixed by
+the rules, not by how the cube happens to land:
+
+| Face | |
+|---|---|
+| Top | **fruit** |
+| One opposing pair of sides | **fruit** ×2 |
+| The other opposing pair of sides | plain ×2 |
+| Bottom | plain |
+
+Three consequences the perception stack is built on:
+
+1. **Of the four side azimuths, exactly two carry a photograph.** A side-on look at a fruit cube
+   has a 50 % chance of seeing a blank face — so a single `plain` observation is weak evidence,
+   not a refutation. Against a genuine Set 1 cube the likelihood ratio is only 1:2.
+2. **Any two *adjacent* side faces are one fruit and one plain.** The fruit sides are opposite
+   each other, so a 45° corner view is guaranteed to have exactly one photographed face in it.
+   This is why the close-range re-verification before a grasp works as well as it does.
+3. **The top face is the only photographed face visible from every azimuth.** The side pair is
+   visible from half the directions and at grazing incidence from most of those. That is the
+   reason the centre scan is taken with the camera mast raised — see
+   [`hardware/docs/gripper-and-mast.md` §4.0](../hardware/docs/gripper-and-mast.md#40-why-there-is-a-mast-at-all).
 
 | Fruit | Count |
 | --- | --- |
@@ -261,7 +275,7 @@ We publish the failures because they are the more useful half of the record.
 | --- | --- | --- |
 | Qualifier 1 | 60 | The apple printed on the arena cubes was a **yellowish, under-ripe apple**, not the red one described in advance. The face model, trained entirely on synthetic renders of a red apple, mis-predicted it. A textbook train/deploy colour domain gap. |
 | Qualifier 2 | 60 | The same domain gap, the day after. The scan map again confirmed only **one** apple of the three on the field, so the round ended at 1/3 fruit with the shape quota full. |
-| Final 1 | 60 | Three pineapples went perfectly. Then the OpenRB **stopped answering**: one octahedron was carried and released with the grasp never confirmed (an empty hand, and no points), and two more were refused because the board did report `empty`. That one grasp was worth 70, not 90. We also overran, at 189.8 s. |
+| Final 1 | 60 | Three pineapples went perfectly. Then the OpenRB **stopped answering**: one octahedron was carried and released with the grasp never confirmed (an empty hand, and no points), and two more were refused because the board did report `empty`. That one grasp was worth 10 points — the run's own estimate was 70, not the 60 it officially scored. We also overran, at 189.8 s. |
 | Final 2 | 90 | **Ran out of time** — the 180 s timeout expired while the last object was being grasped. |
 
 Two of the three are rule-shaped failures rather than software failures in the abstract: the

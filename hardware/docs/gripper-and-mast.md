@@ -187,6 +187,37 @@ transport.
 Both RealSense cameras ride the mast. Raising it lifts the whole stereo pair, which is why
 the mast height is not a cosmetic setting — it changes the perception calibration (§4.4).
 
+### 4.0 Why there is a mast at all
+
+The mast is raised for exactly one stage of the match, the centre scan, and it exists
+because of a viewing-angle problem the rulebook creates. A Set 2 object is a white cube
+carrying a fruit photograph on three of its six faces: the **top**, and one **opposing pair
+of sides**. A Set 1 cube is the same white cube with nothing on it.
+
+The geometry that matters is which of those three faces you can count on seeing. The two
+fruit sides are opposite each other, so from any given direction you see one of them only
+about half the time — a cube set down with its blank pair facing you is, from chassis height,
+indistinguishable from a Set 1 cube. The top face has no such problem: it is visible from
+every azimuth. But at chassis height it is presented nearly edge-on, foreshortening to a
+sliver a few pixels tall at the 1–2 m ranges the scan works at, and the face classifier has
+nothing to classify. Mast down, cube identity is therefore a coin flip on yaw, and no amount
+of model quality fixes it.
+
+Adding 148.9 mm of camera height at the scan point steepens the look-down angle onto every
+cell enough that the top faces present real area — turning the one orientation-independent
+fruit face from unusable into the primary evidence. It buys a second thing for free: at a
+worst-case scan radius of 2.15 m, the higher vantage means the objects in the near rows
+occlude the far rows much less, so a single 12-shot spin can see most of the 42 cells.
+
+The price is paid in two places, and both are handled elsewhere in this document: a second
+full calibration set, because the lift is not a pure height offset (§4.4), and ~7 s up plus
+~6 s down out of a 180 s budget, which the match runner hides under the drive to the centre
+and under batched inference respectively (§4.3). Everything after the scan runs mast-down.
+
+The perception-side version of this argument, with the measured fruit-face hit rates that
+justify the asymmetric vote, is in
+[`perception/docs/grid-voting.md`](../../perception/docs/grid-voting.md).
+
 ### 4.1 Homing without a limit switch
 
 There is no limit switch and no absolute encoder across the full stroke. The scheme

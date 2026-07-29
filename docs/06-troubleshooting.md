@@ -28,6 +28,7 @@ the failing line names it. Then find the symptom below.
 | No camera topics | RSUSB backend / USB enumeration | `field_autopilot.py down` then `up`. If it persists, physically replug |
 | No localisation output | Pose never seeded, or robot not where you told it | Re-place in the start zone facing north, re-run `up` (re-seeds) |
 | `LIFT_*` does nothing | OpenRB unpowered or home not captured | Check the kill switch first. Then `check`, then power-cycle the board **with the mast at the bottom** |
+| OpenRB absent from `lsusb`, or it vanishes under load | Jetson was booted with the 12 V rail already live | Kill switch off, reboot the Jetson, confirm enumeration, *then* switch the rail on ([§2](#the-openrb-is-missing-or-drops-out-after-booting-with-12-v-live)) |
 | Scan finds ghosts or misses cells | Perception, not navigation | Compare against the GT table the runner prints; capture with `field_autopilot.py record` and analyse offline |
 
 ---
@@ -108,6 +109,27 @@ each in turn (`hardware/ros2/robot_bringup/config/real.yaml:3-4` for the Arduino
 for the OpenRB, ending with a bare `/dev/ttyACM0` / `/dev/ttyACM1` fallback). Add your own
 path to the list rather than hard-coding one. Reconnection is retried every
 `serial_reconnect_interval_sec: 1.0`.
+
+### The OpenRB is missing, or drops out, after booting with 12 V live
+
+**Symptom.** `lsusb` shows no `ROBOTIS OpenRB-150`, or it shows up and then vanishes once the
+robot is doing real work, taking `gripper_bridge_node` down with it. The Arduino, the LiDAR
+and both cameras are unaffected. Replugging the OpenRB sometimes helps and sometimes does not.
+
+**Action, and it is an ordering rule, not a fix.** Switch the 12 V kill switch **off**, boot
+the Jetson with the rail dead, confirm the board enumerates, and only then switch the rail on
+([`05-field-runbook.md` §1](05-field-runbook.md#1-power-on-order)). Booted in that order the
+board has been reliable for us; booted with the switch already on it is not.
+
+**Cause — unverified.** We never put a scope on it, so this is a working theory rather than a
+diagnosis: with the 12 V rail live at boot, the OpenRB appears to backfeed current into the
+shared ground / USB path, and the Jetson's port protection responds by cutting the port
+instead of enumerating a device it reads as faulty. That would explain why the failure is
+specific to the one board that sits on both the 12 V rail and a Jetson-side USB path, and why
+the state at boot decides it. If you reproduce this properly, replace this paragraph with the
+measurement. Related and also worth doing: both microcontrollers run behind a powered USB hub
+rather than the Jetson's own ports
+([`wiring-and-firmware.md` §2](../hardware/docs/wiring-and-firmware.md#2-boards-buses-and-who-owns-what)).
 
 ### The robot reboots the Arduino mid-run and then rejects every move
 
@@ -430,6 +452,13 @@ verdict itself, not another restart mechanism.
 add `respawn=True` to the gripper node in the launch, and make the mission layer treat a
 gripper-state timeout as a recoverable state rather than assuming the bridge is alive. None of
 those three changes are in the code as it stands.
+
+**Before you go looking for a software cause, check the boot order.** Every one of these
+failures starts with the USB link to the OpenRB going away. Two physical things made that
+much rarer for us and neither is in the code: booting the Jetson with the 12 V kill switch
+**off** ([§2](#the-openrb-is-missing-or-drops-out-after-booting-with-12-v-live)) and running
+both microcontrollers behind a powered USB hub
+([`wiring-and-firmware.md` §2](../hardware/docs/wiring-and-firmware.md#2-boards-buses-and-who-owns-what)).
 
 ### `LIFT_*` does nothing
 

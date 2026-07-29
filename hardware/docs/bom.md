@@ -56,11 +56,12 @@ Quantities are per robot. Cost column: enter unit price, and note the currency.
 |---|---|---:|---|---|
 | Battery | 12 V pack | 1 | Chemistry and capacity **not recorded anywhere in the repository** — fill in from the physical robot | TODO |
 | Jetson power | Regulator / dedicated supply for the Jetson **(unverified)** | 1 | The Jetson is not powered from the 12 V motor rail in any documented way | TODO |
-| Main power switch / fuse | — | 1 | **(unverified — not documented)** | TODO |
+| Main power switch / fuse | Kill switch on the 12 V rail | 1 | Rating and fusing **(unverified — not documented)**. Operationally it is load-bearing: the Jetson must boot with this switch **off**, or the OpenRB-150 does not enumerate reliably ([wiring-and-firmware.md](wiring-and-firmware.md#boot-the-jetson-with-the-12-v-kill-switch-off)) | TODO |
 | Power distribution | Battery → 2 × MDD10A VM in parallel; common ground bus | 1 set | **Common ground is mandatory**: battery ↔ both MDD10A ↔ Arduino ↔ Jetson (via USB). A missing common ground was the suspected cause of a 2026-06-26 motor fault. Check branch-wire gauge and connector rating against the stall current | TODO |
 | Motor / power connectors | XT60 or equivalent **(unverified)** | — | — | TODO |
 | Encoder wiring | 4-conductor per motor (A, B, 5 V, GND) | 4 | Encoder VCC comes from the **Arduino 5 V rail**, never from motor power | TODO |
-| USB cables | Arduino UNO (USB-B), OpenRB-150 (USB **(unverified connector)**), RPLIDAR | 3 | Consider a powered hub; the Jetson's per-port topology is what the default `by-path` device paths encode | TODO |
+| USB cables | Arduino UNO (USB-B), OpenRB-150 (USB **(unverified connector)**), RPLIDAR | 3 | — | TODO |
+| Powered USB hub | Self-powered, for the UNO and the OpenRB-150 | 1 | Not optional in practice: both boards dropped their ttys intermittently when plugged straight into the Orin Nano, and were noticeably more stable behind the hub ([wiring-and-firmware.md §2](wiring-and-firmware.md#2-boards-buses-and-who-owns-what)). Its port topology is what the default `by-path` device paths encode | TODO |
 
 ## Structure
 

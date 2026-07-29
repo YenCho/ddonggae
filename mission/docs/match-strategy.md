@@ -258,8 +258,8 @@ The rule that makes it useful is that **only a definite contradiction skips the 
 | Target is a polyhedron, A1 re-reads it as anything else | **skip** | Definite contradiction |
 | Target is a fruit, A1 says "not a cube" | **skip** | Definite contradiction |
 | Target is a fruit, face model says a *different* fruit with conf ≥ 0.30 | **skip** | Definite contradiction |
-| Face model says `plain` | **pass** | Undecidable — cube side faces are always plain |
-| No detection at all, or a weak fruit face below the vote gate | **pass** | Undecidable — the fruit photo is on the *top* face, which a near, low view may not see |
+| Face model says `plain` | **pass** | Undecidable — two of a fruit cube's four side azimuths are blank by rule, so one `plain` reading is a 1:2 likelihood ratio, not a refutation |
+| No detection at all, or a weak fruit face below the vote gate | **pass** | Undecidable — the one fruit face guaranteed to be facing you is the *top* one, which a near, low view may not see |
 | Face inference throws | **pass** | Trust the scan identity |
 
 Treating "plain" as a mismatch would throw away real targets on nearly every cycle. The asymmetry is

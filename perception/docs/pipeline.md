@@ -222,12 +222,14 @@ def face_vote(faces, face_fruit_min=FACE_FRUIT_MIN):
 This is deliberately **asymmetric**: any fruit face at `conf ≥ FACE_FRUIT_MIN = 0.30`
 beats a plain face of *any* confidence.
 
-The justification is a competition rule, not a heuristic. A fruit cube carries its printed
-faces on a vertical ring — front, top, back — with the single blank face fixed to the
-**bottom**. Left, right and bottom are blank. So any viewpoint that resolves the cube sees
-two fruit faces and one plain face, and a symmetric "most confident face wins" rule would
-label fruit cubes plain most of the time. Measured over a scan, fruit faces occupy only
-10–24 % of all face observations.
+The justification is a competition rule, not a heuristic. A fruit cube carries its three
+printed faces on a vertical ring — **front, top, back** — leaving **left, right and bottom**
+blank ([`docs/01-competition-and-rules.md` §3](../../docs/01-competition-and-rules.md)). Half
+the blank faces are therefore side faces the camera sees all the time: from a side-on view a
+fruit cube shows a photograph only half the time, and from a corner view exactly one of the
+two visible sides carries one. A symmetric "most confident face wins" rule would label fruit
+cubes plain most of the time. Measured over a scan, fruit faces occupy only 10–24 % of all
+face observations.
 
 A separate runtime guard (`fruit_min_conf = 0.45`, added 2026-07-08) re-counts weak fruit
 detections as *unknown* rather than ignoring them. The threshold is data-derived from a

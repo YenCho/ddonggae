@@ -40,6 +40,47 @@ project vendored it; this repository does not).
 | USB → RPLIDAR A2M12 | LiDAR | 256000 | `sllidar_node` |
 | USB3 → 2 × RealSense | RGB + depth (+ IMU on the D435i) | — | `realsense2_camera` |
 
+### Both microcontrollers hang off a powered USB hub, not the Jetson directly
+
+This is a wiring decision that reads like a downgrade and is not. Plugged straight into
+the Orin Nano's own ports, the UNO and the OpenRB-150 both dropped their ttys
+intermittently under load — the enumeration would come back on a different device node,
+or the port would go quiet mid-match and take the bridge with it — the class of failure
+that cost us Final 1 ([`docs/07-results-and-lessons.md` §3.2](../../docs/07-results-and-lessons.md))
+and that §8.4 catalogues at the software layer. Moving both boards behind a self-powered USB hub, with only
+the two RealSense units and the LiDAR left on the Jetson's ports, was measurably more
+stable across the field sessions that followed. Two plausible reasons, neither of which we
+instrumented well enough to call proven: the hub supplies bus power from its own rail
+instead of the Jetson's, and it isolates the two low-speed CDC devices from the USB3
+bandwidth the cameras are saturating.
+
+The practical consequence is that the `by-path` fallback names in `real.yaml` are hub-port
+paths — the `usb-0:2.3.1` / `usb-0:2.3.3` pair is two sockets of the same hub. Rearranging
+which board sits in which socket renames both ttys, which is why `by-id` is tried first;
+see [`docs/06-troubleshooting.md`](../../docs/06-troubleshooting.md) on device-path drift.
+
+### Boot the Jetson with the 12 V kill switch OFF
+
+The other half of the same reliability story, and the one that cost us more time. **The 12 V
+rail must be dead while the Jetson boots and enumerates USB.** Switch the rail on afterwards,
+once `lsusb` has shown the OpenRB-150. Booted the other way round, that board either never
+appears or appears and then drops out under load, taking `gripper_bridge_node` with it — which
+is the failure mode the whole of [`gripper-and-mast.md` §5](gripper-and-mast.md#5-one-process-owns-the-tty)
+and §8.4 here are downstream of.
+
+We never instrumented it, so the mechanism is a hypothesis and is written here as one: with
+12 V live at boot, the OpenRB appears to backfeed into the shared ground / USB path, and the
+Jetson's port protection cuts the port rather than enumerating a device it reads as faulty.
+That fits the evidence — it is the only board sitting on both the 12 V rail and a Jetson-side
+USB path, and boot-time state is what decides the outcome — but it is not measured. The rule
+is in the field runbook as step 0
+([`docs/05-field-runbook.md` §1](../../docs/05-field-runbook.md#1-power-on-order)); the symptom
+table is [`docs/06-troubleshooting.md` §2](../../docs/06-troubleshooting.md#the-openrb-is-missing-or-drops-out-after-booting-with-12-v-live).
+
+Note the asymmetry this creates: the kill switch must be **off** at Jetson boot for the board
+to enumerate, and **on** for the Dynamixel bus to have power at all. Off for boot, on before
+bringup.
+
 Body frame convention, identical in firmware, `mecanum_control.py` and the URDF generator:
 **+x forward, +y left, +yaw counter-clockwise**. Wheel order is always
 `(front_left, front_right, rear_left, rear_right)`.

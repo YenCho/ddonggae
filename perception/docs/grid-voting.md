@@ -147,11 +147,12 @@ after that value looked like pure overhead, and exposed as `--scan-settle`. A
 count fall out of the rotation duration.
 
 **Mast up.** Both cameras ride the lifting mast. Raised, the top camera sits at 0.4986 m
-with a 19.39° down-tilt, which makes the scan a near-top-down view: objects occlude each
-other far less, and — decisively — the fruit photograph, which the rules fix to the **top**
-face of a cube, is visible at all. From the side a fruit cube is indistinguishable from a
-plain one, so a mast-down scan cannot solve the identity problem no matter how good the
-model is. The cost is a second calibration set (`TOP_MOUNT_UP` / `NEAR_MOUNT_UP`,
+with a 19.39° down-tilt, which makes the scan a much more top-down view: objects occlude each
+other far less, and — decisively — the cube's **top** face presents real area. That face
+matters because it is the only one of the three photographed faces visible from *every*
+azimuth; the other two are an opposing pair of sides, so a mast-down scan sees a photograph
+from only half the directions around a cube and sees it at grazing incidence from most of
+those. The cost is a second calibration set (`TOP_MOUNT_UP` / `NEAR_MOUNT_UP`,
 `perception/calibration/stitch/up.json`) and ~7 s up / ~6 s down, both hidden under other
 work: the raise overlaps the drive to the centre, and the lower is issued *before* inference
 so it overlaps the batched forward passes (`mission/match_runner.py:1037`).
@@ -278,11 +279,12 @@ confidence.
 This is the cell-level half of the asymmetry. The other half is inside a single crop
 (`face_vote()`, `perception/fieldlib.py:465`, documented in
 [`pipeline.md` §5](pipeline.md#5-face-level-vote-inside-one-crop)). Both exist for the same
-rulebook reason: a fruit cube carries its printed faces on a vertical ring with the single
-blank face fixed to the bottom, so **any** viewpoint that resolves the cube sees two fruit
-faces and one plain face, and most viewpoints see mostly plain. Fruit faces were measured at
-only **10–24 %** of all face observations across a scan. A symmetric majority rule would
-label almost every fruit cube `plain`.
+rulebook reason: a fruit cube carries its three printed faces on a vertical ring — front, top,
+back — leaving left, right and bottom blank. Two of the four side azimuths are therefore
+*legitimately* blank on a real fruit cube, and the top face only presents usable area from an
+elevated viewpoint. Most observations of a fruit cube are consequently `plain` observations:
+fruit faces were measured at only **10–24 %** of all face observations across a scan. A
+symmetric majority rule would label almost every fruit cube `plain`.
 
 The asymmetry is not free, and the direction of the risk is exactly the direction the
 thresholds are tuned against: a single false fruit face can capture a cell that a dozen
@@ -493,22 +495,29 @@ The rule that makes it useful is that **only a confirmed contradiction skips the
 | No face detection at all, or a fruit face below 0.30 | **pass** | Undecidable |
 | Face inference raises, or no crop is available | **pass** | Trust the scan identity |
 
-The asymmetry is forced by the same rulebook fact that motivated asymmetric fruit voting,
-stated in the source docstring:
+The asymmetry is forced by the same rulebook fact that motivated asymmetric fruit voting —
+though the docstring that originally justified it got the fact wrong, and the correction is
+worth reading because the conclusion survived it unchanged. Translated from the correction
+note in `mission/match_runner.py:3576-3585` (2026-07-23):
 
-> 배치 규칙상 큐브 측면은 항상 plain이고 과일면은 윗면뿐이라, 마스트다운 근접 시야의
-> plain/무검출은 '아님'이 아니라 '판별불가'다. 이때 skip하면 진짜 대상까지 버리므로
-> 스캔 identity를 신뢰하고 통과시킨다.
+> ⚠ The previous comment's premise was wrong. Discarded: *"by the layout rule a cube's side
+> faces are always plain and the fruit face is only on top."* The actual rule is **top 1 +
+> one opposing pair of sides = fruit**, **bottom 1 + the other opposing pair = plain**. So
+> **two of the four side azimuths do carry a photograph**, and any two adjacent sides are
+> always one fruit and one plain — which means a corner (45°) view is guaranteed one fruit
+> face. That is why close-range re-verification works as well as it does.
 >
-> *By the layout rule a cube's side faces are always plain and the fruit face is only on
-> top, so `plain` or no-detection from the mast-down close-up view does not mean "not it",
-> it means "cannot tell". Skipping on that would throw away real targets, so we trust the
-> scan identity and pass.*
+> The conclusion (`plain` observed → undecidable → pass) is unaffected: even for a fruit
+> cube, two of the four side azimuths are legitimately plain, so a single `plain` observation
+> carries a likelihood ratio of only 1:2 against a genuine plain cube. That is not enough to
+> refute on its own.
 
-A close, low, mast-down view of a fruit cube sees its blank sides and nothing else. Treating
-`plain` as a mismatch would veto a real target on nearly every cycle, which is strictly worse
-than not verifying at all. The close-range view can **refute** an identity but cannot
-**confirm** one, so it is only granted a veto.
+So the reason a low mast-down `plain` cannot veto is *not* that a fruit cube's sides are
+always blank — it is that they are blank half the time by design. Treating `plain` as a
+mismatch would veto real targets on roughly half of all approaches, which is strictly worse
+than not verifying at all. The close-range view can **refute** an identity — an actively
+detected *different* fruit is a real contradiction — but it cannot **confirm** one, so it is
+only granted a veto.
 
 The verification runs the identical contract as the scan — same 0.18 crop pad, same
 `imgsz = 224`, same `face_vote`, same pair routing and the same `PAIR_CONF = 0.80` label
