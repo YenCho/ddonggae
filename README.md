@@ -1,11 +1,47 @@
-# DDONGGAE 똥개
+<div align="center">
 
-**D**NN-based **D**etection of **O**bjects with **N**avigation and **G**oal-oriented **G**rasping
-for **A**utonomous **E**rrands.
+# DDONGGAE&ensp;똥개
 
-An autonomous mobile manipulator that finds, identifies, grasps and stores 8 cm objects in a
-4 m × 4 m arena inside a 3-minute round — **no Nav2, no AMCL, no TF tree, and not one
-hand-labelled training image.** 1st place of 16 teams at the SNU AI ROBOT CHALLENGE 2026.
+<h3><b>D</b>NN-based <b>D</b>etection of <b>O</b>bjects with <b>N</b>avigation<br>
+and <b>G</b>oal-oriented <b>G</b>rasping for <b>A</b>utonomous <b>E</b>rrands</h3>
+
+<p><b>An autonomous mobile manipulator that finds, identifies, grasps and stores 8 cm objects<br>
+in a 4 m × 4 m arena inside a 3-minute round, computing everything on board a Jetson Orin Nano.</b></p>
+
+<p><b>no Nav2&emsp;·&emsp;no AMCL&emsp;·&emsp;no TF tree&emsp;·&emsp;not one hand-labelled training image</b></p>
+
+<p>🏆 <b>1st of 16 teams (우승)</b> — SNU AI ROBOT CHALLENGE 2026 (Seoul National University)</p>
+
+<p>
+<a href="docs/07-results-and-lessons.md"><img alt="SNU AI ROBOT CHALLENGE 2026 — 1st of 16 teams" src="https://img.shields.io/badge/SNU%20AI%20ROBOT%20CHALLENGE%202026-1st%20of%2016%20teams-e6b400"></a>
+<a href="LICENSE"><img alt="License MIT" src="https://img.shields.io/badge/License-MIT-blue?logo=opensourceinitiative&logoColor=white"></a>
+</p>
+
+<p>
+<a href="docs/08-reproducibility.md"><img alt="Ubuntu 22.04" src="https://img.shields.io/badge/Ubuntu-22.04-E95420?logo=ubuntu&logoColor=white"></a>
+<a href="docs/04-getting-started.md"><img alt="ROS 2 Humble" src="https://img.shields.io/badge/ROS%202-Humble-22314E?logo=ros&logoColor=white"></a>
+<a href="docs/08-reproducibility.md"><img alt="Python 3.10" src="https://img.shields.io/badge/Python-3.10-3776AB?logo=python&logoColor=white"></a>
+</p>
+
+<p>
+<a href="perception/training/train_face_ft.py"><img alt="PyTorch 2.5.1" src="https://img.shields.io/badge/PyTorch-2.5.1-EE4C2C?logo=pytorch&logoColor=white"></a>
+<a href="perception/docs/models.md"><img alt="Ultralytics 8.4.54" src="https://img.shields.io/badge/Ultralytics-8.4.54-0B23A9"></a>
+<a href="perception/docs/pipeline.md"><img alt="ONNX Runtime" src="https://img.shields.io/badge/ONNX%20Runtime-005CED?logo=onnx&logoColor=white"></a>
+<a href="docs/04-getting-started.md"><img alt="TensorRT" src="https://img.shields.io/badge/TensorRT-76B900?logo=nvidia&logoColor=white"></a>
+<a href="perception/docs/synthetic-data.md"><img alt="BlenderProc 2.8.0" src="https://img.shields.io/badge/BlenderProc-2.8.0-EA7600?logo=blender&logoColor=white"></a>
+<a href="simulation/README.md"><img alt="Isaac Sim 6.0" src="https://img.shields.io/badge/Isaac%20Sim-6.0-76B900?logo=nvidia&logoColor=white"></a>
+</p>
+
+<a href="docs/07-results-and-lessons.md"><img width="720" alt="DDONGGAE running a match in the 4 m x 4 m arena, carrying a fruit cube in its gripper while the other teams watch from behind the arena wall" src="media/robot/competition-run.jpg"></a>
+
+<p><i>DDONGGAE mid-match: 28 white 3D-printed objects on a 50 cm grid, two announced target classes,<br>
+180 seconds, one gripper — so every point is a round trip across the arena.</i></p>
+
+<b><a href="#result">Result</a>&emsp;·&emsp;<a href="#what-it-does">What it does</a>&emsp;·&emsp;<a href="hardware/README.md">Hardware</a>&emsp;·&emsp;<a href="perception/README.md">Perception</a>&emsp;·&emsp;<a href="navigation/README.md">Navigation</a>&emsp;·&emsp;<a href="mission/README.md">Mission</a>&emsp;·&emsp;<a href="simulation/README.md">Simulation</a>&emsp;·&emsp;<a href="docs/README.md">Docs</a></b>
+
+</div>
+
+---
 
 ### Why 똥개?
 
@@ -24,16 +60,10 @@ So the joke is also the design brief. A **25-second budget per object** falls st
 of the arena, the street router, deleting Nav2 for a localiser 17–22× faster, cutting rotation
 because turning was collapsing the pose estimate — exists to make those round trips shorter.
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![ROS 2 Humble](https://img.shields.io/badge/ROS%202-Humble-22314E.svg)](docs/04-getting-started.md)
-[![Python 3.10](https://img.shields.io/badge/python-3.10-3776AB.svg)](docs/04-getting-started.md)
-[![SNU AI ROBOT CHALLENGE 2026](https://img.shields.io/badge/SNU%20AI%20ROBOT%20CHALLENGE%202026-1st%20of%2016%20teams-e6b400.svg)](docs/07-results-and-lessons.md)
-
 <table>
   <tr>
-    <td width="33.3%"><img src="media/robot/competition-run.jpg" alt="DDONGGAE collecting objects in the 4 m x 4 m arena during a match, watched by the teams"></td>
-    <td width="33.3%"><img src="media/award/award-ceremony.jpg" alt="Team 14 holding the winners' placard and the robot"></td>
-    <td width="33.3%"><img src="media/award/competition-group.jpg" alt="All SNU AI ROBOT CHALLENGE 2026 participants with their robots under the event banner"></td>
+    <td width="50%"><img src="media/award/award-ceremony.jpg" alt="Team 14 holding the winners' placard and the robot"></td>
+    <td width="50%"><img src="media/award/competition-group.jpg" alt="All SNU AI ROBOT CHALLENGE 2026 participants with their robots under the event banner"></td>
   </tr>
 </table>
 
