@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-REPO = Path(__file__).resolve().parents[3]
+REPO = Path(__file__).resolve().parents[1]
 
 from geometry import (  # noqa: E402
     CameraMount,

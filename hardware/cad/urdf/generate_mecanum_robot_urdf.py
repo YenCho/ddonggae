@@ -32,7 +32,7 @@ import math
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_OUTPUT = REPO_ROOT / "src" / "robot_description" / "urdf" / "robot_mk3_mecanum_sim.urdf"
+DEFAULT_OUTPUT = REPO_ROOT / "hardware" / "cad" / "urdf" / "robot_mk3_mecanum_sim.urdf"
 
 # Drive geometry: mirrors mecanum_bridge_node defaults / real.yaml.
 # Two wheel sets were purchased for the real MK3 swap: 68 mm and 80 mm

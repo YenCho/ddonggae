@@ -41,7 +41,7 @@ from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import CameraInfo, Image
 from std_msgs.msg import String
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_BASE = REPO_ROOT / "logs" / "sim_validation"
 
 # Default scan points: the real capture's 3x3 quadrant/center pattern.

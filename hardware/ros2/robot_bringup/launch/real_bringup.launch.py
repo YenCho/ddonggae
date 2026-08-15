@@ -7,7 +7,7 @@ from launch.substitutions import EnvironmentVariable, LaunchConfiguration, Pytho
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_CONFIG = REPO_ROOT / 'src' / 'robot_bringup' / 'config' / 'real.yaml'
 DEFAULT_MODEL = REPO_ROOT / 'data' / 'yolo' / 'weights' / 'seg1000.pt'
 

@@ -1335,7 +1335,7 @@ class BridgeManager:
             "LAUNCH_CAMERAS": "true",
             "LAUNCH_PYTHON_UI": "false",
         })
-        script = REPO_ROOT / "scripts" / "dev" / "run_lightweight_arena_control.sh"
+        script = REPO_ROOT / "scripts" / "run_lightweight_arena_control.sh"
         log = self.log_dir / "stack_launch.log"
         args = ["bash", str(script)]
         if camera_depth:

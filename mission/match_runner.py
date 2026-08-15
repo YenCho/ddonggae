@@ -330,7 +330,7 @@ def hud_write(key: str, score: int = 0) -> None:
 # 이 값만 True 로 되돌리면 종전 동작(러너가 자식으로 기동)이 그대로 복원된다.
 # 코드/인자(--no-hud, start_hud, hud_write)는 폐기하지 않고 그대로 남긴다.
 HUD_AUTOSTART = False
-HUD_LITE = REPO_ROOT / "scripts" / "dev" / "match_hud_lite.py"
+HUD_LITE = REPO_ROOT / "scripts" / "match_hud_lite.py"
 HUD_CACHE_DIR = REPO_ROOT / "hardware" / "hud" / "cache"
 _hud_proc: subprocess.Popen | None = None
 

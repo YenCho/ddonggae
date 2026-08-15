@@ -64,18 +64,24 @@ PHOTO_PARAMS = ("enable_auto_exposure", "exposure", "gain",
 # 프레임 소스
 # =========================================================================
 class OfflineSource:
-    """저장된 top/near 페어 디렉터리. shotNN_top.png / pair_NN_top.png 둘 다."""
+    """저장된 top/near 페어 디렉터리. shotNN_top.* / pair_NN_top.* 둘 다.
 
-    PAT = re.compile(r"^(.*?)_?(top)\.png$")
+    [2026-07-23] e2e 러너가 raw 쌍을 JPEG q95 로 저장하도록 바뀌어 .jpg 도 받는다
+    (과거 런의 .png 와 혼재 가능). depth 는 uint16 이라 계속 .png 다.
+    """
+
+    PAT = re.compile(r"^(.*?)_?(top)\.(?:png|jpe?g)$", re.IGNORECASE)
 
     def __init__(self, path: Path):
         self.dir = Path(path)
-        tops = sorted(p for p in self.dir.glob("*top.png") if "depth" not in p.name)
+        tops = sorted(p for p in self.dir.iterdir()
+                      if p.suffix.lower() in (".png", ".jpg", ".jpeg")
+                      and p.stem.endswith("top") and "depth" not in p.name)
         self.pairs = []
         for t in tops:
-            n = t.parent / t.name.replace("top.png", "near.png")
+            n = t.parent / (t.stem[:-3] + "near" + t.suffix)
             if not n.exists():
-                n = t.parent / t.name.replace("top.png", "bottom.png")
+                n = t.parent / (t.stem[:-3] + "bottom" + t.suffix)
             if n.exists():
                 self.pairs.append((t, n))
         if not self.pairs:

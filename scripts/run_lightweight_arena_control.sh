@@ -30,7 +30,12 @@ OBJECT_KEEPOUT_HALF_WIDTH_M="${OBJECT_KEEPOUT_HALF_WIDTH_M:-0.15}"
 OBJECT_KEEPOUT_HALF_DEPTH_M="${OBJECT_KEEPOUT_HALF_DEPTH_M:-0.20}"
 OBJECT_AVOIDANCE_LOOKAHEAD_M="${OBJECT_AVOIDANCE_LOOKAHEAD_M:-0.35}"
 OBJECT_AVOIDANCE_TURN_RPS="${OBJECT_AVOIDANCE_TURN_RPS:-0.35}"
-GRIPPER_SERIAL_PORT="${GRIPPER_SERIAL_PORT:-/dev/serial/by-path/platform-3610000.usb-usb-0:2.3.3:1.0}"
+# [2026-07-23] by-path -> by-id glob. Retired:
+#   GRIPPER_SERIAL_PORT="${GRIPPER_SERIAL_PORT:-/dev/serial/by-path/platform-3610000.usb-usb-0:2.3.3:1.0}"
+# A by-path name is the physical USB hub port, so it disappears the moment the
+# board is plugged into a different one (field run 18:30: moving 2.3.3 -> 2.4.3
+# made gripper_bridge_node fail to start).
+GRIPPER_SERIAL_PORT="${GRIPPER_SERIAL_PORT:-/dev/serial/by-id/usb-ROBOTIS_OpenRB-150*-if00}"
 # LiDAR mount yaw. Default pi = lidar 0deg facing robot rear (MK3 mount).
 # If reassembly rotated the lidar 180deg, run
 # scripts/dev/mecanum/40_lidar_orientation_check.py and set BASE_SCAN_YAW=0.0.

@@ -20,7 +20,7 @@ motor_bridge_node:
     swap_wheel_odometry: true
     max_linear_mps: 0.16
     max_angular_rps: 0.30
-    calibration_csv: perception/calibration/arduino_motor/latest_pwm_calibration.csv
+    calibration_csv: hardware/calibration/motor_pwm/latest_pwm_calibration.csv
     min_calibration_points: 2
     min_calibration_duration_sec: 2.0
     min_pwm: 72.0

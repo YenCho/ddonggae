@@ -27,7 +27,7 @@ from robot_hardware.gripper_position_probe import (
     build_summary,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 
 DEFAULT_CONFIG = str(REPO_ROOT / 'src' / 'robot_bringup' / 'config' / 'real.yaml')
 DEFAULT_FIRMWARE = str(REPO_ROOT / 'firmware' / 'openrb_gripper' / 'openrb_gripper.ino')

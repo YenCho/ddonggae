@@ -15,6 +15,10 @@ setup(
         ),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', glob('launch/*.launch.py')),
+        # The arena map used to live in example_nav2, which is not part of this
+        # release. It ships here now, so lightweight_real.launch.py can resolve
+        # map_yaml from this package's own share directory.
+        ('share/' + package_name + '/maps', glob('maps/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

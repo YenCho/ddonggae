@@ -1306,12 +1306,21 @@ class ArenaControlNode(Node):
             super().destroy_node()
 
 
+# The map used to be installed by example_nav2, which is not part of this
+# release. It now ships with this package (setup.py data_files), and the
+# source-tree fallback follows the part-directory layout.
+MAP_REL_PATH = Path("navigation") / "ros2" / "arena_lightweight_control" / "maps" / "stadium.yaml"
+
+
 def default_map_yaml() -> str:
     try:
-        return str(Path(get_package_share_directory("example_nav2")) / "maps" / "stadium.yaml")
+        return str(
+            Path(get_package_share_directory("arena_lightweight_control"))
+            / "maps"
+            / "stadium.yaml"
+        )
     except PackageNotFoundError:
-        repo_root = find_repo_root()
-        return str(repo_root / "src" / "example_nav2" / "maps" / "stadium.yaml")
+        return str(find_repo_root() / MAP_REL_PATH)
 
 
 def find_repo_root() -> Path:
@@ -1322,7 +1331,7 @@ def find_repo_root() -> Path:
     candidates.extend([Path.cwd(), Path(__file__).resolve()])
     for candidate in candidates:
         for root in [candidate, *candidate.parents]:
-            if (root / "src" / "example_nav2" / "maps" / "stadium.yaml").exists():
+            if (root / MAP_REL_PATH).exists():
                 return root
     return Path.cwd()
 

@@ -46,7 +46,7 @@ import sys
 import time
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 DEFAULT_PHOTO_DIR = REPO_ROOT / "hardware" / "hud" / "photos"
 DEFAULT_CACHE_DIR = REPO_ROOT / "hardware" / "hud" / "cache"

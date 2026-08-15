@@ -54,7 +54,7 @@ from pathlib import Path
 
 import numpy as np
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 REAL_JSON_DEFAULT = REPO_ROOT / "perception" / "calibration" / "photometry" / "arena_20260720_212531.json"
 PRESET_OUT_DEFAULT = REPO_ROOT / "perception" / "calibration" / "photometry" / "sim_lowlight_preset.json"
 LOG_ROOT = REPO_ROOT / "logs" / "sim_validation"

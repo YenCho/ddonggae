@@ -11,7 +11,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_BEST_MODEL = REPO_ROOT / "perception" / "models" / "best.pt"
 DEFAULT_FALLBACK_YOLO_MODEL = REPO_ROOT / "perception" / "models" / "260516.pt"
 DEFAULT_YOLO_MODEL = DEFAULT_BEST_MODEL if DEFAULT_BEST_MODEL.exists() else DEFAULT_FALLBACK_YOLO_MODEL

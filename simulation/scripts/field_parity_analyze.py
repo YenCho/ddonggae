@@ -43,7 +43,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image as PILImage
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "perception"))
 import fieldlib as fl  # noqa: E402
 import match_runner as e2e  # noqa: E402  (실기 스캔 체인 단일 소스)

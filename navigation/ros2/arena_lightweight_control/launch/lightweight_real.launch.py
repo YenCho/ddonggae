@@ -39,7 +39,11 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 "map_yaml",
                 default_value=PathJoinSubstitution(
-                    [FindPackageShare("example_nav2"), "maps", "stadium.yaml"]
+                    [
+                        FindPackageShare("arena_lightweight_control"),
+                        "maps",
+                        "stadium.yaml",
+                    ]
                 ),
             ),
             DeclareLaunchArgument("scan_topic", default_value="/laser_scan"),

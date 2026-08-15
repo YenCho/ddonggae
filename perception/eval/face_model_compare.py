@@ -25,7 +25,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image as PILImage
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from geometry import CameraMount, Intrinsics  # noqa: E402
 from arena_lightweight_control.competition_layout import (  # noqa: E402

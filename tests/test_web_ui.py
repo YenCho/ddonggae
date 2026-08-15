@@ -5,7 +5,10 @@ import urllib.request
 import json
 from pathlib import Path
 
-SRC_DIR = Path(__file__).resolve().parents[3] / "src" / "arena_lightweight_control"
+SRC_DIR = (
+    Path(__file__).resolve().parents[1]
+    / "navigation" / "ros2" / "arena_lightweight_control"
+)
 
 from arena_lightweight_control.web_ui import ArenaWebServer  # noqa: E402
 

@@ -27,10 +27,10 @@ from robot_hardware.base_control import (
     twist_to_wheel_speeds,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_CALIBRATION_CSV = (
-    'perception/calibration/arduino_motor/'
-    'pwm_encoder_sweep_20260527_231622_speed_analysis_cpr2464.csv'
+    'hardware/calibration/motor_pwm/'
+    'pwm_encoder_sweep_20260527_231622_speed_analysis.csv'
 )
 
 
