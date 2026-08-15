@@ -88,11 +88,22 @@ sys.path.insert(0, str(SCRIPT_DIR.parents[0] / "navigation"))
 import street_nav as snv  # noqa: E402
 
 REPO_ROOT = fl.REPO_ROOT
+# arena 노드가 기본으로 무는 맵 (lightweight_real.launch.py 의 map_yaml 기본값).
+# `--offline` 의 P9 가 이 맵에서 유도한 아레나 크기를 fl.ARENA_HALF_M 과 대조해
+# "런너는 4m, 노드는 2m 맵" 같은 사고를 로봇 없이 잡는다. 런치 기본값을 바꾸면
+# 이 이름도 같이 바꿀 것.
+DEFAULT_MAP_YAML_NAME = "stadium.yaml"
 from geometry import (  # noqa: E402
     CameraMount, Intrinsics, pixel_to_ground)
 
 # ---- 튜닝 상수 (본 스크립트 로컬 — 공용 계약값은 fieldlib) ----
 SCAN_SHOTS = 8
+# [데모 2m] 스캔 조준 yaw [deg, map 절대각] — None 이면 회전 없음(경기 동작 그대로).
+# 2m 필드에서는 6칸의 방위각 스팬이 45.4°(103.0~148.4°)라 HFOV 69° 한 프레임에
+# 전부 들어온다. 그래서 스핀 대신 126° 를 조준하고 1샷만 찍는다. 제자리 회전은
+# 각 칸의 *방위각*을 바꾸지 않으므로(어느 칸이 프레임에 들어오는지만 바뀐다)
+# 한 프레임에 다 들어오는 배치에서 스핀은 회전 시간만 쓰고 새 정보를 주지 않는다.
+SCAN_AIM_YAW_DEG = None
 A1_SCAN_CONF = 0.25          # 스캔: 저문턱 (셀 투표 누적이 거름)
 A1_APPROACH_CONF = 0.35      # 접근: 60번 계약(0.4) 근처, 스티치라 소폭 완화
 # [폐기 2026-07-23 04시 — 1순위를 480 으로 교체. 롤백 시 이 값으로 복귀]
@@ -271,7 +282,7 @@ PLACE_PUSH_M = 0.025         # [2026-07-22 04시 조작자 지시] 적재 전진
 # 깊어, 드리프트로 비스듬히 들어오는 동안 문 물체가 경기장 림에 걸리는 경우가
 # 잦았다(조작자 관측). 최종 적재 위치는 슬롯(핀) 좌표가 정하므로 이 값은
 # 접근 경로만 바꾼다 — 물체가 놓이는 자리는 불변.
-STAGING_XY = (-1.40, -1.40)  # 보관함 앞 스테이징 (맵 좌표)
+STAGING_XY = fl.official_cm_to_map(60.0, 60.0)   # 보관함 앞 스테이징 (공식 60,60)
 
 # ---- 보관함 적재 슬롯: 볼링핀 배치 (7/20 재설계) ----
 # 로봇은 적재 내내 좌하 구석(45도)을 정면으로 보고 진입한다. 그리퍼 길이를
@@ -395,7 +406,7 @@ def storage_pins():
             ry = PIN1_CM[1] + s * (PIN_ROW_STEP_CM * r - lat)
             ox = rx - s * fl.GRIP_FORWARD_M * 100.0   # 물체는 구석 쪽으로
             oy = ry - s * fl.GRIP_FORWARD_M * 100.0
-            item = ((rx / 100.0 - 2.0, ry / 100.0 - 2.0), (ox, oy))
+            item = (fl.official_cm_to_map(rx, ry), (ox, oy))
             (keep if lo <= ox <= hi and lo <= oy <= hi else dropped).append(item)
     return keep, dropped
 
@@ -419,7 +430,7 @@ CORRIDOR_BASE_M = 0.10
 ROBOT_RADIUS_M = 0.16
 VOTE_UNCERT_M = 0.05
 DETOUR_CLEAR_M = 0.5
-ARENA_CLAMP_M = 1.9
+ARENA_CLAMP_M = fl.ARENA_HALF_M - 0.1   # 벽에서 10cm 안쪽까지만 목표 허용
 PRESENCE_OBSTACLE_MIN = 2    # far presence 셀은 이 관측수 이상일 때만 장애물
 
 
@@ -639,9 +650,15 @@ def path_free(pts, obstacles, clearance=None):
 # 물체는 격자점(공식 50cm 간격)에만 놓인다. 그 사이 25cm 지점을 잇는 선이
 # street — 물체 반폭 4cm + 로봇 반폭 9.5cm = 13.5cm 이므로 25cm 통로면 안전.
 # 대각선 주행은 격자점 위를 지나므로 금지.
-STREET_XS_M = tuple((x - 200) / 100.0 for x in range(25, 376, 50))   # -1.75..+1.75
-STREET_YS_M = tuple((y - 200) / 100.0 for y in range(75, 376, 50))   # -1.25..+1.75
-HIGHWAY_Y_M = -1.25          # 하단 하이웨이(공식 y<100 = 객체 없음) 중심
+# 공식 중앙선(x: 25+50k, y: 75+50k)에서 유도. 상한은 아레나 한 변을 따라간다.
+_ARENA_SIDE_CM = int(round(fl.ARENA_HALF_M * 200.0))
+STREET_XS_M = tuple(fl.official_cm_to_map(x, 0.0)[0]
+                    for x in range(25, _ARENA_SIDE_CM - 24, fl.GRID_PITCH_CM))
+STREET_YS_M = tuple(fl.official_cm_to_map(0.0, y)[1]
+                    for y in range(75, _ARENA_SIDE_CM - 24, fl.GRID_PITCH_CM))
+# 하단 하이웨이(공식 y<100 = 객체 없음) 중심 = 공식 y=75.
+# ⚠ snv.HIGHWAY_Y_M(공식 60)과 **다른 값**이다 — 아래 HIGHWAY_FREE_Y_M 주석 참조.
+HIGHWAY_Y_M = fl.official_cm_to_map(0.0, 75.0)[1]
 # street 축정렬 주행의 측방 여유. 로봇 반폭 0.095 + 물체 반폭 0.04 = 0.135,
 # 여기에 pose 오차 여유 0.065 → 0.20. street 통로 반폭 0.25 안에 들어간다.
 # 일반 inflation_for(0.31, 외접반경 기준)를 쓰면 정상 street 도 전부 막힘 판정.
@@ -649,7 +666,7 @@ STREET_CLEAR_M = 0.20
 # 이 선(공식 y=60cm) 남쪽은 물체가 없어 어떤 yaw로든 주행 가능 — 최남단
 # 물체행 y=100 의 실루엣 하단 ~96cm, 로봇 외접반경 16cm → y<80 이면 비접촉.
 # 60 은 보수 마진. 이 밴드 안에서 완결되는 레그는 yaw 정렬을 생략한다.
-HIGHWAY_FREE_Y_M = -1.40
+HIGHWAY_FREE_Y_M = fl.official_cm_to_map(0.0, 60.0)[1]
 # [2026-07-22] street 주행의 하이웨이 라인(snv.HIGHWAY_Y_M)이 -1.80 → -1.40 으로
 # 올라와 이 경계와 일치한다 (조작자 지시 — 사이클당 남하/북진 왕복 0.8m 단축).
 # 기하 검증은 street_nav.HIGHWAY_Y_M 주석 참조 (그리퍼 선단 마진 10cm).
@@ -841,7 +858,7 @@ def descend_candidate(cell, pose) -> tuple:
     # 미러 mini-goal 이 최서열 street(공식 x=25)로 가는 경우는 금지. 그 street
     # 남단은 적재함(0~40cm)과 겹쳐 파지 후 남하(street_bail / 운반)가 적재함을
     # 관통한다 — 남서안 전면 폐기(2026-07-21)의 사유 그대로다.
-    if gx < -1.25 - 1e-6:
+    if gx < STREET_XS_M[1] - 1e-6:
         return False, False
     if abs(pose[0] - gx) <= DESCEND_STREET_TOL_M:
         return True, True
@@ -1035,7 +1052,7 @@ CF_FACE_S = 1.2            # 근접 face + pair 재검증 (= 사양의 T_ver)
 CF_BAIL_S = 1.4            # 불일치 abort 복귀 (T_probe 9.8~12.4 상단 흡수)
 CF_GRASP_S = 1.0           # 파지
 CF_CARRY_FIXED_S = 9.5     # 운반 고정분(드리프트·슬롯·릴리스) — carry 12.8s 역산
-CF_STORAGE_XY = (-1.8, -1.8)   # 보관함 중심 = 공식 (20,20)cm
+CF_STORAGE_XY = fl.official_cm_to_map(20.0, 20.0)   # 보관함 중심 = 공식 (20,20)cm
 CF_DESCEND_SAVE_S = 6.0    # 하산 파지가 없애는 하이웨이 왕복(~3.3m / 0.55m/s)
 
 
@@ -1227,10 +1244,10 @@ def preshot_cells() -> set:
     7/21 실증: 마스트 up(14:32)·mid(17:12) 공히 인접 셀이 8샷 전체 미검출
     (초근접 탑뷰 A1 conf 0.05~0.11 < 문턱 0.25). 서진 레그1 종료 지점
     (해당 셀들에서 1.8~2.3m, 마스트다운 = 최적 캘리브)의 프리샷이 전담한다."""
-    ox = fl.CENTER_SCAN_XY[0] * 100 + 200
-    oy = fl.CENTER_SCAN_XY[1] * 100 + 200
-    xs = (int(ox // 50) * 50, int(ox // 50) * 50 + 50)
-    ys = (int(oy // 50) * 50, int(oy // 50) * 50 + 50)
+    ox, oy = fl.map_to_official_cm(*fl.CENTER_SCAN_XY)
+    p = fl.GRID_PITCH_CM
+    xs = (int(ox // p) * p, int(ox // p) * p + p)
+    ys = (int(oy // p) * p, int(oy // p) * p + p)
     return {(x, y) for x in xs for y in ys}
 
 
@@ -1446,18 +1463,167 @@ class E2ERunner:
         self.report = {"started": time.strftime("%Y-%m-%d %H:%M:%S"),
                        "args": vars(args), "gt": [[list(c), v] for c, v in sorted(gt.items())],
                        "stages": [], "scan": {}, "cycles": [], "log": []}
+        # ---- 관객용 실시간 피드 상태 (/match/state) [데모] ----
+        self._phase = "STARTUP"
+        self._active_cell = None      # 지금 노리는 셀 (x,y)cm | None
+        self._cycle_live = None       # 진행 중 사이클 요약 dict | None
+        self._drifting = False        # 운반 드리프트 진행 중 (경기 통틀어 한 곳)
+        self._t_mission0 = None       # run() 시작 monotonic
+        self._match_state_t = 0.0     # 마지막 발행 시각 (레이트 리밋)
 
     # ---- 공통 유틸 ----
     def log(self, msg: str):
         line = f"[{time.strftime('%H:%M:%S')}] {msg}"
         print(line, flush=True)
         self.report["log"].append(line)
+        self.publish_match_state()
 
     def mark(self, stage: str, ok: bool, t0: float, detail=None):
         self.report["stages"].append(
             {"stage": stage, "ok": ok, "sec": round(time.monotonic() - t0, 2),
              "detail": detail})
+        self._phase = stage
         self.save_report()
+        self.publish_match_state(force=True)
+
+    # ---- 관객용 실시간 피드 (/match/state) [데모] ----
+    # 왜 여기인가: 러너는 ROS 로 아무것도 발행하지 않고 stdout + report.json 만
+    # 남긴다. 그래서 화면에 띄울 수 있는 "지금 무엇을 왜 하는가"가 존재하지 않았다.
+    # 셀의 **판정 결과**(수거 대상 / 거부 / 보류)는 어디에도 저장돼 있지 않고
+    # targets·placed_by_cls·collected·skip_cells 에서 파생될 뿐이라, 그 파생을
+    # 여기서 한 번 하고 내보낸다.
+    # 경기 로직에 대한 영향: 없음. 예외는 전부 삼키고, 0.2s 미만 간격은 건너뛴다.
+    MATCH_STATE_MIN_INTERVAL_S = 0.2
+
+    def cell_status(self, cell, info: dict) -> str:
+        """셀 하나의 관객용 판정. 우선순위가 곧 의미 순서다."""
+        if cell in self.collected:
+            return "collected"          # 이미 적재함에 넣었다
+        if self._active_cell is not None and tuple(cell) == tuple(self._active_cell):
+            return "active"             # 지금 이걸 노리고 있다
+        if info.get("conflict"):
+            return "conflict"           # 과일 판정 충돌 — 확신 없어 보류
+        if cell in self.skip_cells:
+            return "skipped"            # 시도했다 실패/거부됨
+        ident = info.get("identity")
+        if not self.targets:
+            return "pending"            # 리허설 모드(실전 타깃 없음)
+        quota = self.targets.get(ident)
+        if quota is None:
+            return "refused"            # 타깃 클래스가 아니다 — 집으면 감점
+        if self.placed_by_cls.get(ident, 0) >= quota:
+            return "quota_full"         # 맞는 클래스지만 쿼터가 찼다
+        return "target"                 # 수거 예정
+
+    # 사이클 하위 단계는 rec["phases"] 에 이미 채워지는 키에서 파생한다 —
+    # 11곳을 따로 계측하지 않고도 "지금 어디"가 정확히 나온다.
+    CYCLE_PHASES = ("route", "face", "approach", "grasp", "carry")
+
+    def sub_phase(self) -> str | None:
+        rec = self._cycle_live
+        if rec is None:
+            return None
+        if self._drifting:
+            return "drift"        # CARRY 안의 유일한 드리프트 구간
+        done = rec.get("phases", {})
+        for p in self.CYCLE_PHASES:
+            if p not in done:
+                return p          # 앞 단계까지 끝났으면 지금은 이 단계
+        return "place"
+
+    def match_state_payload(self) -> dict:
+        elapsed = (time.monotonic() - self._t_mission0
+                   if self._t_mission0 is not None else 0.0)
+        cells = []
+        for cell, info in sorted(self.cells.items()):
+            mx, my = fl.official_cm_to_map(*cell)
+            # 판정 **근거**를 같이 보낸다. 지금까지는 집계된 표 수만 남기고
+            # 원시 투표(어느 카메라가, 몇 m 에서, A1/face 를 얼마의 확신으로 봤는지)를
+            # 버리고 있었다 — 화면이 "왜 그렇게 판정했는가"를 말하려면 이게 필요하다.
+            ev = [{"a1": v.get("a1"), "a1_conf": v.get("a1_conf"),
+                   "face": v.get("identity"), "face_conf": v.get("face_conf"),
+                   "cam": v.get("cam"), "range_m": v.get("range_m"),
+                   "shot": v.get("shot")}
+                  for v in self.cell_votes.get(cell, [])[-6:]]
+            cells.append({
+                "cell": list(cell), "xy": [round(mx, 3), round(my, 3)],
+                "identity": info.get("identity"), "votes": info.get("votes"),
+                "fruit_hits": info.get("fruit_hits"),
+                "conflict": info.get("conflict"), "evidence": ev,
+                # 화면이 "집으면 몇 점 손해"를 말할 수 있도록 배점을 같이 보낸다.
+                # 미스픽은 자기 배점의 -2배다 (docs/01-competition-and-rules.md §4).
+                "points": POINTS.get(info.get("identity"), 0),
+                "status": self.cell_status(cell, info)})
+        presence = []
+        for cell, n in sorted(self.presence.items()):
+            if cell in self.cells:
+                continue
+            mx, my = fl.official_cm_to_map(*cell)
+            presence.append({"cell": list(cell), "xy": [round(mx, 3), round(my, 3)],
+                             "count": n})
+        # 아레나 기하는 페이로드에 실어 보낸다 — 화면이 4m/2m 상수를 또 복제하지
+        # 않게 하려는 것이다(이미 저장소에 격자 테이블 사본이 5개 있다).
+        # 반이레나는 상수가 있으면 그걸, 없으면 적재함 사각의 좌하단에서 뽑는다
+        # (STORAGE_RECT_MAP[0] == -ARENA_HALF_M). 두 방식 다 4m/2m 에서 맞는다.
+        half_m = getattr(fl, "ARENA_HALF_M", None)
+        if half_m is None:
+            half_m = abs(fl.STORAGE_RECT_MAP[0])
+        arena = {
+            "half_m": half_m,
+            "storage": list(fl.STORAGE_RECT_MAP),
+            "grid_xs_cm": list(fl.GRID_XS_CM), "grid_ys_cm": list(fl.GRID_YS_CM),
+            "start_xy": [fl.START_POSE[0], fl.START_POSE[1]],
+            "scan_xy": list(fl.CENTER_SCAN_XY),
+        }
+        return {
+            # phase 는 mark() 가 실제로 찍는 단계만 쓴다 (SEED / GOTO_CENTER /
+            # SCAN / COLLECT). 없는 단계 이름을 지어내지 않는다.
+            "stamp": time.time(), "phase": self._phase,
+            "sub_phase": self.sub_phase(),
+            "elapsed_sec": round(elapsed, 1),
+            "budget_sec": self.report.get("summary", {}).get("match_budget_sec", 180),
+            "arena": arena,
+            "targets": dict(self.targets), "placed_by_cls": dict(self.placed_by_cls),
+            "score_est": sum(POINTS.get(k, 0) * n
+                             for k, n in self.placed_by_cls.items()),
+            "cycle": self._cycle_live,
+            "cells": cells, "presence": presence,
+            "log_tail": self.report["log"][-6:],
+        }
+
+    def publish_scan_overlay(self, blob: bytes, shot: int):
+        """스캔 오버레이 JPEG 을 관객 화면으로 발행. 시각화가 경기를 막지 않는다."""
+        if self.fn is None:
+            return
+        try:
+            pub = self.fn.pub.get("scan_overlay")
+            if pub is None:
+                return
+            msg = self.fn._CompressedImage()
+            msg.format = "jpeg"
+            msg.data = list(blob) if not isinstance(blob, (bytes, bytearray)) else blob
+            pub.publish(msg)
+            self.log(f"  [관객화면] 스캔 오버레이 발행 shot{shot:02d} "
+                     f"({len(blob)/1048576:.2f} MiB)")
+        except Exception:
+            pass
+
+    def publish_match_state(self, force: bool = False):
+        if self.fn is None:
+            return
+        now = time.monotonic()
+        if not force and now - self._match_state_t < self.MATCH_STATE_MIN_INTERVAL_S:
+            return
+        self._match_state_t = now
+        try:
+            pub = self.fn.pub.get("match_state")
+            if pub is None:
+                return
+            from std_msgs.msg import String
+            pub.publish(String(data=json.dumps(self.match_state_payload(),
+                                               ensure_ascii=False, default=str)))
+        except Exception:
+            pass   # 시각화는 경기를 절대 방해하지 않는다
 
     def save_report(self):
         self.report["cells"] = [
@@ -1722,9 +1888,15 @@ class E2ERunner:
     # ---- street 주행 래퍼 (2026-07-22 통합 — navigation/docs/control-and-routing.md) ----
     # dry-run 게이트를 이 계층에서 처리한다 (do_move/do_goto 와 동일 관례).
     def street_x_snap(self, x: float) -> float:
-        """가장 가까운 street 중심 x (map). street x = -1.25 + 0.5k (공식 75~375)."""
-        k = round((float(x) + 1.25) / 0.5)
-        return max(-1.25, min(1.75, -1.25 + 0.5 * k))
+        """가장 가까운 street 중심 x (map).
+
+        후보와 클램프 범위는 STREET_XS_M 에서 유도한다 — 최서열(공식 x=25)은
+        적재함과 겹쳐 쓰지 않으므로 [1] 부터다 (descend_candidate 의 금지와 동일).
+        """
+        lo, hi = STREET_XS_M[1], STREET_XS_M[-1]
+        step = fl.GRID_PITCH_CM / 100.0
+        k = round((float(x) - lo) / step)
+        return max(lo, min(hi, lo + step * k))
 
     def descent_plan(self, cell, pose) -> tuple:
         """(mirror, descend) — 판정은 모듈 함수 descend_candidate 가 한다.
@@ -2127,9 +2299,11 @@ class E2ERunner:
         t0 = time.monotonic()
         cx, cy = fl.CENTER_SCAN_XY
         p = self.pose()
-        start_y = p[1] if p else -1.80
+        # [A8] 종전 리터럴 -1.80/-1.25 를 유도로. 4m 에서는 값이 동일하다
+        # (START_POSE[1] = -1.80, HIGHWAY_Y_M = 공식 75cm = -1.25).
+        start_y = p[1] if p else fl.START_POSE[1]
         # 하이웨이 y밴드로 클램프 (이미 하이웨이 안이면 현재 y 유지)
-        hw_y = min(start_y, -1.25)
+        hw_y = min(start_y, HIGHWAY_Y_M)
         # [2026-07-22 조작자 지시] first-scan(프리샷) 진입은 서진→북진 L 대신
         # 단일 대각(메카넘 홀로노믹). 대각 종점은 자유밴드 경계(하이웨이 라인
         # y=-1.40) — 프리샷 y(-1.25)까지 곧장 대각을 올리면 물체열 x=0.5 교차
@@ -2215,7 +2389,10 @@ class E2ERunner:
             self.spin(0.4)
 
         caps = []
-        n = max(2, int(self.args.scan_shots))
+        # [데모] 1샷 허용. 종전 하한 2 는 "항상 한 바퀴 돈다"는 전제였는데,
+        # 6칸이 한 프레임에 들어오는 배치에서는 회전 자체가 불필요하다.
+        # n==1 이면 아래에서 회전 루프·동서 분할·북향 닫기가 모두 빠진다.
+        n = max(1, int(self.args.scan_shots))
 
         # --- 2~3단계 준비: 모델 대기 → 프리샷/배치 추론 → 투표 확정 ---
         # (촬영 루프보다 먼저 정의 — 동쪽 phase 스레드가 촬영 중에 시작된다)
@@ -2314,7 +2491,10 @@ class E2ERunner:
 
         use_bg = (self.nav_mode == "street" and self.snav is not None
                   and not self.args.dry_run and self.fn is not None
-                  and self.args.scan_mode != "continuous")
+                  and self.args.scan_mode != "continuous"
+                  # 동서 분할은 샷이 2장 이상일 때만 의미가 있다. 1샷이면
+                  # phase B 가 빈 리스트를 받게 되므로 단일 phase 로 간다.
+                  and n >= 2)
         if use_bg:
             def _start(east_caps):
                 self.log(f"  [스캔] 동쪽 {len(east_caps)}샷 추론 백그라운드 시작 "
@@ -2350,6 +2530,12 @@ class E2ERunner:
                 # 동반구(북→동→남)를 먼저 훑는다 — 그 시점에 동쪽 배치추론을
                 # 백그라운드로 시작해 서쪽 촬영과 겹친다.
                 east_n = n // 2 + 1
+                # [데모] 조준 회전 — 촬영 전 1회, 절대 yaw. 경기 인자(None)면
+                # 이 블록 자체가 건너뛰어져 종전 동작과 완전히 동일하다.
+                aim = getattr(self.args, "scan_aim_yaw", None)
+                if aim is not None and not self.args.dry_run and self.fn is not None:
+                    self.log(f"  [스캔] 조준 회전 → yaw {aim:.0f}°")
+                    self.do_rotate(math.radians(float(aim)), tol=0.10)
                 # [폐기 2026-07-22 오후 — 롤백 시 t_gate 대신 복원]
                 # self.spin(self.scan_settle_s)  # (루프 첫 줄) 정지 안정화
                 # cap = self._capture_one(k)     # 카운트 기반 +2프레임 대기
@@ -2974,6 +3160,9 @@ class E2ERunner:
                 dr.ellipse([cu - 3, cv - 3, cu + 3, cv + 3],
                            outline=(255, 40, 40), width=2)  # 바닥접점
             _enc(img, "overlay.jpg", **JPEG_OPTS)
+            # 관객 화면으로도 보낸다. 방금 _enc 가 만든 바이트를 그대로 쓰므로
+            # **재인코딩이 없다.** 단발 스캔이면 경기당 1장(약 0.9 MiB).
+            self.publish_scan_overlay(self._pending_writes[-1][1], k)
         except Exception as e:  # noqa: BLE001
             self.log(f"  샷 {k} 이미지 인코딩 실패: {e}")
 
@@ -3471,8 +3660,11 @@ class E2ERunner:
             if pose is not None:
                 wx = pose[0] + y * c + x * s   # body(우 x, 전방 y) → map
                 wy = pose[1] + y * s - x * c
-                snap = (int(round((wx + 2.0) * 100.0 / 50.0)) * 50,
-                        int(round((wy + 2.0) * 100.0 / 50.0)) * 50)
+                # 반아레나 오프셋을 fl 경유로 — 여기 리터럴이 아레나 크기와
+                # 어긋나면 역투영 셀이 통째로 밀려 **모든 접근이 배제**된다.
+                wcx, wcy = fl.map_to_official_cm(wx, wy)
+                snap = (int(round(wcx / fl.GRID_PITCH_CM)) * fl.GRID_PITCH_CM,
+                        int(round(wcy / fl.GRID_PITCH_CM)) * fl.GRID_PITCH_CM)
                 if snap != (int(cell[0]), int(cell[1])):
                     self.log(f"  [접근] 격자 스냅 배제 — [{det['cls']}] "
                              f"역투영 셀 {snap} ≠ 대상 {tuple(cell)}")
@@ -3714,6 +3906,10 @@ class E2ERunner:
         rec = {"index": idx, "target": list(cell),
                "identity": info.get("identity"), "phases": {},
                "grasped": False, "placed": False, "ok": False}
+        # 관객 피드: 이 사이클이 끝날 때까지 "지금 이 셀"로 표시된다.
+        self._active_cell = tuple(cell)
+        self._cycle_live = rec
+        self.publish_match_state(force=True)
         cxy = fl.official_cm_to_map(*cell)
         self.log(f"\n[수거 {idx}] 셀 {cell} = {info.get('identity')} "
                  f"(맵 {cxy[0]:+.2f},{cxy[1]:+.2f})")
@@ -4074,9 +4270,17 @@ class E2ERunner:
                     rec["carry_route"] = {"mode": "street_drift",
                                           "waypoints": [list(STAGING_XY)]}
                 else:
-                    r_w = self.snav.drive_drift(STAGING_XY, STORAGE_CORNER_YAW,
-                                                "운반_드리프트",
-                                                v_max=snv.V_STREET_MPS)
+                    # 관객 피드: 드리프트는 경기 전체에서 **여기 한 곳뿐**이다.
+                    # (street_nav 의 복귀 드리프트는 drive_to 내부 경로 로직이라
+                    #  미션 단계로는 잡히지 않는다.)
+                    self._drifting = True
+                    try:
+                        self.publish_match_state(force=True)
+                        r_w = self.snav.drive_drift(STAGING_XY, STORAGE_CORNER_YAW,
+                                                    "운반_드리프트",
+                                                    v_max=snv.V_STREET_MPS)
+                    finally:
+                        self._drifting = False
                     carried_west = bool(r_w.get("ok"))
                     if carried_west:
                         self.log(f"  [운반] street_drift — 드리프트 "
@@ -4405,6 +4609,10 @@ class E2ERunner:
                 # (다음 목표 확정이 1초 뒤라 러너 쪽 순서만으로는 0.1Hz 폴링이 놓친다)
                 hud_write(self.hud_key(rec["identity"]), self.hud_score())
             self.save_report()
+            # 관객 피드: 사이클 종료 — "지금 이것" 강조를 푼다. 셀의 다음 상태
+            # (collected / skipped)는 collect_one 이 이미 갱신해 둔 집합이 정한다.
+            self._active_cell = None
+            self._cycle_live = None
             state = "적재" if rec["placed"] else (
                 "파지만" if rec["grasped"] else f"실패({rec.get('fail')})")
             quota_txt = ""
@@ -4507,6 +4715,7 @@ class E2ERunner:
 
     def run(self):
         t0 = time.monotonic()
+        self._t_mission0 = t0          # 관객 피드의 경과시간 기준
         hud_write("start", 0)   # 2026-07-23 경량 HUD — 경기 시작 화면 (잔상 제거)
         # [2026-07-23] 실기 전 구간 원해상도 프레임 상시 기록 (기본 3fps/캠, 0.21코어).
         # 실패 분석용 — 근거와 비용은 FrameRecorder 도크스트링 참조.
@@ -4665,7 +4874,8 @@ def offline_selftest(args) -> int:
     print(f"\n[적재 볼링핀] 구석 정면 yaw={math.degrees(STORAGE_CORNER_YAW):+.0f}° "
           f"— 사용 가능 {len(STORAGE_PINS)}핀 (보관함 40x40 안에 8cm 물체 기준)")
     for i, (slot, obj) in enumerate(STORAGE_PINS, 1):
-        print(f"    핀{i}: 로봇 ({slot[0] * 100 + 200:5.1f},{slot[1] * 100 + 200:5.1f})cm"
+        print(f"    핀{i}: 로봇 ({fl.map_to_official_cm(*slot)[0]:5.1f},"
+              f"{fl.map_to_official_cm(*slot)[1]:5.1f})cm"
               f" = 맵({slot[0]:+.3f},{slot[1]:+.3f}) → 물체 ({obj[0]:5.1f},{obj[1]:5.1f})cm")
     for slot, obj in STORAGE_PINS_DROPPED:
         print(f"    (제외) 물체 ({obj[0]:5.1f},{obj[1]:5.1f})cm — 보관함 밖")
@@ -4992,6 +5202,92 @@ def offline_selftest(args) -> int:
         if got_ord != want_ord:
             fails.append(f"하산 정렬({tag}) {[c[1] for c in got_ord]}")
 
+    # =====================================================================
+    # 프로필 정합성 — 아레나 상수가 서로 어긋나지 않았는지 순수 등식으로 검산
+    # =====================================================================
+    # 아레나 크기를 바꾸면 격자·구역·street·하이웨이가 **함께** 따라와야 한다.
+    # 하나만 놓치면 런너와 노드가 서로 다른 아레나를 믿는 조용한 실패가 되고,
+    # 그건 주행을 해 봐야 드러난다. 여기서 로봇 없이 잡는다.
+    H = fl.ARENA_HALF_M
+    ocm = fl.official_cm_to_map
+    side = H * 200.0                      # 아레나 한 변 [cm]
+    print(f"\n[프로필 정합성] ARENA_HALF_M={H} (한 변 {side:.0f}cm), "
+          f"격자 {len(fl.GRID_XS_CM)}x{len(fl.GRID_YS_CM)}"
+          f"={len(fl.GRID_XS_CM) * len(fl.GRID_YS_CM)}칸, 피치 {fl.GRID_PITCH_CM}cm")
+
+    def chk(tag, cond, detail=""):
+        print(f"  {'OK ' if cond else '✗  '} {tag}" + (f" — {detail}" if detail else ""))
+        if not cond:
+            fails.append(f"정합성:{tag}")
+
+    # P1 좌표 변환 왕복 항등 (전 격자셀)
+    rt = all(abs(fl.map_to_official_cm(*ocm(x, y))[0] - x) < 1e-9
+             and abs(fl.map_to_official_cm(*ocm(x, y))[1] - y) < 1e-9
+             for x in fl.GRID_XS_CM for y in fl.GRID_YS_CM)
+    chk("P1 좌표 왕복 항등", ocm(0, 0) == (-H, -H) and rt,
+        f"ocm(0,0)={ocm(0, 0)}")
+    # P2 적재함 = 좌하단 모서리의 40cm 정사각
+    chk("P2 적재함 사각", fl.STORAGE_RECT_MAP ==
+        (*ocm(0, 0), *ocm(fl.STORAGE_BOX_CM, fl.STORAGE_BOX_CM)),
+        f"{tuple(round(v, 3) for v in fl.STORAGE_RECT_MAP)}")
+    # P3 출발 포즈가 아레나 안, 벽에서 INSET 만큼
+    sx, sy = fl.START_POSE[0], fl.START_POSE[1]
+    chk("P3 출발 포즈", abs(abs(sx) - (H - fl.START_INSET_CM / 100.0)) < 1e-9
+        and abs(abs(sy) - (H - fl.START_INSET_CM / 100.0)) < 1e-9,
+        f"({sx:+.2f},{sy:+.2f}) 벽에서 {fl.START_INSET_CM:.0f}cm")
+    # P4 모서리 기준 좌표는 아레나 크기와 무관 — 공식 cm 로 되돌려 확인.
+    #    왕복에 부동소수 잔차가 남으므로(30 -> -1.7 -> 30.000000000000004)
+    #    P1 과 같은 허용오차로 본다. 1e-6 cm = 10nm.
+    def cm_eq(got, want):
+        return all(abs(g - w) < 1e-6 for g, w in zip(got, want))
+
+    chk("P4 모서리 기준 좌표",
+        cm_eq(fl.map_to_official_cm(*STAGING_XY), (60.0, 60.0))
+        and cm_eq(fl.map_to_official_cm(*CF_STORAGE_XY), (20.0, 20.0))
+        and bool(STORAGE_PINS)
+        and cm_eq(fl.map_to_official_cm(*STORAGE_PINS[0][0]), PIN1_CM),
+        f"스테이징(60,60) 보관함중심(20,20) 핀1{PIN1_CM}")
+    # P5 하이웨이 두 상수는 공식 cm 가 서로 다르다 — 같게 맞추면 안 된다
+    chk("P5 하이웨이 상수", abs(HIGHWAY_Y_M - ocm(0, 75)[1]) < 1e-9
+        and abs(HIGHWAY_FREE_Y_M - ocm(0, 60)[1]) < 1e-9
+        and abs(snv.HIGHWAY_Y_M - HIGHWAY_FREE_Y_M) < 1e-9,
+        f"러너 공식75={HIGHWAY_Y_M:+.2f} / 자유밴드·주행선 공식60={HIGHWAY_FREE_Y_M:+.2f}")
+    # P6 street 중앙선이 공식 25+50k / 75+50k 집합과 일치
+    want_xs = tuple(ocm(x, 0)[0] for x in range(25, int(side) - 24, fl.GRID_PITCH_CM))
+    want_ys = tuple(ocm(0, y)[1] for y in range(75, int(side) - 24, fl.GRID_PITCH_CM))
+    chk("P6 street 중앙선", STREET_XS_M == want_xs and STREET_YS_M == want_ys,
+        f"x{len(STREET_XS_M)}개 y{len(STREET_YS_M)}개")
+    # P7 클램프와 mini-goal 이 전부 아레나 안
+    mg = [snv.mini_goal_for((x, y)) for x in fl.GRID_XS_CM for y in fl.GRID_YS_CM]
+    chk("P7 아레나 클램프", abs(ARENA_CLAMP_M - (H - 0.1)) < 1e-9
+        and all(abs(g[0]) < H - 0.03 and abs(g[1]) < H - 0.03 for g in mg),
+        f"clamp={ARENA_CLAMP_M:.2f} mini-goal {len(mg)}개 전부 안쪽")
+    # P8 navigation 패키지의 독립 사본과 대조 (일부러 합치지 않은 값들)
+    try:
+        sys.path.insert(0, str(REPO_ROOT / "navigation" / "ros2"
+                               / "arena_lightweight_control"))
+        from arena_lightweight_control import competition_layout as _cl
+        same = (_cl.ARENA_HALF_M == H
+                and tuple(_cl.GRID_XS_CM) == tuple(fl.GRID_XS_CM)
+                and tuple(_cl.GRID_YS_CM) == tuple(fl.GRID_YS_CM)
+                and tuple(_cl.STORAGE_RECT_MAP) == tuple(fl.STORAGE_RECT_MAP))
+        chk("P8 competition_layout 대조", same,
+            f"half={_cl.ARENA_HALF_M} 격자 {len(_cl.GRID_XS_CM)}x{len(_cl.GRID_YS_CM)}")
+    except ImportError as exc:
+        chk("P8 competition_layout 대조", False, f"import 실패: {exc}")
+    # P9 프로세스 간: 런치 기본 맵이 이 상수와 같은 아레나인가
+    #    (노드를 띄우지 않고 맵 파일만 읽는다 — 로봇도 ROS 도 필요 없다)
+    try:
+        from arena_lightweight_control.map_localization import OccupancyMap
+        maps = (REPO_ROOT / "navigation" / "ros2" / "arena_lightweight_control"
+                / "maps")
+        b = OccupancyMap.from_yaml(maps / DEFAULT_MAP_YAML_NAME).inner_wall_bounds()
+        got_half = max(abs(b.xmin), abs(b.xmax), abs(b.ymin), abs(b.ymax))
+        chk("P9 맵 대조", abs(got_half - H) <= 0.06,
+            f"{DEFAULT_MAP_YAML_NAME} half={got_half:.2f} vs 상수 {H:.2f}")
+    except Exception as exc:                       # noqa: BLE001 - 진단용
+        chk("P9 맵 대조", False, f"{type(exc).__name__}: {exc}")
+
     print("\n인자 요약: " + json.dumps(
         {k: v for k, v in vars(args).items() if v not in (None, False, "")},
         ensure_ascii=False))
@@ -5111,7 +5407,12 @@ def main() -> int:
     p.add_argument("--fruit-k", type=int, default=None,
                    help=f"과일 확정 최소 과일표 (기본 {fl.CELL_FRUIT_K})")
     p.add_argument("--scan-shots", type=int, default=SCAN_SHOTS,
-                   help=f"360°를 나눌 스캔 스텝 수 (기본 {SCAN_SHOTS})")
+                   help=f"360°를 나눌 스캔 스텝 수 (기본 {SCAN_SHOTS}). "
+                        "1이면 회전 없이 단발 촬영 — 2m 데모용")
+    p.add_argument("--scan-aim-yaw", type=float, default=SCAN_AIM_YAW_DEG,
+                   help="촬영 전 조준할 절대 yaw [deg]. 미지정이면 회전 없음"
+                        "(경기 동작). 2m 데모는 126 — 6칸이 HFOV 69° 한 "
+                        "프레임에 들어오는 방위각")
     p.add_argument("--release-ticks", type=float, default=PLACE_RELEASE_TICKS,
                    help=f"적재 투하 시 *현재 위치 기준* 상대 개방 틱 "
                         f"(기본 {PLACE_RELEASE_TICKS:.0f}tick "

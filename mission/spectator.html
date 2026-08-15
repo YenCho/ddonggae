@@ -1,0 +1,429 @@
+<!--
+  관객용 실시간 화면 — mission/spectator_server.py 가 서빙한다.
+
+  구성 (2패널)
+  ------------
+  왼쪽  : arena 노드 기반 실시간 위치 — 경기장, 로봇 포즈, 궤적, 판정된 물체.
+          그 아래 **지금 무슨 작업 중인지** 한 줄.
+          ⚠ 관객용이라 기술 계기(잔차/지연/빔·후보 수/IMU prior)는 **의도적으로 뺐다.**
+          그 값들은 서버 /state.json 에 그대로 있으니 운영자는 거기서 본다.
+  오른쪽: **스캔 오버레이 사진** — 검출 박스가 그려진 스티치 프레임. 단발 스캔에서는
+          경기당 1장이고, 그 한 장이 그 경기 판정의 전부다. 그 아래 칸별 판정.
+
+  설계 메모
+  ---------
+  * 아레나 상수를 하나도 갖고 있지 않다. 격자·적재함·출발점은 전부 /match/state 의
+    arena 블록에서 온다. 저장소에 이미 격자 테이블 사본이 5개라 여섯 번째를 만들지 않는다.
+    같은 화면이 4m 경기장과 2m 데모에서 코드 수정 없이 돈다.
+  * **연속 추론은 하지 않는다.** 실측(docs/07:84)으로 로봇에서 전체 프레임 YOLO 가
+    43ms(≈23FPS)라, 상시 오버레이는 추론 예산을 통째로 먹는다. 대신 스캔 때 이미 만들어진
+    오버레이 JPEG 한 장을 받아 띄운다 — 재인코딩 0.
+  * **이 서버는 젯슨이 아니라 노트북에서 돌린다.** 카메라 4스트림 구독만으로
+    /arena_lightweight/status 가 20Hz → 6Hz(p90 0.43s)로 떨어진 실측이 있다
+    (perception/fieldlib.py:863). 화면 비용을 로봇 밖으로 뺀다.
+  * 궤적에 주기적으로 방향 눈금을 찍는다. 드리프트는 직선 병진 + 동시 회전이라
+    위치 궤적만 그리면 아무것도 안 보인다. 보이는 건 heading 이다.
+  * 요청마다 디스크에서 다시 읽히므로 부스에서 노드 재시작 없이 고칠 수 있다.
+-->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DDONGGAE — 실시간</title>
+<style>
+  :root{
+    /* 로고에서 뽑은 두 색이 이 화면의 정체성이다:
+       곤색 #203080 = 서울대 마크, 주황 #e88820 = 기계공학부 마크.
+       로봇을 주황으로 칠해 "지금 수거 중" 강조색과 일치시켰다 — 주황 로봇이
+       주황 링이 걸린 칸으로 간다는 게 한눈에 읽힌다. */
+    --bg:#ffffff; --panel:#f7f8fa; --line:#e2e6ec; --ink:#151a22; --dim:#69737f;
+    --navy:#203080; --navy-tint:#eef1fa; --floor:#f1f3f7; --wall:#b9c2cf;
+    --target:#203080; --active:#e88820; --done:#2f7d4f; --refuse:#c0392b;
+    --hold:#7b4fa8; --quota:#8b96a3; --robot:#e88820;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--ink); overflow:hidden;
+    font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-variant-numeric:tabular-nums;
+  }
+  #app{display:grid; grid-template-rows:auto 1fr; height:100%}
+
+  header{
+    display:flex; align-items:center; gap:18px; padding:12px 24px;
+    border-bottom:2px solid var(--navy); background:#fff;
+  }
+  .brand{font-size:18px; font-weight:800; letter-spacing:.12em; color:var(--navy)}
+  .brand span{color:var(--active)}
+  .spacer{flex:1}
+  .logos{display:flex; align-items:center; gap:26px}
+  .logos img{height:38px; width:auto; display:block}
+  .phase{
+    padding:7px 15px; border-radius:999px; font-weight:700; font-size:15px;
+    background:var(--navy-tint); color:var(--navy); border:1px solid #ccd5ee;
+    letter-spacing:.05em;
+  }
+  .sub{font-size:14px; color:var(--active); font-weight:700; letter-spacing:.04em}
+
+  /* ── 2패널 ── */
+  main{display:grid; grid-template-columns:1fr 1fr; min-height:0}
+  .pane{display:grid; min-height:0; min-width:0}
+  #left{grid-template-rows:1fr auto}
+  #right{grid-template-rows:1fr auto; border-left:1px solid var(--line); background:var(--panel)}
+
+  #stage{position:relative; min-width:0; min-height:0; background:var(--bg)}
+  canvas{display:block; width:100%; height:100%}
+  /* 경과시간은 헤더가 아니라 경기장 위에 둔다 — 지도를 보는 눈이 그대로 읽는다 */
+  #clock{position:absolute; left:20px; top:16px; display:flex; align-items:baseline; gap:8px}
+  #clock .k{font-size:11px; letter-spacing:.12em; color:var(--dim); font-weight:700}
+  #clock .v{font-size:34px; font-weight:800; color:var(--navy); line-height:1}
+
+  .sec{padding:14px 22px; border-top:1px solid var(--line); background:#fff}
+  .sec h2{font-size:11px; color:var(--dim); letter-spacing:.14em; margin-bottom:11px; font-weight:700}
+
+
+  /* 현재 작업 */
+  #task{font-size:15px; line-height:1.55}
+  #task .big{font-size:21px; font-weight:700; color:var(--navy)}
+  #task .meta{color:var(--dim); font-size:13px; margin-top:3px}
+
+  /* 오버레이 사진 */
+  #shotwrap{position:relative; display:grid; place-items:center; padding:14px; min-height:0}
+  #shot{max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;
+        border:1px solid var(--line); display:none}
+  #shotempty{text-align:center; color:var(--dim); font-size:14px; line-height:1.8}
+  #shotcap{position:absolute; left:22px; bottom:20px; font-size:11px; color:var(--dim);
+           background:rgba(255,255,255,.9); border:1px solid var(--line); padding:4px 10px; border-radius:5px; display:none}
+
+  /* 판정 목록 */
+  #cells{padding:10px 20px 14px; border-top:1px solid var(--line);
+         max-height:38vh; overflow-y:auto}
+  .cell{display:grid; grid-template-columns:12px 1fr auto; gap:11px; align-items:baseline;
+        padding:8px 0; border-bottom:1px solid var(--line)}
+  .dot{width:12px; height:12px; border-radius:50%; align-self:center}
+  .cell .id{font-size:15px; font-weight:600; text-transform:capitalize}
+  .cell .why{font-size:12px; color:var(--dim); margin-top:2px}
+  .cell .at{font-size:11px; color:#9aa3ae; text-align:right; white-space:nowrap}
+  .cell.mute .id{color:var(--dim)}
+
+  #idle{
+    position:absolute; inset:0; display:none; place-content:center; text-align:center;
+    background:rgba(255,255,255,.95);
+  }
+  #idle.on{display:grid}
+  #idle .t{font-size:46px; font-weight:800; letter-spacing:.2em; color:var(--navy)}
+  #idle .s{margin-top:13px; color:var(--dim); font-size:15px; letter-spacing:.05em}
+  .pill{display:inline-block; margin-top:22px; padding:8px 18px; border-radius:999px;
+        border:1px solid var(--line); color:var(--dim); font-size:13px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="brand">DDONGGAE<span> ·</span> SNU AI ROBOT CHALLENGE 2026</div>
+    <div class="phase" id="phase">대기</div>
+    <div class="sub" id="subphase"></div>
+    <div class="spacer"></div>
+    <div class="logos">
+      <img src="/assets/snu.png" alt="서울대학교">
+      <img src="/assets/snu-mech-eng.png" alt="서울대학교 기계공학부">
+    </div>
+  </header>
+
+  <main>
+    <!-- 왼쪽: 경기장 실시간 + 현재 작업 -->
+    <div class="pane" id="left">
+      <div id="stage">
+        <canvas id="cv"></canvas>
+        <div id="clock"><span class="k">경과</span><span class="v" id="elapsed">0.0s</span></div>
+        <div id="idle"><div>
+          <div class="t">DDONGGAE</div>
+          <div class="s">자율 물체 수거 로봇 · 16팀 중 1위</div>
+          <div class="pill" id="idlemsg">경기 대기 중</div>
+        </div></div>
+      </div>
+
+      <!-- [관객용] 위치추정 계기(잔차/지연/빔/후보/IMU/게이트)는 뺐다 —
+           일반 관객에게 의미가 없다. 데이터는 서버 /state.json 에 그대로 남아
+           있으므로 부스 운영자가 필요하면 그쪽에서 본다. -->
+      <div class="sec">
+        <div id="task"><div class="big" style="color:var(--dim)">대기 중</div></div>
+      </div>
+    </div>
+
+    <!-- 오른쪽: 스캔 오버레이 사진 + 판정 -->
+    <div class="pane" id="right">
+      <div id="shotwrap">
+        <img id="shot" alt="스캔 오버레이 — 검출 박스가 그려진 스티치 프레임">
+        <div id="shotempty">스캔 대기 중<br><span style="font-size:12.5px">
+          촬영이 끝나면 검출 결과가 그려진 사진이 여기 뜹니다</span></div>
+        <div id="shotcap">스캔 오버레이 · 이 한 장이 이번 경기 판정의 전부</div>
+      </div>
+      <div id="cells"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+"use strict";
+
+/* 상태별 색·문구. 이 표가 곧 화면의 의미 체계다.
+   색은 CSS 변수가 아니라 리터럴 — 캔버스가 60fps 로 도는데 셀마다
+   getComputedStyle 을 부르면 CPU 를 낭비한다. */
+const STATUS = {
+  active:    {c:"#e88820", label:"지금 수거 중"},
+  target:    {c:"#203080", label:"수거 예정"},
+  collected: {c:"#2f7d4f", label:"수거 완료"},
+  refused:   {c:"#c0392b", label:"거부 · 타깃 아님"},
+  conflict:  {c:"#7b4fa8", label:"판단 보류 · 확신 부족"},
+  quota_full:{c:"#8b96a3", label:"쿼터 충족 — 더 안 집음"},
+  skipped:   {c:"#8b96a3", label:"건너뜀"},
+  pending:   {c:"#a8b0ba", label:"미판정"},
+};
+const ORDER = ["active","target","collected","conflict","refused","quota_full","skipped","pending"];
+/* 사이클 하위 단계 → 관객이 읽는 말. 기술 용어를 쓰지 않는다. */
+const SUB = {route:"이동 중", face:"물체 정면으로", approach:"다가가는 중",
+             grasp:"집는 중", carry:"옮기는 중",
+             drift:"돌면서 이동 중", place:"보관함에 넣는 중"};
+/* 단계 → 관객이 읽는 말 */
+const PHASE = {SEED:"출발 준비", GOTO_CENTER:"촬영 위치로",
+               SCAN:"물체 찾는 중", COLLECT:"수거 중", REPORT:"경기 종료"};
+
+const cv = document.getElementById("cv");
+const ctx = cv.getContext("2d");
+let snap = null, trail = [], lastRev = -1;
+const TRAIL_MAX = 260, TICK_EVERY_M = 0.18;
+
+function resize(){
+  const r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+  cv.width = Math.round(r.width*d); cv.height = Math.round(r.height*d);
+  ctx.setTransform(d,0,0,d,0,0);
+}
+window.addEventListener("resize", resize);
+
+/* 맵(원점 중앙, +y 북) → 캔버스(+y 아래) */
+function view(half){
+  const r = cv.getBoundingClientRect();
+  const pad = 18, size = Math.max(40, Math.min(r.width, r.height) - pad*2);
+  return {s:size/(2*half), ox:(r.width-size)/2, oy:(r.height-size)/2, size, half};
+}
+const WX = (v,x) => v.ox + (x + v.half)*v.s;
+const WY = (v,y) => v.oy + (v.half - y)*v.s;
+/* 물체 반지름 [px] — 실제 8cm 를 축척대로. 고정 px 로 그리면 로봇만 실축이라
+   로봇이 과장돼 보인다 (19cm:8cm = 2.4배인데 화면에선 4배로 읽혔다). */
+const OBJ_R = v => Math.max(6, 0.04 * v.s);
+
+function draw(){
+  const r = cv.getBoundingClientRect();
+  ctx.clearRect(0,0,r.width,r.height);
+  const m = snap && snap.match, arena = m && m.arena;
+  if(!arena) return;
+  const v = view(arena.half_m);
+
+  ctx.fillStyle = "#f1f3f7"; ctx.fillRect(v.ox, v.oy, v.size, v.size);
+  ctx.strokeStyle = "#8e9aab"; ctx.lineWidth = 3;
+  ctx.strokeRect(v.ox, v.oy, v.size, v.size);
+
+  /* 아직 판정 안 된 후보 격자점 */
+  const seen = new Set((m.cells||[]).map(c => c.cell.join(",")));
+  ctx.fillStyle = "#ccd3dd";
+  for(const xc of arena.grid_xs_cm||[]) for(const yc of arena.grid_ys_cm||[]){
+    if(seen.has(xc+","+yc)) continue;
+    ctx.beginPath();
+    ctx.arc(WX(v,xc/100-arena.half_m), WY(v,yc/100-arena.half_m), 3, 0, 7); ctx.fill();
+  }
+
+  if(arena.storage){
+    const [x1,y1,x2,y2] = arena.storage;
+    const l = WX(v,Math.min(x1,x2)), t = WY(v,Math.max(y1,y2));
+    const w = Math.abs(x2-x1)*v.s, h = Math.abs(y2-y1)*v.s;
+    ctx.strokeStyle = "#2f7d4f"; ctx.lineWidth = 2; ctx.strokeRect(l,t,w,h);
+    ctx.fillStyle = "rgba(47,125,79,.10)"; ctx.fillRect(l,t,w,h);
+    ctx.fillStyle = "#2f7d4f"; ctx.font = "600 11px sans-serif"; ctx.textAlign = "center";
+    ctx.fillText("적재함", l+w/2, t+h/2+4);
+  }
+
+  const st = arena.start_xy, sc = arena.scan_xy;
+  const same = st && sc && Math.hypot(st[0]-sc[0], st[1]-sc[1]) < 0.15;
+  const mark = (p, text, col) => {
+    if(!p) return;
+    const x = WX(v,p[0]), y = WY(v,p[1]);
+    ctx.strokeStyle = col; ctx.lineWidth = 1.6; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.arc(x,y,13,0,7); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = col; ctx.font = "600 10px sans-serif"; ctx.textAlign = "center";
+    ctx.fillText(text, x, y+26);
+  };
+  if(same) mark(st, "출발 · 스캔", "#6b7684");
+  else { mark(st, "출발", "#6b7684"); mark(sc, "스캔", "#b5761c"); }
+
+  const R = OBJ_R(v);
+  ctx.lineWidth = 2;
+  for(const p of m.presence||[]){
+    ctx.strokeStyle = "#b5761c";
+    ctx.beginPath(); ctx.arc(WX(v,p.xy[0]), WY(v,p.xy[1]), R, 0, 7); ctx.stroke();
+  }
+
+  const t = performance.now()/1000;
+  for(const c of m.cells||[]){
+    const s2 = STATUS[c.status] || STATUS.pending;
+    const x = WX(v,c.xy[0]), y = WY(v,c.xy[1]), col = s2.c;
+    if(c.status === "active"){
+      const r2 = R*1.8 + Math.sin(t*4)*R*0.35;
+      ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.globalAlpha = .85;
+      ctx.beginPath(); ctx.arc(x,y,r2,0,7); ctx.stroke(); ctx.globalAlpha = 1;
+    }
+    const dim = (c.status==="refused"||c.status==="skipped"||c.status==="quota_full");
+    ctx.globalAlpha = dim ? .5 : 1;
+    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x,y,R,0,7); ctx.fill();
+    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = Math.max(2, R*0.24);
+    if(c.status === "collected"){
+      ctx.beginPath();
+      ctx.moveTo(x-R*0.45,y); ctx.lineTo(x-R*0.1,y+R*0.38); ctx.lineTo(x+R*0.5,y-R*0.38);
+      ctx.stroke();
+    } else if(c.status === "refused"){
+      const d = R*0.4; ctx.beginPath();
+      ctx.moveTo(x-d,y-d); ctx.lineTo(x+d,y+d);
+      ctx.moveTo(x+d,y-d); ctx.lineTo(x-d,y+d); ctx.stroke();
+    }
+    ctx.fillStyle = dim ? "#8b96a3" : "#151a22";
+    ctx.font = "600 13px sans-serif"; ctx.textAlign = "center";
+    ctx.fillText(c.identity || "?", x, y - R - 7);
+    ctx.globalAlpha = 1;
+  }
+
+  drawTrail(v); drawRobot(v);
+}
+
+/* 궤적 + 방향 눈금. 눈금이 없으면 드리프트는 그냥 직선으로 보인다. */
+function drawTrail(v){
+  if(trail.length < 2) return;
+  ctx.strokeStyle = "rgba(232,136,32,.42)"; ctx.lineWidth = 2;
+  ctx.beginPath();
+  trail.forEach((p,i) => i ? ctx.lineTo(WX(v,p.x),WY(v,p.y)) : ctx.moveTo(WX(v,p.x),WY(v,p.y)));
+  ctx.stroke();
+  let acc = 1e9;
+  for(let i=1;i<trail.length;i++){
+    const a = trail[i-1], b = trail[i];
+    acc += Math.hypot(b.x-a.x, b.y-a.y);
+    if(acc < TICK_EVERY_M) continue;
+    acc = 0;
+    const x = WX(v,b.x), y = WY(v,b.y), L = 11;
+    const dx = Math.cos(b.yaw)*L, dy = -Math.sin(b.yaw)*L;
+    ctx.strokeStyle = "rgba(232,136,32,"+(0.3 + 0.6*i/trail.length).toFixed(2)+")";
+    ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(x-dx*0.35, y-dy*0.35); ctx.lineTo(x+dx*0.65, y+dy*0.65);
+    ctx.stroke();
+  }
+}
+
+function drawRobot(v){
+  const a = snap && snap.arena, p = a && a.pose;
+  if(!p || typeof p.x !== "number") return;
+  const x = WX(v,p.x), y = WY(v,p.y);
+  ctx.save(); ctx.translate(x,y); ctx.rotate(-p.yaw + Math.PI/2);
+  const S = v.s;
+  ctx.fillStyle = "rgba(232,136,32,.92)"; ctx.strokeStyle = "#8a4f0d"; ctx.lineWidth = 1.4;
+  ctx.beginPath(); ctx.rect(-0.095*S, -0.125*S, 0.19*S, 0.25*S); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = "rgba(138,79,13,.55)";
+  ctx.fillRect(-0.095*S, -0.225*S, 0.022*S, 0.10*S);
+  ctx.fillRect( 0.073*S, -0.225*S, 0.022*S, 0.10*S);
+  ctx.restore();
+}
+
+/* ---------------- 왼쪽 패널: 지금 무엇을 하는가 ---------------- */
+function task(){
+  const m = snap && snap.match;
+  const el = document.getElementById("task");
+  if(!m){ el.innerHTML = `<div class="big" style="color:var(--dim)">대기 중</div>`; return; }
+  const cyc = m.cycle;
+  if(!cyc){
+    const txt = PHASE[m.phase] || m.phase || "—";
+    const n = (m.cells||[]).length;
+    el.innerHTML = `<div class="big">${escapeHtml(txt)}</div>` +
+      (n ? `<div class="meta">물체 ${n}개 확인 — 무엇을 집을지 정하는 중</div>` : "");
+    return;
+  }
+  const sub = SUB[m.sub_phase] || "";
+  el.innerHTML = `<div class="big">${escapeHtml(cyc.identity||"?")}
+      ${sub ? `<span style="color:var(--active)"> — ${escapeHtml(sub)}</span>` : ""}</div>
+    <div class="meta">${cyc.index}번째 수거${cyc.grasped ? " · 집었음" : ""}</div>`;
+}
+
+/* ---------------- 오른쪽 패널 ---------------- */
+function shot(){
+  const rev = snap && snap.overlay_rev;
+  if(rev && rev !== lastRev){
+    lastRev = rev;
+    const img = document.getElementById("shot");
+    img.src = "/scan_overlay.jpg?r=" + rev;   /* rev 로 캐시 무효화 */
+    img.style.display = "block";
+    document.getElementById("shotempty").style.display = "none";
+    document.getElementById("shotcap").style.display = "block";
+  }
+}
+
+function cells(){
+  const m = snap && snap.match;
+  const list = ((m && m.cells) || []).slice()
+    .sort((a,b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status));
+  document.getElementById("cells").innerHTML = list.map(c => {
+    const s = STATUS[c.status] || STATUS.pending;
+    let why = s.label;
+    if(c.status === "refused" && c.points)  why += ` · 집으면 −${c.points*2}점`;
+    if(c.status === "conflict")             why += " · 미스픽 위험";
+    if(c.status === "target" && c.points)   why += ` · +${c.points}점`;
+    const mute = (c.status==="refused"||c.status==="skipped"||c.status==="quota_full");
+    return `<div class="cell ${mute?"mute":""}">
+      <div class="dot" style="background:${s.c}"></div>
+      <div><div class="id">${escapeHtml(c.identity||"?")}</div>
+           <div class="why">${why}</div></div>
+      <div class="at">(${c.cell[0]}, ${c.cell[1]})</div></div>`;
+  }).join("");
+}
+
+const escapeHtml = s => String(s).replace(/[&<>]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[ch]));
+
+function header(){
+  const m = snap && snap.match;
+  const fresh = m && snap.match_age !== null && snap.match_age < (snap.stale_sec||5);
+  document.getElementById("idle").classList.toggle("on", !fresh);
+  if(!fresh){
+    const done = m ? (m.placed_by_cls||{}) : null;
+    const n = done ? Object.values(done).reduce((a,b)=>a+b,0) : 0;
+    document.getElementById("idlemsg").textContent = m
+      ? `직전 경기 — ${n}개 수거 · 다음 경기 준비 중`
+      : "경기 대기 중";
+  }
+  if(!m) return;
+  document.getElementById("phase").textContent = PHASE[m.phase] || m.phase || "—";
+  document.getElementById("subphase").textContent = SUB[m.sub_phase] || "";
+  document.getElementById("elapsed").textContent = (m.elapsed_sec||0).toFixed(1)+"s";
+}
+
+/* ---------------- 폴링 / 렌더 ---------------- */
+async function poll(){
+  try{
+    const r = await fetch("/state.json", {cache:"no-store"});
+    snap = await r.json();
+    const p = snap.arena && snap.arena.pose;
+    if(p && typeof p.x === "number"){
+      const last = trail[trail.length-1];
+      if(!last || Math.hypot(p.x-last.x, p.y-last.y) > 0.008
+         || Math.abs(p.yaw-last.yaw) > 0.03){
+        trail.push({x:p.x, y:p.y, yaw:p.yaw});
+        if(trail.length > TRAIL_MAX) trail.shift();
+      }
+    }
+    if(snap.match && snap.match.elapsed_sec < 2 && trail.length > 40) trail = [];
+    header(); task(); cells(); shot();
+  }catch(e){ /* 서버 재시작 중 — 다음 틱에 다시 붙는다 */ }
+  setTimeout(poll, 100);
+}
+function loop(){ draw(); requestAnimationFrame(loop); }
+
+resize(); poll(); loop();
+</script>
+</body>
+</html>

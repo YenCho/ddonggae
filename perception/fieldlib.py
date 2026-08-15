@@ -101,8 +101,39 @@ def apply_cpu_affinity(env_var: str, role: str, default: str = "auto", log=print
 FRUITS = {"apple", "orange", "banana", "pineapple"}
 POLYHEDRA = {"octahedron", "dodecahedron", "icosahedron"}
 CLASSES = FRUITS | POLYHEDRA | {"plain"}
-GRID_XS_CM = tuple(range(50, 351, 50))
-GRID_YS_CM = tuple(range(100, 351, 50))
+
+# =========================================================================
+# 아레나 기하 — 좌표계 원시값
+# =========================================================================
+# 공식 프레임: 원점 = 좌하단 적재함 모서리, 단위 cm. 룰북과 배치 지시가 쓰는 계.
+# 맵 프레임:   원점 = 아레나 중심, 단위 m. 로컬라이저·컨트롤러가 쓰는 계.
+# 두 계 사이 오프셋은 이 값 하나다.
+#
+# 종전에는 `- 2.0` / `+ 2.0` 리터럴이 런너 경로 여러 곳에 흩어져 있었고, 그중
+# `match_runner.snap_gate` 에 박힌 것은 **살아 있는 안전 게이트**라 하나만
+# 놓치면 접근이 전부 오판정된다. 아레나 크기를 바꿀 일이 생기면 여기 한 곳만
+# 고치고, `--offline` 의 [프로필 정합성] 이 나머지가 따라왔는지 검산한다.
+#
+# ⚠ navigation/ros2/arena_lightweight_control/competition_layout.py 에도 같은
+#   값이 독립적으로 있다 — ament 패키지에서 이 모듈을 import 하려면 노드에
+#   sys.path 해킹이 들어가므로 일부러 합치지 않았다. 어긋나면 `--offline` 이 잡는다.
+ARENA_HALF_M = 2.0
+
+
+def official_cm_to_map(x_cm: float, y_cm: float):
+    return x_cm / 100.0 - ARENA_HALF_M, y_cm / 100.0 - ARENA_HALF_M
+
+
+def map_to_official_cm(x: float, y: float):
+    return (x + ARENA_HALF_M) * 100.0, (y + ARENA_HALF_M) * 100.0
+
+
+# 물체 후보 격자 (공식 cm). 피치 50cm 는 바꾸지 말 것 — street 여유 11.5cm 와
+# MINI_GOAL_OFFSET_M ±25cm 가 전부 이 값에서 유도된 실기 튜닝값이다.
+# 아레나를 줄일 때는 피치가 아니라 **점 개수**를 줄인다.
+GRID_PITCH_CM = 50
+GRID_XS_CM = tuple(range(50, 351, GRID_PITCH_CM))
+GRID_YS_CM = tuple(range(100, 351, GRID_PITCH_CM))
 
 # ---- 카메라 마운트 (2026-07-20 확정 — 4쌍 전부 depth 바닥평면 실측 + 줄자 교차검증) ----
 # 두 카메라 모두 마스트에 동승한다 (줄자 4점: 상단 35.1→49.7, 하단 30.8→45.9,
@@ -243,8 +274,21 @@ FAR_PRESENCE_M = 2.5      # 초과 관측은 presence-only 강등 (하드컷 금
 # 현장에서 파지 실패 시 ±0.01 단위로 조정.
 GRIP_FORWARD_M = 0.115
 
-STORAGE_RECT_MAP = (-2.0, -2.0, -1.6, -1.6)
-START_POSE = (1.8, -1.8, math.pi / 2.0)  # 우하단, 북향(+y) 출발
+# 적재함 40cm 정사각 — 좌하단 모서리에 붙어 있어 공식 cm 값이 아레나 크기와
+# 무관하다. 맵 좌표만 ARENA_HALF_M 을 따라간다.
+STORAGE_BOX_CM = 40.0
+STORAGE_RECT_MAP = (*official_cm_to_map(0.0, 0.0),
+                    *official_cm_to_map(STORAGE_BOX_CM, STORAGE_BOX_CM))
+# 출발 포즈: 동벽·남벽에서 각각 20cm 안쪽, 북향(+y). 출발구역이 우하단 40cm
+# 정사각이라 그 중앙이 아니라 벽 기준으로 잡는다 — 바닥 마커로 로봇을 놓을 때
+# 벽까지의 거리가 유일하게 줄자 없이 재현 가능한 양이기 때문이다.
+# round() 은 부동소수 잔차 제거용이다: 380/100 - 2.0 = 1.7999999999999998 로
+# 종전 리터럴 1.8 과 1 ULP 어긋난다. 1e-9 m = 1nm 라 물리적 의미는 없지만,
+# 유도화가 값을 바꾸지 않았다는 걸 등호로 보일 수 있게 해 둔다.
+START_INSET_CM = 20.0
+_start_x, _start_y = official_cm_to_map(ARENA_HALF_M * 200.0 - START_INSET_CM,
+                                        START_INSET_CM)
+START_POSE = (round(_start_x, 9), round(_start_y, 9), math.pi / 2.0)
 # 스캔 스핀 포인트: 격자점 대칭 회피(4방 이웃점에서 대각 35cm) + 배치필드
 # 중심. 객체 후보는 공식 x 50~350(중심 200)·y 100~350(중심 225)이므로
 # 맵 (+0.25,+0.25)=공식 (225,225)가 필드 실제 중심 — 종전 (0.25,-0.25)는
@@ -346,16 +390,8 @@ def compare_with_gt(cells: dict, gt: dict) -> dict:
 
 
 # =========================================================================
-# 좌표/격자
+# 좌표/격자 — 원시값은 파일 앞쪽 "아레나 기하" 절에 있다
 # =========================================================================
-def official_cm_to_map(x_cm: float, y_cm: float):
-    return x_cm / 100.0 - 2.0, y_cm / 100.0 - 2.0
-
-
-def map_to_official_cm(x: float, y: float):
-    return (x + 2.0) * 100.0, (y + 2.0) * 100.0
-
-
 def snap_cell(map_x: float, map_y: float):
     cx, cy = map_to_official_cm(map_x, map_y)
     gx = min(GRID_XS_CM, key=lambda g: abs(g - cx))
@@ -779,6 +815,14 @@ class FieldNode:
         "near_depth": "/camera_54/depth",
         "top_info": "/camera_19/camera_info",
         "near_info": "/camera_54/camera_info",
+        # [데모] 관객용 실시간 시각화 피드. match_runner 가 발행하고
+        # mission/spectator_server.py 가 구독한다. 경기 로직은 이걸 읽지 않는다 —
+        # 발행 실패는 무해하며, 구독자가 없어도 비용은 String 직렬화 1회뿐.
+        "match_state": "/match/state",
+        # 스캔 오버레이(검출 박스가 그려진 스티치 프레임). 러너가 이미 JPEG 로
+        # 인코딩해 메모리에 들고 있으므로(_pending_writes) **추가 인코딩 비용이 없다.**
+        # 단발 스캔에서는 경기당 1장이다.
+        "scan_overlay": "/match/scan_overlay",
     }
 
     def __init__(self, node_name: str):
@@ -826,7 +870,13 @@ class FieldNode:
         n.create_subscription(Imu, self.TOPICS["imu"], cb("imu"), q)
 
         self.pub = {}
-        for key in ("goal", "pose_seed", "control", "move", "gripper_cmd", "lift_cmd"):
+        # 스캔 오버레이만 CompressedImage — 나머지는 String 계약 그대로.
+        from sensor_msgs.msg import CompressedImage
+        self.pub["scan_overlay"] = n.create_publisher(
+            CompressedImage, self.TOPICS["scan_overlay"], 1)
+        self._CompressedImage = CompressedImage
+        for key in ("goal", "pose_seed", "control", "move", "gripper_cmd",
+                    "lift_cmd", "match_state"):
             self.pub[key] = n.create_publisher(String, self.TOPICS[key], 10)
 
     # ---- 기본 ----
