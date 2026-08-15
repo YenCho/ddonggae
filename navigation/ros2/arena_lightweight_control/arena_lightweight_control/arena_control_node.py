@@ -137,6 +137,13 @@ class ArenaControlNode(Node):
 
         self.lock = threading.Lock()
         self.map = OccupancyMap.from_yaml(str(self.get_parameter("map_yaml").value))
+        # 이 노드가 믿는 아레나 크기를 status 에 실어 보낸다. 러너가 시딩 직후
+        # 자기 상수(fl.ARENA_HALF_M)와 대조해서 어긋나면 주행 전에 죽는다 —
+        # 맵/상수 불일치는 포즈가 조용히 최대 1m 틀리고 레그1에서 벽으로 가는
+        # 실패라, 주행 후에 알아채면 늦다.
+        # inner_wall_bounds() 는 맵 전체를 훑으므로 20Hz status 경로에서 매번
+        # 부르면 안 된다. 맵은 런타임에 안 바뀌니 여기서 한 번만 만든다.
+        self.arena_info = self._arena_info()
         self.pose = Pose2D(
             float(self.get_parameter("initial_pose_x").value),
             float(self.get_parameter("initial_pose_y").value),
@@ -1006,6 +1013,21 @@ class ArenaControlNode(Node):
         msg.data = json.dumps(self.state_snapshot(), sort_keys=True)
         self.status_pub.publish(msg)
 
+    def _arena_info(self) -> dict:
+        """맵에서 유도한 아레나 기하. __init__ 에서 한 번만 만든다.
+
+        half_m 은 네 변까지의 거리 중 **최대**다. inner_wall_bounds() 가 주는 건
+        3px 벽의 안쪽 면이라 벽 중심보다 1~2셀 안쪽이고(경기 맵: ±2.0m 벽 ->
+        -1.97/+1.99), 변마다 반 셀씩 다르다. 최대를 쓰면 벽 중심에 가장 가까워
+        러너 상수와의 대조 오차가 셀 크기(0.02m) 안에 들어온다.
+        """
+        b = self.map.inner_wall_bounds()
+        return {
+            "xmin": b.xmin, "xmax": b.xmax, "ymin": b.ymin, "ymax": b.ymax,
+            "half_m": max(abs(b.xmin), abs(b.xmax), abs(b.ymin), abs(b.ymax)),
+            "map_yaml": str(self.get_parameter("map_yaml").value),
+        }
+
     def map_snapshot(self) -> dict:
         return {
             "width": self.map.width,
@@ -1034,6 +1056,7 @@ class ArenaControlNode(Node):
                 #   스냅샷을 뜨는 이 순간이 곧 yaw 의 시각이다. x/y 는 스캔 주기로
                 #   갱신되지만 스텝 스캔은 제자리라 병진이 0 이다.
                 "stamp": self.get_clock().now().nanoseconds * 1e-9,
+                "arena": self.arena_info,
                 "pose": _pose_dict(pose),
                 "goal": _pose_dict(goal) if goal is not None else None,
                 "command": {

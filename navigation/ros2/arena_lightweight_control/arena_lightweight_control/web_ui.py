@@ -242,22 +242,14 @@ INDEX_HTML = """<!doctype html>
       ctx.stroke();
     }
 
-    // 경기 공식 레이아웃 (competition_layout.py와 동일 상수, cm/100-2.0 변환)
-    const COMP = (() => {
-      const pts = [];
-      for (let yc = 100; yc <= 350; yc += 50)
-        for (let xc = 50; xc <= 350; xc += 50)
-          pts.push([xc / 100 - 2.0, yc / 100 - 2.0]);
-      return {
-        grid: pts,
-        storage: [-2.0, -2.0, -1.6, -1.6],
-        start: [1.6, -2.0, 2.0, -1.6],
-        // 스캔점은 아레나 정중앙이 아니라 공식 (225,225)cm = map (0.25,0.25).
-        // 격자점은 50cm 간격이라 정중앙에는 물체가 서고, 스캔은 그 사이 street
-        // 교차점에서 한다 — 실기 로그의 "[GOTO_CENTER] ... → (+0.25,+0.25)".
-        center: [0.25, 0.25]
-      };
-    })();
+    // 경기 공식 레이아웃 — competition_layout.py 에서 주입된다 (아래 _COMP_JSON).
+    // 종전에는 격자 루프와 구역 좌표를 여기 JS 에 하드코딩했는데, 저장소에
+    // 격자 테이블 사본이 이미 여러 개라 아레나 크기를 바꾸면 이 화면만 조용히
+    // 옛 배치를 그리게 된다. 사본을 늘리지 않는다.
+    // 스캔점은 아레나 정중앙이 아니라 공식 (225,225)cm = map (0.25,0.25).
+    // 격자점이 50cm 간격이라 정중앙에는 물체가 서고, 스캔은 그 사이 street
+    // 교차점에서 한다 — 실기 로그의 "[GOTO_CENTER] ... → (+0.25,+0.25)".
+    const COMP = __COMP_JSON__;
 
     function drawCompetitionLayout(view) {
       const zones = [
@@ -371,6 +363,25 @@ INDEX_HTML = """<!doctype html>
 </body>
 </html>
 """
+
+
+def _competition_layout_json() -> str:
+    """`competition_layout` 의 상수를 페이지가 쓰는 모양으로 직렬화한다.
+
+    import 시점에 한 번만 치환하므로 요청마다 드는 비용은 없다. 격자 순서는
+    `GRID_POINTS_MAP` 그대로 (y 바깥, x 안쪽) — 종전 JS 이중 루프와 동일하다.
+    """
+    from . import competition_layout as layout
+
+    return json.dumps({
+        "grid": [list(p) for p in layout.GRID_POINTS_MAP],
+        "storage": list(layout.STORAGE_RECT_MAP),
+        "start": list(layout.START_RECT_MAP),
+        "center": list(layout.CENTER_SCAN_MAP),
+    })
+
+
+INDEX_HTML = INDEX_HTML.replace("__COMP_JSON__", _competition_layout_json())
 
 
 class ArenaWebServer:

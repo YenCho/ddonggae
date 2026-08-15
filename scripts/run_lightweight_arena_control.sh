@@ -5,6 +5,9 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ROS_DISTRO_ARG="${ROS_DISTRO_ARG:-humble}"
 FASTDDS_PROFILE="${FASTDDS_PROFILE:-${REPO_ROOT}/hardware/ros2/robot_bringup/config/fastdds_udp_only.xml}"
 LAUNCH_CAMERAS="${LAUNCH_CAMERAS:-false}"
+# 아레나 맵 교체용. 비워두면 런치 기본값(패키지 share 의 stadium.yaml)을 쓴다.
+# 예) MAP_YAML=$PWD/navigation/ros2/arena_lightweight_control/maps/demo2m.yaml
+MAP_YAML="${MAP_YAML:-}"
 UI_PORT="${UI_PORT:-18765}"
 LAUNCH_PYTHON_UI="${LAUNCH_PYTHON_UI:-true}"
 ENABLE_WEB_UI="${ENABLE_WEB_UI:-false}"
@@ -109,8 +112,15 @@ echo "near_goal_slow=${NEAR_GOAL_SLOW_RADIUS_M}m scale=${NEAR_GOAL_SPEED_SCALE}"
 echo "object_avoidance=${ENABLE_OBJECT_AVOIDANCE} keepout_half=${OBJECT_KEEPOUT_HALF_WIDTH_M}x${OBJECT_KEEPOUT_HALF_DEPTH_M} lookahead=${OBJECT_AVOIDANCE_LOOKAHEAD_M}"
 echo "gripper_serial_port=${GRIPPER_SERIAL_PORT}"
 echo "drive_type=${DRIVE_TYPE} controller_type=${CONTROLLER_TYPE} base_scan_yaw=${BASE_SCAN_YAW}"
+echo "map_yaml=${MAP_YAML:-(런치 기본값)}"
+
+# MAP_YAML 이 비었으면 인자 자체를 넘기지 않는다 — 빈 문자열을 넘기면 노드가
+# 존재하지 않는 경로를 열려다 죽는다.
+MAP_ARGS=()
+[[ -n "${MAP_YAML}" ]] && MAP_ARGS+=("map_yaml:=${MAP_YAML}")
 
 exec ros2 launch arena_lightweight_control lightweight_real.launch.py \
+  "${MAP_ARGS[@]+"${MAP_ARGS[@]}"}" \
   launch_bridge:=true \
   drive_type:="${DRIVE_TYPE}" \
   controller_type:="${CONTROLLER_TYPE}" \
