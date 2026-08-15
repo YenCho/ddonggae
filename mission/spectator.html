@@ -30,7 +30,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DDONGGAE — 실시간</title>
+<title>SNU AI ROBOT CHALLENGE 2026 — 실시간</title>
 <style>
   :root{
     /* 로고에서 뽑은 두 색이 이 화면의 정체성이다:
@@ -113,7 +113,7 @@
     background:rgba(255,255,255,.95);
   }
   #idle.on{display:grid}
-  #idle .t{font-size:46px; font-weight:800; letter-spacing:.2em; color:var(--navy)}
+  #idle .t{font-size:44px; font-weight:800; letter-spacing:.04em; color:var(--navy)}
   #idle .s{margin-top:13px; color:var(--dim); font-size:15px; letter-spacing:.05em}
   .pill{display:inline-block; margin-top:22px; padding:8px 18px; border-radius:999px;
         border:1px solid var(--line); color:var(--dim); font-size:13px}
@@ -122,7 +122,7 @@
 <body>
 <div id="app">
   <header>
-    <div class="brand">DDONGGAE<span> ·</span> SNU AI ROBOT CHALLENGE 2026</div>
+    <div class="brand">SNU AI ROBOT CHALLENGE<span> 2026</span></div>
     <div class="phase" id="phase">대기</div>
     <div class="sub" id="subphase"></div>
     <div class="spacer"></div>
@@ -141,8 +141,8 @@
         <canvas id="cv"></canvas>
         <div id="clock"><span class="k">경과</span><span class="v" id="elapsed">0.0s</span></div>
         <div id="idle"><div>
-          <div class="t">DDONGGAE</div>
-          <div class="s">자율 물체 수거 로봇 · 16팀 중 1위</div>
+          <div class="t">자율 물체 수거 로봇</div>
+          <div class="s">SNU AI ROBOT CHALLENGE 2026 · 16팀 중 1위</div>
           <div class="pill" id="idlemsg">경기 대기 중</div>
         </div></div>
       </div>
