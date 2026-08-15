@@ -4794,12 +4794,15 @@ def offline_selftest(args) -> int:
     print("== 오프라인 자가테스트 (ROS 없음) ==\n")
     fails = []
 
-    # 1) GT 파서
-    sample = "apple:150,200;plain:250,300;octahedron:100,150"
+    # 1) GT 파서 — 셀은 현재 격자에서 뽑는다. 아레나 프로파일을 바꾸면
+    #    4m 전용 좌표(150,200 등)가 격자 밖이 되어 파서가 정당하게 거부한다.
+    cells_all = [(x, y) for y in fl.GRID_YS_CM for x in fl.GRID_XS_CM]
+    c0, c1, c2 = cells_all[0], cells_all[len(cells_all) // 2], cells_all[-1]
+    sample = f"apple:{c0[0]},{c0[1]};plain:{c1[0]},{c1[1]};octahedron:{c2[0]},{c2[1]}"
     gt = fl.parse_gt_text(sample)
     print(f"[GT 파서] 입력 '{sample}'")
     print("  " + fl.gt_summary_text(gt).replace("\n", "\n  "))
-    if len(gt) != 3 or gt[(150, 200)] != "apple":
+    if len(gt) != 3 or gt[c0] != "apple":
         fails.append("GT 파서")
     if args.gt_text or args.gt_file:
         user_gt = fl.prompt_gt(interactive=False, gt_text=args.gt_text,
@@ -4808,7 +4811,7 @@ def offline_selftest(args) -> int:
 
     # 2) GT 비교 스모크
     cmp_res = fl.compare_with_gt(
-        {(150, 200): {"identity": "apple"}, (250, 300): {"identity": "banana"}}, gt)
+        {c0: {"identity": "apple"}, c1: {"identity": "banana"}}, gt)
     print("\n[GT 비교]")
     print("  " + cmp_res["text"].replace("\n", "\n  "))
     if cmp_res["ok"] != 1 or len(cmp_res["missed"]) != 1:
@@ -4869,8 +4872,11 @@ def offline_selftest(args) -> int:
         if r["mode"] not in ("blocked", "street_forced") and hits:
             fails.append(f"라우터 회귀 {label} (침범 {hits})")
 
-    # 4) 격자/스냅 스모크
-    cell, err = fl.snap_cell(*fl.official_cm_to_map(152, 197))
+    # 4) 격자/스냅 스모크 — 실제 격자점을 몇 cm 흔들어 되돌아오는지 본다.
+    #    (종전 (152,197)→(150,200) 하드코딩은 4m 격자에서만 성립했다)
+    _snap_want = (fl.GRID_XS_CM[1], fl.GRID_YS_CM[-1])
+    _snap_probe = (_snap_want[0] + 2, _snap_want[1] - 3)
+    cell, err = fl.snap_cell(*fl.official_cm_to_map(*_snap_probe))
     print(f"\n[적재 볼링핀] 구석 정면 yaw={math.degrees(STORAGE_CORNER_YAW):+.0f}° "
           f"— 사용 가능 {len(STORAGE_PINS)}핀 (보관함 40x40 안에 8cm 물체 기준)")
     for i, (slot, obj) in enumerate(STORAGE_PINS, 1):
@@ -4882,8 +4888,9 @@ def offline_selftest(args) -> int:
     if not STORAGE_PINS:
         fails.append("적재 볼링핀 0개")
 
-    print(f"\n[격자 스냅] 공식 (152,197)cm → 셀 {cell} 오차 {err * 100:.1f}cm")
-    if cell != (150, 200):
+    print(f"\n[격자 스냅] 공식 ({_snap_probe[0]},{_snap_probe[1]})cm → 셀 {cell} "
+          f"오차 {err * 100:.1f}cm (기대 {_snap_want})")
+    if cell != _snap_want:
         fails.append("격자 스냅")
 
     # 5) 실전 2세트 타깃 후보 필터 (룰북 §5/§7 — 오픽업 2배 감점, 폴백 금지)
@@ -5130,19 +5137,24 @@ def offline_selftest(args) -> int:
     print(f"\n[street 통합] 기본 nav={getattr(args, 'nav', '?')}")
     if getattr(args, "nav", None) not in ("street", "legacy"):
         fails.append("--nav 인자 부재")
-    mg = snv.mini_goal_for((200, 150))
-    print(f"  mini_goal_for((200,150)) = ({mg[0]:+.2f},{mg[1]:+.2f}) "
-          f"(기대 +0.25,-0.75)")
-    if abs(mg[0] - 0.25) > 1e-9 or abs(mg[1] + 0.75) > 1e-9:
+    _mgc = (fl.GRID_XS_CM[-1], fl.GRID_YS_CM[0])
+    mg = snv.mini_goal_for(_mgc)
+    _mgw = fl.official_cm_to_map(_mgc[0] + snv.MINI_GOAL_OFFSET_M[0] * 100,
+                                 _mgc[1] + snv.MINI_GOAL_OFFSET_M[1] * 100)
+    print(f"  mini_goal_for({_mgc}) = ({mg[0]:+.2f},{mg[1]:+.2f}) "
+          f"(기대 {_mgw[0]:+.2f},{_mgw[1]:+.2f})")
+    if abs(mg[0] - _mgw[0]) > 1e-9 or abs(mg[1] - _mgw[1]) > 1e-9:
         fails.append("mini_goal_for")
     # street x 스냅: 모든 mini-goal x 는 자기 자신으로, 중간값은 최근접으로
     import types as _t
     _r = E2ERunner.street_x_snap
     _self = _t.SimpleNamespace()      # street_x_snap 은 self 미사용
-    snap_ok = all(abs(_r(_self, -1.25 + 0.5 * k) - (-1.25 + 0.5 * k)) < 1e-9
-                  for k in range(7))
-    snap_ok &= _r(_self, 0.30) == 0.25 and _r(_self, 2.5) == 1.75 \
-        and _r(_self, -1.9) == -1.25
+    _sxs = STREET_XS_M[1:]                      # [0] 은 적재함과 겹쳐 미사용
+    snap_ok = all(abs(_r(_self, v) - v) < 1e-9 for v in _sxs)
+    _half_step = fl.GRID_PITCH_CM / 200.0       # 0.25m — 스냅 경계 안쪽
+    snap_ok &= abs(_r(_self, _sxs[0] + _half_step * 0.4) - _sxs[0]) < 1e-9
+    snap_ok &= _r(_self, _sxs[-1] + 1.0) == _sxs[-1]     # 상한 클램프
+    snap_ok &= _r(_self, _sxs[0] - 1.0) == _sxs[0]       # 하한 클램프
     print(f"  street_x_snap 격자/클램프 {'OK' if snap_ok else 'FAIL'}")
     if not snap_ok:
         fails.append("street_x_snap")
@@ -5152,8 +5164,9 @@ def offline_selftest(args) -> int:
         for cy in fl.GRID_YS_CM:
             x, y = snv.mini_goal_for((cx, cy))
             on_street = abs(_r(_self, x) - x) < 1e-9
-            inside = -1.97 < x < 1.97 and -1.97 < y < 1.97
-            if not (on_street and inside and x >= -1.25):
+            _lim = fl.ARENA_HALF_M - 0.03
+            inside = -_lim < x < _lim and -_lim < y < _lim
+            if not (on_street and inside and x >= STREET_XS_M[1] - 1e-9):
                 bad_mg.append(((cx, cy), round(x, 2), round(y, 2)))
     print(f"  42셀 mini-goal 전수: 위반 {len(bad_mg)}건")
     if bad_mg:
@@ -5167,8 +5180,14 @@ def offline_selftest(args) -> int:
     got_scan = {c for c in ((cx, cy) for cx in fl.GRID_XS_CM
                             for cy in fl.GRID_YS_CM)
                 if descend_candidate(c, scan_pose)[1]}
-    # 기대: x=250 열에서 DESCEND_SKIP_ROWS 를 뺀 전부. 그 외 열은 하나도 없다.
-    want_scan = {(250, cy) for cy in fl.GRID_YS_CM
+    # 기대: 미러 mini-goal 이 스캔점 street 와 맞는 열에서 SKIP 행을 뺀 전부.
+    # (종전에는 x=250 을 하드코딩했다 — 4m 격자에서만 성립)
+    def _mirror_x(cx):
+        return snv.mini_goal_for((cx, fl.GRID_YS_CM[0]), mirror=True)[0]
+    want_cols = {cx for cx in fl.GRID_XS_CM
+                 if abs(_mirror_x(cx) - scan_pose[0]) <= DESCEND_STREET_TOL_M
+                 and _mirror_x(cx) >= STREET_XS_M[1] - 1e-6}
+    want_scan = {(cx, cy) for cx in want_cols for cy in fl.GRID_YS_CM
                  if cy not in DESCEND_SKIP_ROWS}
     print(f"  하산 후보(스캔점) {len(got_scan)}셀 "
           f"{sorted(got_scan)} (기대 {len(want_scan)}셀)")

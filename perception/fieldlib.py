@@ -325,7 +325,11 @@ def parse_gt_text(text: str) -> dict:
             raise ValueError(f"알 수 없는 클래스 '{cls}' (허용: {sorted(CLASSES)})")
         x, y = (int(float(v)) for v in xy.split(","))
         if x not in GRID_XS_CM or y not in GRID_YS_CM:
-            raise ValueError(f"({x},{y})는 42격자점이 아님 (x∈50..350, y∈100..350, 50 간격)")
+            raise ValueError(
+                f"({x},{y})는 격자점이 아님 — "
+                f"{len(GRID_XS_CM) * len(GRID_YS_CM)}점 "
+                f"(x∈{GRID_XS_CM[0]}..{GRID_XS_CM[-1]}, "
+                f"y∈{GRID_YS_CM[0]}..{GRID_YS_CM[-1]}, {GRID_PITCH_CM} 간격)")
         out[(x, y)] = cls
     return out
 
