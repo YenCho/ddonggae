@@ -1332,7 +1332,12 @@ class ArenaControlNode(Node):
 # The map used to be installed by example_nav2, which is not part of this
 # release. It now ships with this package (setup.py data_files), and the
 # source-tree fallback follows the part-directory layout.
-MAP_REL_PATH = Path("navigation") / "ros2" / "arena_lightweight_control" / "maps" / "stadium.yaml"
+# 아레나 맵 파일명. 런치의 map_yaml 기본값과 **같아야 한다** — 노드를
+# 단독 기동(ros2 run)하면 런치를 안 거치므로 이 값이 쓰인다. 둘이 갈리면
+# 런처로 띄울 때와 단독으로 띄울 때 서로 다른 아레나를 믿게 된다.
+DEFAULT_MAP_NAME = "stadium.yaml"
+MAP_REL_PATH = (Path("navigation") / "ros2" / "arena_lightweight_control"
+                / "maps" / DEFAULT_MAP_NAME)
 
 
 def default_map_yaml() -> str:
@@ -1340,7 +1345,7 @@ def default_map_yaml() -> str:
         return str(
             Path(get_package_share_directory("arena_lightweight_control"))
             / "maps"
-            / "stadium.yaml"
+            / DEFAULT_MAP_NAME
         )
     except PackageNotFoundError:
         return str(find_repo_root() / MAP_REL_PATH)
