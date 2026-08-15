@@ -92,7 +92,7 @@ REPO_ROOT = fl.REPO_ROOT
 # `--offline` 의 P9 가 이 맵에서 유도한 아레나 크기를 fl.ARENA_HALF_M 과 대조해
 # "런너는 4m, 노드는 2m 맵" 같은 사고를 로봇 없이 잡는다. 런치 기본값을 바꾸면
 # 이 이름도 같이 바꿀 것.
-DEFAULT_MAP_YAML_NAME = "stadium.yaml"
+DEFAULT_MAP_YAML_NAME = "demo2m.yaml"   # [demo/arena-2m] 경기 stadium.yaml
 from geometry import (  # noqa: E402
     CameraMount, Intrinsics, pixel_to_ground)
 
@@ -710,7 +710,12 @@ DESCEND_FIELD_MIN_Y_M = 0.30  # snv.HIGHWAY_Y_M 보다 이만큼 북쪽 = 필드
 # 180° 는 wrap_angle 부호 경계라 시작 몇 틱의 회전 방향이 진동할 수 있다.
 # 순이득도 x=250 중 가장 작다(~2.5s — 적재함에서 가도 어차피 가까운 행이라
 # "지금 가면 싸고 나중에 가면 비싼" 정도가 가장 작다).
-DESCEND_SKIP_ROWS = (100,)
+# [demo/arena-2m] 하산 파지 전면 비활성. 이 기능은 "스캔점이 물체 필드 안
+# street 위에 있다"를 전제로 스캔점 옆 열을 내려오며 집는 최적화인데,
+# 2m 데모는 스캔을 출발 포즈(공식 180,20 — 필드 남쪽 자유밴드)에서 하므로
+# 그 전제가 사라진다. 코드를 지우는 대신 여기서 막고 자기검사가 후보 0건을
+# 확인한다. 경기 값은 (100,).
+DESCEND_SKIP_ROWS = tuple(fl.GRID_YS_CM)
 # 하산 후보 정렬 = **무조건 가장 북쪽(y 최대) 먼저** [2026-07-24 조작자 지시].
 # 근거: 첫 파지 시각은 어느 후보든 마스트 하강(~6s)에 걸려 동일하다 — 스캔
 # 레그(0~1.3s)는 전부 그 안에 흡수돼 "공짜"고, 가까운 걸 골라도 첫 파지가

@@ -117,7 +117,8 @@ CLASSES = FRUITS | POLYHEDRA | {"plain"}
 # ⚠ navigation/ros2/arena_lightweight_control/competition_layout.py 에도 같은
 #   값이 독립적으로 있다 — ament 패키지에서 이 모듈을 import 하려면 노드에
 #   sys.path 해킹이 들어가므로 일부러 합치지 않았다. 어긋나면 `--offline` 이 잡는다.
-ARENA_HALF_M = 2.0
+# [demo/arena-2m] 2.0 -> 1.0. 경기는 4m, 이 데모 경기장은 2m 다.
+ARENA_HALF_M = 1.0
 
 
 def official_cm_to_map(x_cm: float, y_cm: float):
@@ -132,8 +133,12 @@ def map_to_official_cm(x: float, y: float):
 # MINI_GOAL_OFFSET_M ±25cm 가 전부 이 값에서 유도된 실기 튜닝값이다.
 # 아레나를 줄일 때는 피치가 아니라 **점 개수**를 줄인다.
 GRID_PITCH_CM = 50
-GRID_XS_CM = tuple(range(50, 351, GRID_PITCH_CM))
-GRID_YS_CM = tuple(range(100, 351, GRID_PITCH_CM))
+# [demo/arena-2m] 7x6=42칸 -> 3x2=6칸. **피치 50cm 는 유지한다** —
+# street 여유 11.5cm 와 mini-goal ±25cm 가 전부 이 피치에서 유도된 실기
+# 튜닝값이라, 피치를 줄이면 street_nav 의 게인·허용오차가 통째로 무효가 된다.
+# 벽 여백(좌우상 50cm, 하단 100cm 자유밴드)도 경기와 동일하게 둔다.
+GRID_XS_CM = tuple(range(50, 151, GRID_PITCH_CM))
+GRID_YS_CM = tuple(range(100, 151, GRID_PITCH_CM))
 
 # ---- 카메라 마운트 (2026-07-20 확정 — 4쌍 전부 depth 바닥평면 실측 + 줄자 교차검증) ----
 # 두 카메라 모두 마스트에 동승한다 (줄자 4점: 상단 35.1→49.7, 하단 30.8→45.9,
@@ -289,11 +294,16 @@ START_INSET_CM = 20.0
 _start_x, _start_y = official_cm_to_map(ARENA_HALF_M * 200.0 - START_INSET_CM,
                                         START_INSET_CM)
 START_POSE = (round(_start_x, 9), round(_start_y, 9), math.pi / 2.0)
-# 스캔 스핀 포인트: 격자점 대칭 회피(4방 이웃점에서 대각 35cm) + 배치필드
-# 중심. 객체 후보는 공식 x 50~350(중심 200)·y 100~350(중심 225)이므로
-# 맵 (+0.25,+0.25)=공식 (225,225)가 필드 실제 중심 — 종전 (0.25,-0.25)는
-# 남쪽으로 50cm 치우쳐 북단 행(y=350)이 원거리 강등되기 쉬웠다 (7/21 변경).
-CENTER_SCAN_XY = (0.25, 0.25)
+# [demo/arena-2m] 스캔 지점 = **출발 포즈 그 자리**. 경기에서는 아레나 중앙
+# 근처(공식 225,225)로 이동해 12샷 스핀을 돌았지만, 2m 에서는 그 방식이 못 쓴다:
+#   - 중앙에서 6칸 중 4칸이 정확히 0.354m 인데, 마스트업 상단캠 시야 하한
+#     40.8°(tilt 19.39°, VFOV 42°) 기준 최소 유효거리가 0.51m 라 프레임 밖이다.
+#     2026-07-21 에 이 거리에서 8샷 전부 놓친 기록이 있다(A1 conf 0.05~0.11).
+#   - 출발 포즈에서는 6칸이 방위각 45.4° 스팬 안에 들어와 HFOV 69° 한 프레임에
+#     전부 잡히고, 거리도 0.85~1.84m 로 경기 사전샷 검증 대역과 겹친다.
+# 그래서 이동 0m·스핀 0회. 제자리 회전이 각 칸의 방위각을 바꾸지 않으므로
+# 스핀은 시간만 쓴다.
+CENTER_SCAN_XY = (START_POSE[0], START_POSE[1])
 
 # 프리샷(회전 없는 북향 1샷) 지점 = 공식 (225,75). 스캔점 대각 인접 4셀 전담.
 # [2026-07-21] 종전에는 레그1 종료 지점(하이웨이, 공식 약 (232,14))에서 찍었다.
