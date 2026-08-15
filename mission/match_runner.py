@@ -104,6 +104,10 @@ SCAN_SHOTS = 8
 # 각 칸의 *방위각*을 바꾸지 않으므로(어느 칸이 프레임에 들어오는지만 바뀐다)
 # 한 프레임에 다 들어오는 배치에서 스핀은 회전 시간만 쓰고 새 정보를 주지 않는다.
 SCAN_AIM_YAW_DEG = None
+# 스캔 지점 도착 판정 반경 [m] — 이 안이면 stage_goto_center 가 주행을 생략한다.
+# localizer 양자화(POSE_QUANTUM_M 0.075)와 시딩 오차를 흡수하되, 인접 street
+# (0.5m)과는 확실히 구분되는 값.
+SCAN_AT_POSE_TOL_M = 0.20
 A1_SCAN_CONF = 0.25          # 스캔: 저문턱 (셀 투표 누적이 거름)
 A1_APPROACH_CONF = 0.35      # 접근: 60번 계약(0.4) 근처, 스티치라 소폭 완화
 # [폐기 2026-07-23 04시 — 1순위를 480 으로 교체. 롤백 시 이 값으로 복귀]
@@ -2187,6 +2191,7 @@ class E2ERunner:
         if ok:
             self.log(f"  localization 락 OK — reason={loc.get('reason')} "
                      f"latency={loc.get('latency_ms')}ms")
+            self.check_arena_agreement()
         else:
             self.log("  localization 락 실패 (status.localization 부재 또는 latency>=150ms)")
             if not self.args.dry_run:
@@ -2195,6 +2200,44 @@ class E2ERunner:
                 sys.exit(4)
             self.log("  [dry-run] 시뮬 포즈로 계속")
         self.mark("SEED", True, t0, loc)
+
+    # [A12] 런너와 arena 노드가 **같은 아레나를 믿는지** 확인한다.
+    # 이게 어긋나면 크래시도 오류 로그도 없이 포즈가 통째로 틀린 채 주행한다
+    # (4m 맵을 물고 2m 상수로 달리면 첫 레그에서 벽으로 간다). 두 프로세스가
+    # 따로 기동되므로 코드로는 막을 수 없고, 노드가 실제로 로드한 맵에서
+    # 유도한 값을 받아 비교하는 수밖에 없다 (노드 쪽 A11 이 status 에 실어 보낸다).
+    #
+    # 허용치가 0.06 인 이유: 노드의 half_m 은 `inner_wall_bounds()` 가 주는
+    # **벽 안쪽 면**이라 공칭보다 약 0.01 m 안쪽이다(3px 벽). 반면 잡으려는
+    # 사고는 4m↔2m = **1.0 m** 불일치다. 0.06 이면 벽 두께·해상도를 바꿔도
+    # 오검출이 없고 진짜 사고는 여유 있게 잡는다.
+    ARENA_HALF_TOL_M = 0.06
+
+    def check_arena_agreement(self):
+        st = self.fn.arena_status() if self.fn is not None else {}
+        arena = (st or {}).get("arena") or {}
+        node_half = arena.get("half_m")
+        if node_half is None:
+            # 구버전 노드 — 발행 자체가 없으면 비교를 못 한다. 막지는 않는다.
+            self.log("  ⚠ 노드가 아레나 크기를 발행하지 않음 — 기하 일치 미확인 "
+                     "(arena_control_node 구버전?)")
+            return
+        mine = fl.ARENA_HALF_M
+        if abs(float(node_half) - mine) <= self.ARENA_HALF_TOL_M:
+            self.log(f"  아레나 일치 OK — 노드 {float(node_half):.2f}m / "
+                     f"러너 {mine:.2f}m ({arena.get('map_yaml', '?')})")
+            return
+        self.log("")
+        self.log("  " + "=" * 62)
+        self.log(f"  ✗ 아레나 불일치 — 노드 half={float(node_half):.2f}m, "
+                 f"러너 ARENA_HALF_M={mine:.2f}m")
+        self.log(f"    노드가 로드한 맵: {arena.get('map_yaml', '?')}")
+        self.log("    한쪽만 데모 프로파일이다. 맵(MAP_YAML)과 코드 브랜치를 "
+                 "맞춘 뒤 다시 시작할 것.")
+        self.log("  " + "=" * 62)
+        if not self.args.dry_run:
+            print("\n중단: 런너와 노드가 서로 다른 아레나를 믿고 있다.")
+            sys.exit(4)
 
     def stage_mast(self, cmd: str, label: str, wait: bool = True):
         t0 = time.monotonic()
@@ -2299,6 +2342,18 @@ class E2ERunner:
         t0 = time.monotonic()
         cx, cy = fl.CENTER_SCAN_XY
         p = self.pose()
+        # [A10] 이미 스캔 지점에 서 있으면 주행을 통째로 건너뛴다.
+        # 경기 기하에서는 출발(1.80,-1.80)과 스캔점(0.25,0.25)이 2.9m 떨어져
+        # 있어 이 가지는 죽은 코드다. 2m 데모는 스캔점 = 출발 포즈라 여기서
+        # 끝난다 — 없으면 레그1이 하이웨이로 0.4m 북상했다가 레그2가 같은
+        # 거리를 되돌아오는 무의미한 왕복을 한다(스캔점 y 가 하이웨이 남쪽이므로).
+        if p is not None and math.hypot(p[0] - cx, p[1] - cy) <= SCAN_AT_POSE_TOL_M:
+            self.log(f"[GOTO_CENTER] 이미 스캔 지점 "
+                     f"({cx:+.2f},{cy:+.2f}) — 주행 생략")
+            if mast_cmd:
+                self.stage_mast(mast_cmd, mast_label, wait=False)
+            self.mark("GOTO_CENTER", True, t0, {"skipped": "already_at_scan"})
+            return
         # [A8] 종전 리터럴 -1.80/-1.25 를 유도로. 4m 에서는 값이 동일하다
         # (START_POSE[1] = -1.80, HIGHWAY_Y_M = 공식 75cm = -1.25).
         start_y = p[1] if p else fl.START_POSE[1]
