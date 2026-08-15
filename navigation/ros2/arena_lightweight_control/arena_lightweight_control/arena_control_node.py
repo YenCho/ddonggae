@@ -1337,7 +1337,7 @@ class ArenaControlNode(Node):
 # 아레나 맵 파일명. 런치의 map_yaml 기본값과 **같아야 한다** — 노드를
 # 단독 기동(ros2 run)하면 런치를 안 거치므로 이 값이 쓰인다. 둘이 갈리면
 # 런처로 띄울 때와 단독으로 띄울 때 서로 다른 아레나를 믿게 된다.
-DEFAULT_MAP_NAME = "stadium.yaml"
+DEFAULT_MAP_NAME = "demo2m.yaml"   # [demo/arena-2m] 경기 stadium.yaml
 MAP_REL_PATH = (Path("navigation") / "ros2" / "arena_lightweight_control"
                 / "maps" / DEFAULT_MAP_NAME)
 
