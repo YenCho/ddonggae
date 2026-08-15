@@ -126,9 +126,11 @@
     <div class="phase" id="phase">대기</div>
     <div class="sub" id="subphase"></div>
     <div class="spacer"></div>
+    <!-- 상대경로다: 서버로 열면 /assets/…, 파일을 직접 열면 mission/assets/… 로
+         똑같이 풀린다. 절대경로(/assets/…)면 file:// 에서 루트를 찾아 깨진다. -->
     <div class="logos">
-      <img src="/assets/snu.png" alt="서울대학교">
-      <img src="/assets/snu-mech-eng.png" alt="서울대학교 기계공학부">
+      <img src="assets/snu.png" alt="서울대학교">
+      <img src="assets/snu-mech-eng.png" alt="서울대학교 기계공학부">
     </div>
   </header>
 
