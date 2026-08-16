@@ -5218,7 +5218,8 @@ def offline_selftest(args) -> int:
     print(f"  street_x_snap 격자/클램프 {'OK' if snap_ok else 'FAIL'}")
     if not snap_ok:
         fails.append("street_x_snap")
-    # 42셀 mini-goal 전수: street x 격자 위 + 아레나 내부 + 적재함 비겹침
+    # 전 격자 mini-goal 전수: street x 격자 위 + 아레나 내부 + 적재함 비겹침
+    n_cells = len(fl.GRID_XS_CM) * len(fl.GRID_YS_CM)
     bad_mg = []
     for cx in fl.GRID_XS_CM:
         for cy in fl.GRID_YS_CM:
@@ -5228,13 +5229,13 @@ def offline_selftest(args) -> int:
             inside = -_lim < x < _lim and -_lim < y < _lim
             if not (on_street and inside and x >= STREET_XS_M[1] - 1e-9):
                 bad_mg.append(((cx, cy), round(x, 2), round(y, 2)))
-    print(f"  42셀 mini-goal 전수: 위반 {len(bad_mg)}건")
+    print(f"  {n_cells}셀 mini-goal 전수: 위반 {len(bad_mg)}건")
     if bad_mg:
         fails.append(f"mini-goal 전수 {bad_mg[:3]}")
 
     # 6-1) 하산 파지 판정 전수 [2026-07-24 신규]
     # 이 테스트가 없어서 7/23 하루(실기 21런) 동안 하산이 **0회 발동**한 것을
-    # 아무도 못 잡았다. 스캔점/적재함 두 pose 에서 42셀 전수 판정을 고정한다.
+    # 아무도 못 잡았다. 스캔점/적재함 두 pose 에서 전 격자 전수 판정을 고정한다.
     scan_pose = (fl.CENTER_SCAN_XY[0], fl.CENTER_SCAN_XY[1], math.pi / 2.0)
     place_pose = (-1.45, -1.45, math.radians(-135.0))   # 적재 후퇴 종점 실측
     got_scan = {c for c in ((cx, cy) for cx in fl.GRID_XS_CM
