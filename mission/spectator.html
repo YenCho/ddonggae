@@ -117,6 +117,30 @@
   #idle .s{margin-top:13px; color:var(--dim); font-size:15px; letter-spacing:.05em}
   .pill{display:inline-block; margin-top:22px; padding:8px 18px; border-radius:999px;
         border:1px solid var(--line); color:var(--dim); font-size:13px}
+
+  /* ── 조작 패널 (--control 일 때만) ──
+     대기 오버레이 안에 산다. 경기가 시작되면 오버레이째 사라지므로 주행 중에
+     시작 버튼이 화면에 남아 있을 수 없다 — 그게 이 위치를 고른 이유다. */
+  #ctl{margin-top:30px; display:grid; gap:13px; justify-items:center}
+  .ctlrow{display:flex; align-items:center; gap:12px}
+  .ctlk{font-size:11px; font-weight:700; letter-spacing:.14em; color:var(--dim);
+        width:34px; text-align:right}
+  .opts{display:flex; gap:7px; flex-wrap:wrap}
+  .opt{display:flex; align-items:center; gap:7px; cursor:pointer; user-select:none;
+       padding:8px 14px; border-radius:8px; border:1px solid var(--line);
+       background:#fff; font-size:14px; text-transform:capitalize; color:var(--ink)}
+  .opt .box{width:14px; height:14px; border-radius:3px; border:1.5px solid var(--wall);
+            display:grid; place-items:center; flex:none}
+  .opt .box::after{content:""; width:7px; height:7px; border-radius:1px; background:transparent}
+  .opt.on{border-color:var(--navy); background:var(--navy-tint); color:var(--navy); font-weight:700}
+  .opt.on .box{border-color:var(--navy)}
+  .opt.on .box::after{background:var(--navy)}
+  #startbtn{margin-top:6px; padding:13px 40px; border-radius:10px; border:none;
+            background:var(--navy); color:#fff; font-size:17px; font-weight:800;
+            letter-spacing:.06em; cursor:pointer; font-family:inherit}
+  #startbtn:disabled{background:#c3c9d4; cursor:not-allowed}
+  #ctlmsg{font-size:13px; color:var(--dim); min-height:18px}
+  #ctlmsg.err{color:var(--refuse); font-weight:700}
 </style>
 </head>
 <body>
@@ -144,6 +168,18 @@
           <div class="t">자율 물체 수거 로봇</div>
           <div class="s">SNU AI ROBOT CHALLENGE 2026</div>
           <div class="pill" id="idlemsg">경기 대기 중</div>
+          <!-- 서버가 --control 로 떴을 때만 채워진다. 아니면 비어 있는 채로 남고
+               화면은 종전과 똑같은 읽기 전용 관객 화면이다. -->
+          <div id="ctl" hidden>
+            <div class="ctlrow">
+              <span class="ctlk">형상</span><div class="opts" id="optshape"></div>
+            </div>
+            <div class="ctlrow">
+              <span class="ctlk">과일</span><div class="opts" id="optfruit"></div>
+            </div>
+            <button id="startbtn" disabled>경기 시작</button>
+            <div id="ctlmsg"></div>
+          </div>
         </div></div>
       </div>
 
@@ -394,14 +430,97 @@ function header(){
   if(!fresh){
     const done = m ? (m.placed_by_cls||{}) : null;
     const n = done ? Object.values(done).reduce((a,b)=>a+b,0) : 0;
-    document.getElementById("idlemsg").textContent = m
-      ? `직전 경기 — ${n}개 수거 · 다음 경기 준비 중`
-      : "경기 대기 중";
+    /* 러너는 띄운 뒤 YOLO 프리로드·헬스체크를 거쳐야 /match/state 를 내보낸다.
+       그 사이 화면이 "대기 중" 이면 버튼이 먹었는지 알 수 없다 — 그 공백을
+       러너 프로세스 상태로 메운다. */
+    const rn = snap && snap.runner;
+    let msg;
+    if(rn && rn.running){
+      const a = rn.args || {};
+      msg = `기동 중 — ${a.shape||"?"} / ${a.fruit||"?"} · ${(rn.elapsed_sec||0).toFixed(0)}s`;
+    }else if(rn && rn.exit_code !== null && rn.exit_code !== undefined && rn.exit_code !== 0){
+      msg = `러너 종료 — 코드 ${rn.exit_code} · 로그 확인 필요`;
+    }else if(m){
+      msg = `직전 경기 — ${n}개 수거 · 다음 경기 준비 중`;
+    }else{
+      msg = "경기 대기 중";
+    }
+    document.getElementById("idlemsg").textContent = msg;
+    /* 러너가 살아 있는 동안은 중복 기동을 막는다 — 서버도 막지만, 눌리는
+       버튼이 아무 일도 안 하는 것보다 눌리지 않는 편이 읽기 쉽다. */
+    if(ctlOn){
+      const btn = document.getElementById("startbtn");
+      if(rn && rn.running){ btn.disabled = true; btn.textContent = "경기 진행 중"; }
+      else if(!starting) syncBtn();
+    }
   }
   if(!m) return;
   document.getElementById("phase").textContent = PHASE[m.phase] || m.phase || "—";
   document.getElementById("subphase").textContent = SUB[m.sub_phase] || "";
   document.getElementById("elapsed").textContent = (m.elapsed_sec||0).toFixed(1)+"s";
+}
+
+/* ---------------- 조작 패널 (--control 일 때만) ----------------
+   선택지는 서버(/options.json)에서 받는다. 화면에 클래스 목록 사본을 두지
+   않으려는 것 — 아레나 상수를 안 갖고 있는 것과 같은 이유다. */
+const pick = {shape:null, fruit:null};
+let ctlOn = false, starting = false;
+
+function tiles(host, names, kind){
+  host.innerHTML = "";
+  for(const n of names){
+    const el = document.createElement("label");
+    el.className = "opt";
+    el.innerHTML = '<span class="box"></span><span></span>';
+    el.lastChild.textContent = n;
+    el.onclick = () => {
+      if(starting) return;
+      /* 러너는 형상 1개·과일 1개만 받는다. 체크박스 모양이지만 그룹 안에서는
+         하나만 켜진다 — 두 개를 켜게 두면 보낼 수 없는 상태가 만들어진다. */
+      pick[kind] = (pick[kind] === n) ? null : n;
+      for(const s of host.children) s.classList.remove("on");
+      if(pick[kind]) el.classList.add("on");
+      syncBtn();
+    };
+    host.appendChild(el);
+  }
+}
+function syncBtn(){
+  const btn = document.getElementById("startbtn");
+  btn.disabled = starting || !pick.shape || !pick.fruit;
+  btn.textContent = starting ? "시작하는 중…" : "경기 시작";
+}
+function ctlmsg(text, err){
+  const el = document.getElementById("ctlmsg");
+  el.textContent = text || "";
+  el.classList.toggle("err", !!err);
+}
+async function startMatch(){
+  if(starting || !pick.shape || !pick.fruit) return;
+  starting = true; syncBtn(); ctlmsg("");
+  try{
+    const r = await fetch("/start", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({shape:pick.shape, fruit:pick.fruit}),
+    });
+    const j = await r.json();
+    if(!j.ok) ctlmsg(j.msg || "시작 실패", true);
+    else ctlmsg(j.msg || "시작");
+  }catch(e){
+    ctlmsg("서버에 닿지 못했다", true);
+  }
+  starting = false; syncBtn();
+}
+async function initCtl(){
+  try{
+    const o = await (await fetch("/options.json", {cache:"no-store"})).json();
+    if(!o.control) return;              /* 읽기 전용 서버 — 패널을 그리지 않는다 */
+    ctlOn = true;
+    tiles(document.getElementById("optshape"), o.shapes, "shape");
+    tiles(document.getElementById("optfruit"), o.fruits, "fruit");
+    document.getElementById("startbtn").onclick = startMatch;
+    document.getElementById("ctl").hidden = false;
+  }catch(e){ /* 구버전 서버 — 패널 없이 종전대로 */ }
 }
 
 /* ---------------- 폴링 / 렌더 ---------------- */
@@ -425,7 +544,7 @@ async function poll(){
 }
 function loop(){ draw(); requestAnimationFrame(loop); }
 
-resize(); poll(); loop();
+resize(); initCtl(); poll(); loop();
 </script>
 </body>
 </html>
