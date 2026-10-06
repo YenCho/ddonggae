@@ -5,6 +5,7 @@ Uses only public GitHub endpoints. No Kaggle login, scraper or original local pa
 import argparse
 import hashlib
 import json
+import re
 import time
 from pathlib import Path
 from urllib.parse import quote
@@ -14,6 +15,12 @@ REPO = "Horea94/Fruit-Images-Dataset"
 COMMIT = "ffda2d14eada57a0c5537700190b309cfea2e120"
 API = f"https://api.github.com/repos/{REPO}"
 CLASSES = ("apple", "orange", "banana", "pineapple")
+
+
+def matches_class(folder_name, label):
+    return re.search(rf"\b{re.escape(label)}\b", folder_name.lower()) is not None and not any(
+        word in folder_name.lower() for word in ("pepper", "tomato")
+    )
 
 
 def fetch(url):
@@ -63,6 +70,13 @@ def main():
         if saved["commit"] != COMMIT or saved["per_class"] != args.per_class:
             raise RuntimeError("Existing asset pack has another recipe; choose a new output directory")
         for item in saved["files"]:
+            label = Path(item["local"]).parts[0]
+            source_folder = item["source"].split("/")[-2]
+            if label not in CLASSES or not matches_class(source_folder, label):
+                raise RuntimeError(
+                    f"Cached asset has an incorrect fruit class: {item['local']} <- {item['source']}. "
+                    "Rebuild the texture pack in a new output directory."
+                )
             path = args.out / item["local"]
             if not path.exists():
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -80,7 +94,7 @@ def main():
     for label in CLASSES:
         candidates = []
         for folder in folders:
-            if folder["type"] != "tree" or label not in folder["path"].lower():
+            if folder["type"] != "tree" or not matches_class(folder["path"], label):
                 continue
             if any(word in folder["path"].lower() for word in ("pepper", "tomato")):
                 continue

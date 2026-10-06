@@ -14,16 +14,6 @@ from mathutils import Vector
 import cv2
 import numpy as np
 
-# On Windows BlenderProc runs in Blender's bundled Python. Reuse its local
-# package directory so the first launch does not try to fetch every default
-# BlenderProc dependency from PyPI.
-if os.name == "nt":
-    import site
-    site.addsitedir(os.path.join(os.path.dirname(bpy.app.binary_path), "custom-python-packages", "Python311", "site-packages"))
-    import importlib
-    importlib.invalidate_caches()
-
-
 CLASS_TO_ID = {
     "banana": 1,
     "orange": 2,
@@ -1500,6 +1490,12 @@ def face_vertices_for_normal(normal, half=0.040, offset=0.00045):
     if ny > 0:
         y = half + offset
         return [(-half, y, -half), (half, y, -half), (half, y, half), (-half, y, half)]
+    if ny < 0:
+        y = -half - offset
+        return [(half, y, -half), (-half, y, -half), (-half, y, half), (half, y, half)]
+    if nz > 0:
+        z = half + offset
+        return [(-half, -half, z), (half, -half, z), (half, half, z), (-half, half, z)]
     raise ValueError(f"Unsupported fruit face normal: {normal}")
 
 

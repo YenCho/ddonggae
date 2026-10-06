@@ -1,4 +1,5 @@
 import argparse
+import re
 import shutil
 from pathlib import Path
 
@@ -17,7 +18,7 @@ EXCLUDE = {
 
 def matches_class(folder_name, class_name):
     name = folder_name.lower()
-    if any(word not in name for word in CLASS_PATTERNS[class_name]):
+    if any(re.search(rf"\b{re.escape(word)}\b", name) is None for word in CLASS_PATTERNS[class_name]):
         return False
     if any(word in name for word in EXCLUDE.get(class_name, [])):
         return False
