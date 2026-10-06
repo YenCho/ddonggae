@@ -1,0 +1,10 @@
+{
+  "classes": [
+    "apple",
+    "orange",
+    "banana",
+    "pineapple",
+    "plain",
+    "unknown"
+  ]
+}

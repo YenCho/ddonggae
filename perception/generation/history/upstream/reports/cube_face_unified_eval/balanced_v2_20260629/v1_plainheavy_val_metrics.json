@@ -1,0 +1,79 @@
+{
+  "model": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\runs\\segment\\cube_face_unified_yolo26n_seg_wholefruit_plainhard_materialized_ft_v1\\weights\\best.pt",
+  "data": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\datasets\\cube_face_unified_finetune_wholefruit_plainhard_materialized_v2_balanced\\data.yaml",
+  "results_dict": {
+    "metrics/precision(B)": 0.9155143980480409,
+    "metrics/recall(B)": 0.8984179234549268,
+    "metrics/mAP50(B)": 0.9605740358414454,
+    "metrics/mAP50-95(B)": 0.8958917903302581,
+    "metrics/precision(M)": 0.9147253689007098,
+    "metrics/recall(M)": 0.8972211162032689,
+    "metrics/mAP50(M)": 0.9577659633977402,
+    "metrics/mAP50-95(M)": 0.8711448208832718,
+    "fitness": 1.76703661121353
+  },
+  "box_by_class": {
+    "apple": {
+      "precision": 0.9232715978937421,
+      "recall": 0.8684491978609625,
+      "mAP50": 0.9565780642274464,
+      "mAP50-95": 0.900335777607663
+    },
+    "orange": {
+      "precision": 0.9219946598626565,
+      "recall": 0.8745098039215686,
+      "mAP50": 0.9572230787024116,
+      "mAP50-95": 0.9111186324319543
+    },
+    "banana": {
+      "precision": 0.9121585267865159,
+      "recall": 0.9009384775808134,
+      "mAP50": 0.9567989888637816,
+      "mAP50-95": 0.8884588377396069
+    },
+    "pineapple": {
+      "precision": 0.8799388072286232,
+      "recall": 0.9101998131284174,
+      "mAP50": 0.9531307452791882,
+      "mAP50-95": 0.898849541461917
+    },
+    "plain": {
+      "precision": 0.9402083984686668,
+      "recall": 0.9379923247828722,
+      "mAP50": 0.9791393021343995,
+      "mAP50-95": 0.8806961624101495
+    }
+  },
+  "mask_by_class": {
+    "apple": {
+      "precision": 0.9241796791638004,
+      "recall": 0.8684491978609625,
+      "mAP50": 0.9574580384714628,
+      "mAP50-95": 0.8782090544105363
+    },
+    "orange": {
+      "precision": 0.9208111910769723,
+      "recall": 0.873202614379085,
+      "mAP50": 0.953439018848283,
+      "mAP50-95": 0.8909612706018255
+    },
+    "banana": {
+      "precision": 0.9127458366954327,
+      "recall": 0.9009384775808134,
+      "mAP50": 0.9540356053402181,
+      "mAP50-95": 0.8716721840905141
+    },
+    "pineapple": {
+      "precision": 0.8788657678103626,
+      "recall": 0.9088721337896342,
+      "mAP50": 0.9527174785557727,
+      "mAP50-95": 0.8757431782016724
+    },
+    "plain": {
+      "precision": 0.9370243697569803,
+      "recall": 0.9346431574058496,
+      "mAP50": 0.9711796757729649,
+      "mAP50-95": 0.8391384171118107
+    }
+  }
+}

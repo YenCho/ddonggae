@@ -1,0 +1,21 @@
+{
+  "data": "datasets\\arena_v3_a1_eval_v1\\data.yaml",
+  "results": [
+    {
+      "name": "current",
+      "path": "jetson/ABC_model/meta_v2_a1_objectseg/a1_yolo26s_seg_meta_v2_50000/weights/best.pt",
+      "box_map50": 0.8311701921704575,
+      "box_map50_95": 0.728870076688833,
+      "mask_map50": 0.8205621864017454,
+      "mask_map50_95": 0.5582949252251102
+    },
+    {
+      "name": "lowlr",
+      "path": "runs/meta_v2_a1_objectseg/a1_yolo26s_seg_meta_v2_50000_lowlr_ft_v1/weights/best.pt",
+      "box_map50": 0.8058773478489061,
+      "box_map50_95": 0.7135972607991542,
+      "mask_map50": 0.7953146513464026,
+      "mask_map50_95": 0.5399786478481319
+    }
+  ]
+}

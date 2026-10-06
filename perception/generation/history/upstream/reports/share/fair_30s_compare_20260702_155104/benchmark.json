@@ -1,0 +1,304 @@
+{
+  "capture": {
+    "video": "reports/share/fair_30s_compare_20260702_155104/capture_30s_mjpg.avi",
+    "sample_raw": "reports/share/fair_30s_compare_20260702_155104/capture_5s_raw.jpg",
+    "frames": 294,
+    "elapsed_seconds": 30.323964799999885,
+    "capture_fps": 9.695302113000775,
+    "sample_second": 5.0,
+    "sample_index": 43,
+    "device": "cpu",
+    "camera": "0",
+    "camera_backend": "dshow",
+    "width": 1280,
+    "height": 720
+  },
+  "unified": {
+    "name": "current_unified",
+    "frames": 294,
+    "fps": 3.831930056651211,
+    "process_seconds": 76.72373860000242,
+    "per_frame_ms": {
+      "mean": 260.96509727891987,
+      "median": 261.1355500002901,
+      "min": 209.7979000000123,
+      "max": 393.6659000000873
+    },
+    "stage_ms": {
+      "a1_ms": {
+        "mean": 153.51914761903987,
+        "median": 153.4318499998335,
+        "min": 125.09010000030685,
+        "max": 231.32749999967928
+      },
+      "crop_ms": {
+        "mean": 5.741128231303035,
+        "median": 5.393349999849306,
+        "min": 3.4566000003906083,
+        "max": 8.767400000579073
+      },
+      "face_ms": {
+        "mean": 100.67983503399061,
+        "median": 99.89495000036186,
+        "min": 74.21179999982996,
+        "max": 152.64959999967687
+      },
+      "total_ms": {
+        "mean": 259.94387891157146,
+        "median": 260.0569999999607,
+        "min": 209.0831999994407,
+        "max": 392.52530000067054
+      }
+    },
+    "sample_lines": [
+      "A1 objects=8 cube crops=5 fruit cubes=4 unified faces=14",
+      "o0 A1=cube_like_object conf=0.978 crop=[298,366,482,545]",
+      "A1 octahedron conf=0.976 box=[678,356,788,471]",
+      "A1 icosahedron conf=0.972 box=[780,387,876,484]",
+      "o1 A1=cube_like_object conf=0.968 crop=[325,283,470,419]",
+      "o2 A1=cube_like_object conf=0.960 crop=[429,309,550,442]",
+      "o3 A1=cube_like_object conf=0.951 crop=[559,315,688,457]",
+      "A1 dodecahedron conf=0.944 box=[654,289,729,363]",
+      "o4 A1=cube_like_object conf=0.915 crop=[544,280,658,405]",
+      "o0 decision=fruit_cube:banana action=avoid faces=3 blank=1 fruit={'banana': 2} unknown=0",
+      "o1 decision=fruit_cube:pineapple action=avoid faces=3 blank=1 fruit={'pineapple': 2} unknown=0",
+      "o2 decision=fruit_cube:orange action=avoid faces=3 blank=2 fruit={'orange': 1} unknown=0",
+      "o3 decision=plain_cube action=pickup faces=3 blank=3 fruit={} unknown=0",
+      "o4 decision=fruit_cube:apple action=pickup faces=2 blank=0 fruit={'apple': 2} unknown=0",
+      "o0 banana conf=0.948 box=[322,388,446,454]",
+      "o0 banana conf=0.928 box=[321,429,403,520]",
+      "o0 plain conf=0.550 box=[391,407,455,519]",
+      "o1 plain conf=0.954 box=[345,303,445,346]",
+      "o1 pineapple conf=0.925 box=[343,334,412,397]",
+      "o1 pineapple conf=0.916 box=[404,315,449,398]",
+      "o2 plain conf=0.953 box=[446,327,528,363]",
+      "o2 orange conf=0.873 box=[445,363,526,423]",
+      "o2 plain conf=0.854 box=[520,327,532,420]",
+      "o3 plain conf=0.970 box=[578,367,650,439]",
+      "o3 plain conf=0.957 box=[578,333,666,376]",
+      "o3 plain conf=0.889 box=[650,342,667,438]",
+      "o4 apple conf=0.951 box=[561,297,640,334]",
+      "o4 apple conf=0.656 box=[561,305,577,392]"
+    ],
+    "config": {
+      "device": "cpu",
+      "a1_imgsz": 640,
+      "face_imgsz": 224,
+      "a1_conf": 0.25,
+      "face_conf": 0.25,
+      "crop_pad": 0.18
+    }
+  },
+  "abc": {
+    "name": "old_abc_cascade",
+    "frames": 294,
+    "fps": 1.2889705266507578,
+    "process_seconds": 228.08900119999274,
+    "per_frame_ms": {
+      "mean": 775.8129292516759,
+      "median": 769.0464499996779,
+      "min": 610.1185999996233,
+      "max": 1049.9172999998336
+    },
+    "stage_ms": {
+      "yolo_half": {
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "torch_cuda_fast_path": {
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "batch_b_across_objects": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "batch_c_across_objects": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "a1_ms": {
+        "mean": 553.7389676870639,
+        "median": 544.7381499993753,
+        "min": 413.16249999999854,
+        "max": 776.3405999994575
+      },
+      "a1_objects": {
+        "mean": 8.003401360544217,
+        "median": 8.0,
+        "min": 8.0,
+        "max": 9.0
+      },
+      "a1_post_ms": {
+        "mean": 0.2729785714245427,
+        "median": 0.26260000004185713,
+        "min": 0.15529999927821336,
+        "max": 0.5012999999962631
+      },
+      "a2_inputs": {
+        "mean": 5.003401360544218,
+        "median": 5.0,
+        "min": 5.0,
+        "max": 6.0
+      },
+      "a2_prepare_ms": {
+        "mean": 0.8282812925343791,
+        "median": 0.8096999999906984,
+        "min": 0.48969999988912605,
+        "max": 1.4184999999997672
+      },
+      "a2_ms": {
+        "mean": 78.29465238092489,
+        "median": 76.92830000041795,
+        "min": 60.37969999943016,
+        "max": 115.74999999993452
+      },
+      "a2_face_parse_ms": {
+        "mean": 6.947870408260556,
+        "median": 6.6477999994276615,
+        "min": 4.623000000719912,
+        "max": 10.745399998086214
+      },
+      "b_ms": {
+        "mean": 5.886481972792272,
+        "median": 5.876549999811687,
+        "min": 4.288600000109,
+        "max": 8.325900000272668
+      },
+      "b_faces": {
+        "mean": 14.071428571428571,
+        "median": 14.0,
+        "min": 14.0,
+        "max": 15.0
+      },
+      "a2_face_build_ms": {
+        "mean": 3.0734632653820264,
+        "median": 2.9951000005894457,
+        "min": 2.0885000012640376,
+        "max": 4.637300000467803
+      },
+      "a2_face_dedupe_ms": {
+        "mean": 1.979966326645536,
+        "median": 1.9069500003752182,
+        "min": 1.3446999992083875,
+        "max": 3.2375000009778887
+      },
+      "a2_refine_sane_ms": {
+        "mean": 7.877903061219259,
+        "median": 7.430900001054397,
+        "min": 4.704400000264286,
+        "max": 13.23190000039176
+      },
+      "a2_refine_ms": {
+        "mean": 19.884628231367202,
+        "median": 19.335649999447924,
+        "min": 11.52040000033594,
+        "max": 34.778600000208826
+      },
+      "a2_face_filter_ms": {
+        "mean": 29.761593197313264,
+        "median": 28.51074999989578,
+        "min": 18.982399999003974,
+        "max": 50.9355999993204
+      },
+      "c_source_ms": {
+        "mean": 4.371527890991744,
+        "median": 4.125149999254063,
+        "min": 2.8849000000263914,
+        "max": 7.554599998911726
+      },
+      "c_warp_ms": {
+        "mean": 6.307516666574079,
+        "median": 6.144400000721362,
+        "min": 3.917599997294019,
+        "max": 9.961899996596912
+      },
+      "c_filter_ms": {
+        "mean": 3.714212584896677,
+        "median": 3.5558499985199887,
+        "min": 2.4865999994290178,
+        "max": 6.020299997544498
+      },
+      "c_crop_loop_ms": {
+        "mean": 15.410800340200106,
+        "median": 14.741700000286073,
+        "min": 10.035599999355327,
+        "max": 24.892599998565856
+      },
+      "c_skipped_plain_faces": {
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "c_faces": {
+        "mean": 13.156462585034014,
+        "median": 13.0,
+        "min": 11.0,
+        "max": 15.0
+      },
+      "c_preprocess_ms": {
+        "mean": 4.098776530600863,
+        "median": 3.9563499999530904,
+        "min": 2.267799999572162,
+        "max": 8.712699999705364
+      },
+      "c_ms": {
+        "mean": 8.330383333307255,
+        "median": 7.409050000205752,
+        "min": 5.5320000001302105,
+        "max": 83.08429999942746
+      },
+      "c_label_apply_ms": {
+        "mean": 0.22612755104828033,
+        "median": 0.2262000002701825,
+        "min": 0.1297999997404986,
+        "max": 1.792600000044331
+      },
+      "a2_post_ms": {
+        "mean": 80.4845360544432,
+        "median": 78.25449999972989,
+        "min": 57.16350000056991,
+        "max": 194.01550000020507
+      },
+      "total_ms": {
+        "mean": 713.6577044218159,
+        "median": 704.655900000489,
+        "min": 559.8134000001664,
+        "max": 1002.813299999616
+      }
+    },
+    "sample_lines": [
+      "0: octahedron conf=0.984 action=skip identity=octahedron faces=0 blank=0 fruit=- unknown=0 reason=non-target shape",
+      "1: cube_like_object conf=0.982 action=avoid identity=fruit_cube:banana faces=3 blank=1 fruit=banana:1 unknown=1 reason=non-target fruit is visible; wrong set-2 pickup costs double its 20 point value",
+      "2: icosahedron conf=0.981 action=skip identity=icosahedron faces=0 blank=0 fruit=- unknown=0 reason=non-target shape",
+      "3: cube_like_object conf=0.978 action=avoid identity=fruit_cube:orange faces=3 blank=2 fruit=orange:1 unknown=0 reason=non-target fruit is visible; wrong set-2 pickup costs double its 20 point value",
+      "4: cube_like_object conf=0.975 action=inspect identity=conflicting_fruit_cube faces=3 blank=0 fruit=pineapple:1,orange:1 unknown=1 reason=multiple fruit classes on one cube conflict with the rulebook same-fruit-face constraint",
+      "5: cube_like_object conf=0.975 action=pickup identity=plain_cube faces=3 blank=3 fruit=- unknown=0 reason=three or more visible faces are confidently blank and no fruit/unknown face evidence is present; target set-1 cube is worth 10 points",
+      "6: dodecahedron conf=0.966 action=skip identity=dodecahedron faces=0 blank=0 fruit=- unknown=0 reason=non-target shape",
+      "7: cube_like_object conf=0.961 action=pickup identity=fruit_cube:apple faces=2 blank=0 fruit=apple:2 unknown=0 reason=target fruit face is visible; rulebook set-2 object is worth 20 points"
+    ],
+    "config": {
+      "device": "cpu",
+      "a1_imgsz": 960,
+      "a2_imgsz": 224,
+      "a1_conf": 0.25,
+      "a2_conf": 0.2,
+      "c_conf": 0.55,
+      "c_runtime": "onnx:cpu",
+      "c_warp_size": 112,
+      "use_a1_object_mask": false,
+      "batch_b": true,
+      "batch_c": true,
+      "refine_quads": "pose"
+    }
+  }
+}

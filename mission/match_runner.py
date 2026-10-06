@@ -92,7 +92,7 @@ REPO_ROOT = fl.REPO_ROOT
 # `--offline` 의 P9 가 이 맵에서 유도한 아레나 크기를 fl.ARENA_HALF_M 과 대조해
 # "런너는 4m, 노드는 2m 맵" 같은 사고를 로봇 없이 잡는다. 런치 기본값을 바꾸면
 # 이 이름도 같이 바꿀 것.
-DEFAULT_MAP_YAML_NAME = "stadium.yaml"
+DEFAULT_MAP_YAML_NAME = "demo2m.yaml"   # [demo/arena-2m] 경기 stadium.yaml
 from geometry import (  # noqa: E402
     CameraMount, Intrinsics, pixel_to_ground)
 
@@ -710,7 +710,12 @@ DESCEND_FIELD_MIN_Y_M = 0.30  # snv.HIGHWAY_Y_M 보다 이만큼 북쪽 = 필드
 # 180° 는 wrap_angle 부호 경계라 시작 몇 틱의 회전 방향이 진동할 수 있다.
 # 순이득도 x=250 중 가장 작다(~2.5s — 적재함에서 가도 어차피 가까운 행이라
 # "지금 가면 싸고 나중에 가면 비싼" 정도가 가장 작다).
-DESCEND_SKIP_ROWS = (100,)
+# [demo/arena-2m] 하산 파지 전면 비활성. 이 기능은 "스캔점이 물체 필드 안
+# street 위에 있다"를 전제로 스캔점 옆 열을 내려오며 집는 최적화인데,
+# 2m 데모는 스캔을 출발 포즈(공식 180,20 — 필드 남쪽 자유밴드)에서 하므로
+# 그 전제가 사라진다. 코드를 지우는 대신 여기서 막고 자기검사가 후보 0건을
+# 확인한다. 경기 값은 (100,).
+DESCEND_SKIP_ROWS = tuple(fl.GRID_YS_CM)
 # 하산 후보 정렬 = **무조건 가장 북쪽(y 최대) 먼저** [2026-07-24 조작자 지시].
 # 근거: 첫 파지 시각은 어느 후보든 마스트 하강(~6s)에 걸려 동일하다 — 스캔
 # 레그(0~1.3s)는 전부 그 안에 흡수돼 "공짜"고, 가까운 걸 골라도 첫 파지가
@@ -5213,7 +5218,8 @@ def offline_selftest(args) -> int:
     print(f"  street_x_snap 격자/클램프 {'OK' if snap_ok else 'FAIL'}")
     if not snap_ok:
         fails.append("street_x_snap")
-    # 42셀 mini-goal 전수: street x 격자 위 + 아레나 내부 + 적재함 비겹침
+    # 전 격자 mini-goal 전수: street x 격자 위 + 아레나 내부 + 적재함 비겹침
+    n_cells = len(fl.GRID_XS_CM) * len(fl.GRID_YS_CM)
     bad_mg = []
     for cx in fl.GRID_XS_CM:
         for cy in fl.GRID_YS_CM:
@@ -5223,13 +5229,13 @@ def offline_selftest(args) -> int:
             inside = -_lim < x < _lim and -_lim < y < _lim
             if not (on_street and inside and x >= STREET_XS_M[1] - 1e-9):
                 bad_mg.append(((cx, cy), round(x, 2), round(y, 2)))
-    print(f"  42셀 mini-goal 전수: 위반 {len(bad_mg)}건")
+    print(f"  {n_cells}셀 mini-goal 전수: 위반 {len(bad_mg)}건")
     if bad_mg:
         fails.append(f"mini-goal 전수 {bad_mg[:3]}")
 
     # 6-1) 하산 파지 판정 전수 [2026-07-24 신규]
     # 이 테스트가 없어서 7/23 하루(실기 21런) 동안 하산이 **0회 발동**한 것을
-    # 아무도 못 잡았다. 스캔점/적재함 두 pose 에서 42셀 전수 판정을 고정한다.
+    # 아무도 못 잡았다. 스캔점/적재함 두 pose 에서 전 격자 전수 판정을 고정한다.
     scan_pose = (fl.CENTER_SCAN_XY[0], fl.CENTER_SCAN_XY[1], math.pi / 2.0)
     place_pose = (-1.45, -1.45, math.radians(-135.0))   # 적재 후퇴 종점 실측
     got_scan = {c for c in ((cx, cy) for cx in fl.GRID_XS_CM

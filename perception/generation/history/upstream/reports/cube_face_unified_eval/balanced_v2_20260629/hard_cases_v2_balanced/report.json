@@ -1,0 +1,174 @@
+[
+  {
+    "image": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\0c40501e-ac3b-4ced-9c86-11156b2e8d8b_cand01_face03_C_output.png",
+    "mode": "direct_crop",
+    "objects": [
+      {
+        "class_name": "direct_crop",
+        "confidence": 1.0,
+        "box_xyxy": [
+          0,
+          0,
+          223,
+          223
+        ],
+        "crop_box_xyxy": [
+          0,
+          0,
+          223,
+          223
+        ],
+        "faces": [
+          {
+            "class_name": "apple",
+            "confidence": 0.8721723556518555,
+            "box_xyxy_full": [
+              2.55,
+              19.04,
+              222.65,
+              223.48
+            ],
+            "crop_index": 0
+          },
+          {
+            "class_name": "plain",
+            "confidence": 0.12834909558296204,
+            "box_xyxy_full": [
+              0.55,
+              25.99,
+              32.04,
+              223.87
+            ],
+            "crop_index": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\화면 캡처 2026-05-19 105222_cand01_face01_C_output.png",
+    "mode": "direct_crop",
+    "objects": [
+      {
+        "class_name": "direct_crop",
+        "confidence": 1.0,
+        "box_xyxy": [
+          0,
+          0,
+          223,
+          223
+        ],
+        "crop_box_xyxy": [
+          0,
+          0,
+          223,
+          223
+        ],
+        "faces": [
+          {
+            "class_name": "apple",
+            "confidence": 0.9431574940681458,
+            "box_xyxy_full": [
+              35.2,
+              32.36,
+              190.16,
+              195.18
+            ],
+            "crop_index": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\화면 캡처 2026-05-19 105222_cand01_face03_C_output.png",
+    "mode": "direct_crop",
+    "objects": [
+      {
+        "class_name": "direct_crop",
+        "confidence": 1.0,
+        "box_xyxy": [
+          0,
+          0,
+          223,
+          223
+        ],
+        "crop_box_xyxy": [
+          0,
+          0,
+          223,
+          223
+        ],
+        "faces": [
+          {
+            "class_name": "apple",
+            "confidence": 0.7625239491462708,
+            "box_xyxy_full": [
+              6.74,
+              33.5,
+              209.65,
+              206.56
+            ],
+            "crop_index": 0
+          },
+          {
+            "class_name": "plain",
+            "confidence": 0.2459983080625534,
+            "box_xyxy_full": [
+              1.92,
+              30.76,
+              52.95,
+              207.9
+            ],
+            "crop_index": 0
+          },
+          {
+            "class_name": "plain",
+            "confidence": 0.13448797166347504,
+            "box_xyxy_full": [
+              5.55,
+              29.3,
+              199.79,
+              49.15
+            ],
+            "crop_index": 0
+          },
+          {
+            "class_name": "apple",
+            "confidence": 0.07434099167585373,
+            "box_xyxy_full": [
+              1.92,
+              30.76,
+              52.95,
+              207.9
+            ],
+            "crop_index": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\User attachment.png",
+    "mode": "direct_crop",
+    "objects": [
+      {
+        "class_name": "direct_crop",
+        "confidence": 1.0,
+        "box_xyxy": [
+          0,
+          0,
+          1591,
+          731
+        ],
+        "crop_box_xyxy": [
+          0,
+          0,
+          1591,
+          731
+        ],
+        "faces": []
+      }
+    ]
+  }
+]

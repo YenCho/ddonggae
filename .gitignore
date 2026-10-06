@@ -9,6 +9,7 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .venv/
+.venv-perception/
 venv/
 
 # Model weights are distributed as GitHub Release assets, not in the tree.
@@ -23,8 +24,9 @@ runs/
 outputs/
 *.log
 
-# Large captures and rendered datasets are never committed. See
-# perception/docs/synthetic-data.md section 10 for what they were.
+# Generated datasets and downloaded assets are never committed. See
+# perception/docs/synthetic-data-reproduction.md for how to rebuild them and
+# perception/docs/synthetic-data-experiments.md for the historical inventory.
 data/
 datasets/
 

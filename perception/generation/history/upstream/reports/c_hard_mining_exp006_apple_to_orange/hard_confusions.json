@@ -1,0 +1,1333 @@
+{
+  "checkpoint": "runs\\meta_v2_c_facecls\\c_mobilenetv3small_anchor_pair_exp006\\weights\\best.pt",
+  "data_root": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls",
+  "split": "train",
+  "true_class": "apple",
+  "target_class": "orange",
+  "num_images": 4833,
+  "top1_target_count": 7,
+  "top1_target_rate": 0.0014483757500517278,
+  "top_k": [
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009324_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "orange",
+      "pred_prob": 0.9997734427452087,
+      "true_prob": 0.00022633415937889367,
+      "target_prob": 0.9997734427452087,
+      "probs": {
+        "apple": 0.00022633415937889367,
+        "orange": 0.9997734427452087,
+        "banana": 2.710482394086e-10,
+        "pineapple": 4.0108258381188477e-10,
+        "plain": 1.2496776946591126e-07,
+        "unknown": 9.713566129221363e-08
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0000_target0.9998_pred-orange_009324_obj002_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002052_obj003_face01_apple.jpg",
+      "true": "apple",
+      "pred": "orange",
+      "pred_prob": 0.8903710842132568,
+      "true_prob": 0.1096285954117775,
+      "target_prob": 0.8903710842132568,
+      "probs": {
+        "apple": 0.1096285954117775,
+        "orange": 0.8903710842132568,
+        "banana": 2.8876865343363534e-08,
+        "pineapple": 6.074996061755655e-10,
+        "plain": 1.0885653267678208e-07,
+        "unknown": 1.9362997250027547e-07
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0001_target0.8904_pred-orange_002052_obj003_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\003455_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "orange",
+      "pred_prob": 0.7414058446884155,
+      "true_prob": 0.25858286023139954,
+      "target_prob": 0.7414058446884155,
+      "probs": {
+        "apple": 0.25858286023139954,
+        "orange": 0.7414058446884155,
+        "banana": 1.530089548396063e-07,
+        "pineapple": 8.463707672490273e-06,
+        "plain": 1.7434895198675804e-06,
+        "unknown": 9.410758821104537e-07
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0002_target0.7414_pred-orange_003455_obj000_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005758_obj004_face00_apple.jpg",
+      "true": "apple",
+      "pred": "orange",
+      "pred_prob": 0.7021483182907104,
+      "true_prob": 0.29776531457901,
+      "target_prob": 0.7021483182907104,
+      "probs": {
+        "apple": 0.29776531457901,
+        "orange": 0.7021483182907104,
+        "banana": 2.9061644454486668e-05,
+        "pineapple": 8.426971476183098e-08,
+        "plain": 2.4757100618444383e-05,
+        "unknown": 3.250989902880974e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0003_target0.7021_pred-orange_005758_obj004_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005635_obj003_face00_apple.jpg",
+      "true": "apple",
+      "pred": "orange",
+      "pred_prob": 0.6607117652893066,
+      "true_prob": 0.31816595792770386,
+      "target_prob": 0.6607117652893066,
+      "probs": {
+        "apple": 0.31816595792770386,
+        "orange": 0.6607117652893066,
+        "banana": 0.014715519733726978,
+        "pineapple": 0.003609640058130026,
+        "plain": 0.0010252287611365318,
+        "unknown": 0.0017719280440360308
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0004_target0.6607_pred-orange_005635_obj003_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\004197_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "orange",
+      "pred_prob": 0.5913910269737244,
+      "true_prob": 0.4085465371608734,
+      "target_prob": 0.5913910269737244,
+      "probs": {
+        "apple": 0.4085465371608734,
+        "orange": 0.5913910269737244,
+        "banana": 3.254148850828642e-06,
+        "pineapple": 7.587858164015415e-08,
+        "plain": 4.739703581435606e-05,
+        "unknown": 1.1722195267793722e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0005_target0.5914_pred-orange_004197_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005308_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "orange",
+      "pred_prob": 0.5211520791053772,
+      "true_prob": 0.47884440422058105,
+      "target_prob": 0.5211520791053772,
+      "probs": {
+        "apple": 0.47884440422058105,
+        "orange": 0.5211520791053772,
+        "banana": 8.135815932064361e-08,
+        "pineapple": 1.7252446582460834e-08,
+        "plain": 9.47904709391878e-07,
+        "unknown": 2.4517514702893095e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0006_target0.5212_pred-orange_005308_obj001_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002519_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.6114352345466614,
+      "true_prob": 0.6114352345466614,
+      "target_prob": 0.38834935426712036,
+      "probs": {
+        "apple": 0.6114352345466614,
+        "orange": 0.38834935426712036,
+        "banana": 7.449583063134924e-05,
+        "pineapple": 1.8620601622387767e-05,
+        "plain": 7.373800599452807e-06,
+        "unknown": 0.0001149151285062544
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0007_target0.3883_pred-apple_002519_obj002_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009140_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.6147960424423218,
+      "true_prob": 0.6147960424423218,
+      "target_prob": 0.38519707322120667,
+      "probs": {
+        "apple": 0.6147960424423218,
+        "orange": 0.38519707322120667,
+        "banana": 8.635473136564542e-08,
+        "pineapple": 4.4440628954589556e-10,
+        "plain": 2.3251962488757272e-07,
+        "unknown": 6.641670552198775e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0008_target0.3852_pred-apple_009140_obj001_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009082_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.6176167726516724,
+      "true_prob": 0.6176167726516724,
+      "target_prob": 0.3823128044605255,
+      "probs": {
+        "apple": 0.6176167726516724,
+        "orange": 0.3823128044605255,
+        "banana": 3.951359758502804e-05,
+        "pineapple": 2.3921916891822548e-08,
+        "plain": 9.064625373866875e-06,
+        "unknown": 2.1823147108079866e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0009_target0.3823_pred-apple_009082_obj002_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\007921_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.6405507922172546,
+      "true_prob": 0.6405507922172546,
+      "target_prob": 0.3594420552253723,
+      "probs": {
+        "apple": 0.6405507922172546,
+        "orange": 0.3594420552253723,
+        "banana": 1.054400442512815e-07,
+        "pineapple": 2.144900008715922e-06,
+        "plain": 1.8090277080773376e-06,
+        "unknown": 3.095937017860706e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0010_target0.3594_pred-apple_007921_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008441_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.6543943285942078,
+      "true_prob": 0.6543943285942078,
+      "target_prob": 0.3456052243709564,
+      "probs": {
+        "apple": 0.6543943285942078,
+        "orange": 0.3456052243709564,
+        "banana": 2.2154004852836806e-08,
+        "pineapple": 1.9061179301615994e-09,
+        "plain": 1.1693712309579496e-07,
+        "unknown": 3.925767941836966e-07
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0011_target0.3456_pred-apple_008441_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\007460_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.6830145120620728,
+      "true_prob": 0.6830145120620728,
+      "target_prob": 0.3169768452644348,
+      "probs": {
+        "apple": 0.6830145120620728,
+        "orange": 0.3169768452644348,
+        "banana": 7.049231243172471e-08,
+        "pineapple": 8.799375450507796e-07,
+        "plain": 2.6206776055914816e-06,
+        "unknown": 5.078828507976141e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0012_target0.3170_pred-apple_007460_obj002_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\006976_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.6946719288825989,
+      "true_prob": 0.6946719288825989,
+      "target_prob": 0.30532005429267883,
+      "probs": {
+        "apple": 0.6946719288825989,
+        "orange": 0.30532005429267883,
+        "banana": 3.2153415929769835e-08,
+        "pineapple": 2.561367828946004e-08,
+        "plain": 2.9376676593528828e-06,
+        "unknown": 5.15756710228743e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0013_target0.3053_pred-apple_006976_obj001_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001846_obj004_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.7073233127593994,
+      "true_prob": 0.7073233127593994,
+      "target_prob": 0.29038557410240173,
+      "probs": {
+        "apple": 0.7073233127593994,
+        "orange": 0.29038557410240173,
+        "banana": 0.0010425866348668933,
+        "pineapple": 0.0011552919168025255,
+        "plain": 1.7488420780864544e-05,
+        "unknown": 7.579212251584977e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0014_target0.2904_pred-apple_001846_obj004_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\004037_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "plain",
+      "pred_prob": 0.6382606029510498,
+      "true_prob": 0.04329698905348778,
+      "target_prob": 0.26807183027267456,
+      "probs": {
+        "apple": 0.04329698905348778,
+        "orange": 0.26807183027267456,
+        "banana": 0.0019595203921198845,
+        "pineapple": 0.04806887358427048,
+        "plain": 0.6382606029510498,
+        "unknown": 0.00034214049810543656
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0015_target0.2681_pred-plain_004037_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005490_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.7478569149971008,
+      "true_prob": 0.7478569149971008,
+      "target_prob": 0.2521233856678009,
+      "probs": {
+        "apple": 0.7478569149971008,
+        "orange": 0.2521233856678009,
+        "banana": 6.445210232186582e-08,
+        "pineapple": 6.251318573902154e-09,
+        "plain": 2.4534449494240107e-06,
+        "unknown": 1.7058631783584133e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0016_target0.2521_pred-apple_005490_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009961_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.7438955307006836,
+      "true_prob": 0.7438955307006836,
+      "target_prob": 0.249753937125206,
+      "probs": {
+        "apple": 0.7438955307006836,
+        "orange": 0.249753937125206,
+        "banana": 0.006279423832893372,
+        "pineapple": 6.417037366190925e-05,
+        "plain": 4.488604190555634e-06,
+        "unknown": 2.4114972347888397e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0017_target0.2498_pred-apple_009961_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002904_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.7539937496185303,
+      "true_prob": 0.7539937496185303,
+      "target_prob": 0.2396073341369629,
+      "probs": {
+        "apple": 0.7539937496185303,
+        "orange": 0.2396073341369629,
+        "banana": 8.462975529255345e-05,
+        "pineapple": 0.0062543731182813644,
+        "plain": 4.8923178837867454e-05,
+        "unknown": 1.0974828001053538e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0018_target0.2396_pred-apple_002904_obj001_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\004030_obj006_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8334887027740479,
+      "true_prob": 0.8334887027740479,
+      "target_prob": 0.16651073098182678,
+      "probs": {
+        "apple": 0.8334887027740479,
+        "orange": 0.16651073098182678,
+        "banana": 1.3413776400739152e-07,
+        "pineapple": 3.5371645612514158e-09,
+        "plain": 1.7142504304956674e-08,
+        "unknown": 4.471992554044846e-07
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0019_target0.1665_pred-apple_004030_obj006_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002579_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8356263637542725,
+      "true_prob": 0.8356263637542725,
+      "target_prob": 0.16436995565891266,
+      "probs": {
+        "apple": 0.8356263637542725,
+        "orange": 0.16436995565891266,
+        "banana": 6.883349215058843e-07,
+        "pineapple": 6.617260055463703e-07,
+        "plain": 8.847504204823053e-07,
+        "unknown": 1.440450660084025e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0020_target0.1644_pred-apple_002579_obj002_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002475_obj003_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8404267430305481,
+      "true_prob": 0.8404267430305481,
+      "target_prob": 0.15893831849098206,
+      "probs": {
+        "apple": 0.8404267430305481,
+        "orange": 0.15893831849098206,
+        "banana": 0.0002795182808768004,
+        "pineapple": 1.0760374607343692e-05,
+        "plain": 8.081818668870255e-05,
+        "unknown": 0.0002637931611388922
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0021_target0.1589_pred-apple_002475_obj003_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\000722_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8437839150428772,
+      "true_prob": 0.8437839150428772,
+      "target_prob": 0.15613815188407898,
+      "probs": {
+        "apple": 0.8437839150428772,
+        "orange": 0.15613815188407898,
+        "banana": 6.111175753176212e-05,
+        "pineapple": 4.6721203261768096e-07,
+        "plain": 5.803435101370269e-07,
+        "unknown": 1.5629284462193027e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0022_target0.1561_pred-apple_000722_obj001_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008870_obj003_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.4946056008338928,
+      "true_prob": 0.4946056008338928,
+      "target_prob": 0.15339036285877228,
+      "probs": {
+        "apple": 0.4946056008338928,
+        "orange": 0.15339036285877228,
+        "banana": 1.035630361911899e-06,
+        "pineapple": 0.006537026725709438,
+        "plain": 0.3454394042491913,
+        "unknown": 2.658897210494615e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0023_target0.1534_pred-apple_008870_obj003_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005443_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8524545431137085,
+      "true_prob": 0.8524545431137085,
+      "target_prob": 0.14730790257453918,
+      "probs": {
+        "apple": 0.8524545431137085,
+        "orange": 0.14730790257453918,
+        "banana": 7.76320757722715e-06,
+        "pineapple": 8.937838720157743e-05,
+        "plain": 1.9417006114963442e-05,
+        "unknown": 0.00012109282397432253
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0024_target0.1473_pred-apple_005443_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009573_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8590323328971863,
+      "true_prob": 0.8590323328971863,
+      "target_prob": 0.14062362909317017,
+      "probs": {
+        "apple": 0.8590323328971863,
+        "orange": 0.14062362909317017,
+        "banana": 8.040316606638953e-05,
+        "pineapple": 3.115023616828694e-07,
+        "plain": 3.90866152883973e-05,
+        "unknown": 0.00022421477478928864
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0025_target0.1406_pred-apple_009573_obj001_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\006496_obj003_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8675800561904907,
+      "true_prob": 0.8675800561904907,
+      "target_prob": 0.13221341371536255,
+      "probs": {
+        "apple": 0.8675800561904907,
+        "orange": 0.13221341371536255,
+        "banana": 3.338647047712584e-06,
+        "pineapple": 8.859975650921115e-07,
+        "plain": 4.4107920984970406e-05,
+        "unknown": 0.0001582884433446452
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0026_target0.1322_pred-apple_006496_obj003_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\006148_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8693749308586121,
+      "true_prob": 0.8693749308586121,
+      "target_prob": 0.13062219321727753,
+      "probs": {
+        "apple": 0.8693749308586121,
+        "orange": 0.13062219321727753,
+        "banana": 2.417734279447359e-08,
+        "pineapple": 4.600003045140966e-09,
+        "plain": 1.9242585835854698e-07,
+        "unknown": 2.717473989832797e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0027_target0.1306_pred-apple_006148_obj002_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002572_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8753786087036133,
+      "true_prob": 0.8753786087036133,
+      "target_prob": 0.12413875013589859,
+      "probs": {
+        "apple": 0.8753786087036133,
+        "orange": 0.12413875013589859,
+        "banana": 0.0003483617911115289,
+        "pineapple": 7.916112372186035e-05,
+        "plain": 2.3778002287144773e-05,
+        "unknown": 3.129210017505102e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0028_target0.1241_pred-apple_002572_obj000_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001254_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "plain",
+      "pred_prob": 0.5471997857093811,
+      "true_prob": 0.18729054927825928,
+      "target_prob": 0.11936242878437042,
+      "probs": {
+        "apple": 0.18729054927825928,
+        "orange": 0.11936242878437042,
+        "banana": 0.004929014947265387,
+        "pineapple": 0.14041416347026825,
+        "plain": 0.5471997857093811,
+        "unknown": 0.0008041048422455788
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0029_target0.1194_pred-plain_001254_obj001_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\007146_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8829848766326904,
+      "true_prob": 0.8829848766326904,
+      "target_prob": 0.11701447516679764,
+      "probs": {
+        "apple": 0.8829848766326904,
+        "orange": 0.11701447516679764,
+        "banana": 3.7684486642319825e-08,
+        "pineapple": 8.820387087382642e-09,
+        "plain": 3.4102743740049846e-08,
+        "unknown": 6.084868573452695e-07
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0030_target0.1170_pred-apple_007146_obj002_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008928_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8914405703544617,
+      "true_prob": 0.8914405703544617,
+      "target_prob": 0.10849399119615555,
+      "probs": {
+        "apple": 0.8914405703544617,
+        "orange": 0.10849399119615555,
+        "banana": 1.3620307072415017e-05,
+        "pineapple": 2.9063608963042498e-05,
+        "plain": 1.69646864378592e-05,
+        "unknown": 5.794589924335014e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0031_target0.1085_pred-apple_008928_obj002_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001638_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8981618285179138,
+      "true_prob": 0.8981618285179138,
+      "target_prob": 0.10166840255260468,
+      "probs": {
+        "apple": 0.8981618285179138,
+        "orange": 0.10166840255260468,
+        "banana": 0.00011934735084651038,
+        "pineapple": 2.174277324229479e-05,
+        "plain": 1.634046384424437e-05,
+        "unknown": 1.2198031072330195e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0032_target0.1017_pred-apple_001638_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009759_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8996768593788147,
+      "true_prob": 0.8996768593788147,
+      "target_prob": 0.10030960291624069,
+      "probs": {
+        "apple": 0.8996768593788147,
+        "orange": 0.10030960291624069,
+        "banana": 2.3742315136132675e-07,
+        "pineapple": 1.3778146978893346e-07,
+        "plain": 8.715405783732422e-06,
+        "unknown": 4.475666173675563e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0033_target0.1003_pred-apple_009759_obj002_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001330_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8958663940429688,
+      "true_prob": 0.8958663940429688,
+      "target_prob": 0.09921709448099136,
+      "probs": {
+        "apple": 0.8958663940429688,
+        "orange": 0.09921709448099136,
+        "banana": 0.0027787061408162117,
+        "pineapple": 0.001968057593330741,
+        "plain": 3.304810161353089e-05,
+        "unknown": 0.0001367818913422525
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0034_target0.0992_pred-apple_001330_obj000_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009716_obj004_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9037386775016785,
+      "true_prob": 0.9037386775016785,
+      "target_prob": 0.09620683640241623,
+      "probs": {
+        "apple": 0.9037386775016785,
+        "orange": 0.09620683640241623,
+        "banana": 5.289140290187788e-07,
+        "pineapple": 8.42365963649172e-08,
+        "plain": 4.7367757360916585e-05,
+        "unknown": 6.4793616729730275e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0035_target0.0962_pred-apple_009716_obj004_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\007839_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9110968112945557,
+      "true_prob": 0.9110968112945557,
+      "target_prob": 0.08880984038114548,
+      "probs": {
+        "apple": 0.9110968112945557,
+        "orange": 0.08880984038114548,
+        "banana": 7.803078187862411e-05,
+        "pineapple": 4.152683175107086e-08,
+        "plain": 4.885209364147158e-06,
+        "unknown": 1.0387210750195663e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0036_target0.0888_pred-apple_007839_obj000_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\007868_obj003_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9146502614021301,
+      "true_prob": 0.9146502614021301,
+      "target_prob": 0.08532097935676575,
+      "probs": {
+        "apple": 0.9146502614021301,
+        "orange": 0.08532097935676575,
+        "banana": 6.3876520073336e-08,
+        "pineapple": 7.846644223263866e-08,
+        "plain": 1.2915854767925339e-06,
+        "unknown": 2.7242538635618985e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0037_target0.0853_pred-apple_007868_obj003_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\004897_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9164490103721619,
+      "true_prob": 0.9164490103721619,
+      "target_prob": 0.08351970463991165,
+      "probs": {
+        "apple": 0.9164490103721619,
+        "orange": 0.08351970463991165,
+        "banana": 6.424201615118363e-07,
+        "pineapple": 8.229207196563948e-06,
+        "plain": 1.811718539102003e-05,
+        "unknown": 4.258167791704182e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0038_target0.0835_pred-apple_004897_obj002_face01_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\000931_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.918408989906311,
+      "true_prob": 0.918408989906311,
+      "target_prob": 0.0814485028386116,
+      "probs": {
+        "apple": 0.918408989906311,
+        "orange": 0.0814485028386116,
+        "banana": 2.4876519091776572e-05,
+        "pineapple": 8.204692858271301e-05,
+        "plain": 3.0270202842075378e-05,
+        "unknown": 5.455294285638956e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_apple_to_orange\\apple_toward_orange\\0039_target0.0814_pred-apple_000931_obj002_face00_apple.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009972_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9243722558021545,
+      "true_prob": 0.9243722558021545,
+      "target_prob": 0.07515683025121689,
+      "probs": {
+        "apple": 0.9243722558021545,
+        "orange": 0.07515683025121689,
+        "banana": 0.00020030081213917583,
+        "pineapple": 3.54002695530653e-05,
+        "plain": 0.00014063826529309154,
+        "unknown": 9.454017708776519e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\007331_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9255133867263794,
+      "true_prob": 0.9255133867263794,
+      "target_prob": 0.07384152710437775,
+      "probs": {
+        "apple": 0.9255133867263794,
+        "orange": 0.07384152710437775,
+        "banana": 0.00035408494295552373,
+        "pineapple": 4.119078312214697e-06,
+        "plain": 0.00021017978724557906,
+        "unknown": 7.676594395888969e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008891_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9295711517333984,
+      "true_prob": 0.9295711517333984,
+      "target_prob": 0.07042503356933594,
+      "probs": {
+        "apple": 0.9295711517333984,
+        "orange": 0.07042503356933594,
+        "banana": 7.58895168928575e-08,
+        "pineapple": 2.80806119690169e-07,
+        "plain": 1.4161186072669807e-06,
+        "unknown": 2.0381473859742982e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\003864_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.928297758102417,
+      "true_prob": 0.928297758102417,
+      "target_prob": 0.06980337202548981,
+      "probs": {
+        "apple": 0.928297758102417,
+        "orange": 0.06980337202548981,
+        "banana": 0.0015528056537732482,
+        "pineapple": 2.2017062292434275e-05,
+        "plain": 0.00028607354033738375,
+        "unknown": 3.795719749177806e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001748_obj005_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9322019219398499,
+      "true_prob": 0.9322019219398499,
+      "target_prob": 0.0663490742444992,
+      "probs": {
+        "apple": 0.9322019219398499,
+        "orange": 0.0663490742444992,
+        "banana": 1.7928759916685522e-06,
+        "pineapple": 0.0003150390402879566,
+        "plain": 0.0011143347946926951,
+        "unknown": 1.781352148100268e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008058_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9375000596046448,
+      "true_prob": 0.9375000596046448,
+      "target_prob": 0.062482088804244995,
+      "probs": {
+        "apple": 0.9375000596046448,
+        "orange": 0.062482088804244995,
+        "banana": 2.2340821033139946e-06,
+        "pineapple": 1.229064650942746e-06,
+        "plain": 6.030561053194106e-06,
+        "unknown": 8.322578651132062e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005607_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9392219185829163,
+      "true_prob": 0.9392219185829163,
+      "target_prob": 0.06077660992741585,
+      "probs": {
+        "apple": 0.9392219185829163,
+        "orange": 0.06077660992741585,
+        "banana": 9.38685684737095e-10,
+        "pineapple": 3.4673641735594174e-09,
+        "plain": 9.562407399243966e-08,
+        "unknown": 1.3632741229230305e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\000747_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9410092234611511,
+      "true_prob": 0.9410092234611511,
+      "target_prob": 0.05898721143603325,
+      "probs": {
+        "apple": 0.9410092234611511,
+        "orange": 0.05898721143603325,
+        "banana": 1.1136591382410188e-07,
+        "pineapple": 2.278431338709197e-06,
+        "plain": 8.33644890008145e-07,
+        "unknown": 3.424408419050451e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\000971_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9416691064834595,
+      "true_prob": 0.9416691064834595,
+      "target_prob": 0.05798992142081261,
+      "probs": {
+        "apple": 0.9416691064834595,
+        "orange": 0.05798992142081261,
+        "banana": 5.523362779058516e-05,
+        "pineapple": 0.00025054338038899004,
+        "plain": 1.3124141332809813e-05,
+        "unknown": 2.20416477532126e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005214_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9482401013374329,
+      "true_prob": 0.9482401013374329,
+      "target_prob": 0.051722973585128784,
+      "probs": {
+        "apple": 0.9482401013374329,
+        "orange": 0.051722973585128784,
+        "banana": 1.9704985732005298e-07,
+        "pineapple": 2.7306394258630462e-05,
+        "plain": 7.922723852971103e-06,
+        "unknown": 1.5106960518096457e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002586_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9535924792289734,
+      "true_prob": 0.9535924792289734,
+      "target_prob": 0.04640086740255356,
+      "probs": {
+        "apple": 0.9535924792289734,
+        "orange": 0.04640086740255356,
+        "banana": 2.6697446173784556e-06,
+        "pineapple": 2.499216975593299e-07,
+        "plain": 3.003535766765708e-06,
+        "unknown": 8.33708213576756e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\002420_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.956434965133667,
+      "true_prob": 0.956434965133667,
+      "target_prob": 0.0435435026884079,
+      "probs": {
+        "apple": 0.956434965133667,
+        "orange": 0.0435435026884079,
+        "banana": 6.009354791558508e-08,
+        "pineapple": 2.2770858976173258e-08,
+        "plain": 1.2105935638828669e-05,
+        "unknown": 9.307657819590531e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\009661_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9566013216972351,
+      "true_prob": 0.9566013216972351,
+      "target_prob": 0.043381161987781525,
+      "probs": {
+        "apple": 0.9566013216972351,
+        "orange": 0.043381161987781525,
+        "banana": 3.591596708929501e-08,
+        "pineapple": 2.4039043182710884e-06,
+        "plain": 6.629842346228543e-07,
+        "unknown": 1.4489036402665079e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008870_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9576107859611511,
+      "true_prob": 0.9576107859611511,
+      "target_prob": 0.04238256439566612,
+      "probs": {
+        "apple": 0.9576107859611511,
+        "orange": 0.04238256439566612,
+        "banana": 2.6783494533333396e-08,
+        "pineapple": 1.3677888821561623e-09,
+        "plain": 1.888469824962158e-08,
+        "unknown": 6.694152943964582e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\006445_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9604452848434448,
+      "true_prob": 0.9604452848434448,
+      "target_prob": 0.03947147727012634,
+      "probs": {
+        "apple": 0.9604452848434448,
+        "orange": 0.03947147727012634,
+        "banana": 6.454494268837152e-06,
+        "pineapple": 4.768288999912329e-05,
+        "plain": 2.2502654246636666e-05,
+        "unknown": 6.598579147976125e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\003219_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9610298871994019,
+      "true_prob": 0.9610298871994019,
+      "target_prob": 0.03889807313680649,
+      "probs": {
+        "apple": 0.9610298871994019,
+        "orange": 0.03889807313680649,
+        "banana": 6.430444159377657e-07,
+        "pineapple": 1.2308238410696504e-06,
+        "plain": 3.540512261679396e-05,
+        "unknown": 3.46882916346658e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\000638_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.7275060415267944,
+      "true_prob": 0.7275060415267944,
+      "target_prob": 0.038654837757349014,
+      "probs": {
+        "apple": 0.7275060415267944,
+        "orange": 0.038654837757349014,
+        "banana": 8.004397386685014e-05,
+        "pineapple": 0.23301516473293304,
+        "plain": 5.217349826125428e-05,
+        "unknown": 0.0006917141727171838
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001306_obj004_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9571126699447632,
+      "true_prob": 0.9571126699447632,
+      "target_prob": 0.03830312192440033,
+      "probs": {
+        "apple": 0.9571126699447632,
+        "orange": 0.03830312192440033,
+        "banana": 0.0031705296132713556,
+        "pineapple": 0.0003212504379916936,
+        "plain": 0.001019696006551385,
+        "unknown": 7.27676015230827e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\006920_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9582779407501221,
+      "true_prob": 0.9582779407501221,
+      "target_prob": 0.03748263791203499,
+      "probs": {
+        "apple": 0.9582779407501221,
+        "orange": 0.03748263791203499,
+        "banana": 0.0006814582739025354,
+        "pineapple": 0.0034914726857095957,
+        "plain": 4.4157968659419566e-05,
+        "unknown": 2.229681376775261e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005859_obj003_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.965560257434845,
+      "true_prob": 0.965560257434845,
+      "target_prob": 0.0344376340508461,
+      "probs": {
+        "apple": 0.965560257434845,
+        "orange": 0.0344376340508461,
+        "banana": 7.136737423252271e-09,
+        "pineapple": 6.767339044699838e-08,
+        "plain": 1.1852977195303538e-06,
+        "unknown": 9.192542052005592e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\000053_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9652997255325317,
+      "true_prob": 0.9652997255325317,
+      "target_prob": 0.0336814746260643,
+      "probs": {
+        "apple": 0.9652997255325317,
+        "orange": 0.0336814746260643,
+        "banana": 0.0004535935295280069,
+        "pineapple": 0.0003974734281655401,
+        "plain": 3.282174657215364e-05,
+        "unknown": 0.00013489669072441757
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008866_obj006_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9661387801170349,
+      "true_prob": 0.9661387801170349,
+      "target_prob": 0.033443283289670944,
+      "probs": {
+        "apple": 0.9661387801170349,
+        "orange": 0.033443283289670944,
+        "banana": 0.00025571591686457396,
+        "pineapple": 8.97523477760842e-06,
+        "plain": 0.00010069301060866565,
+        "unknown": 5.2627183322329074e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008585_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.8138805031776428,
+      "true_prob": 0.8138805031776428,
+      "target_prob": 0.03209366276860237,
+      "probs": {
+        "apple": 0.8138805031776428,
+        "orange": 0.03209366276860237,
+        "banana": 0.11311984807252884,
+        "pineapple": 0.036875225603580475,
+        "plain": 0.0015877628466114402,
+        "unknown": 0.002442985540255904
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001708_obj004_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9683495759963989,
+      "true_prob": 0.9683495759963989,
+      "target_prob": 0.031648263335227966,
+      "probs": {
+        "apple": 0.9683495759963989,
+        "orange": 0.031648263335227966,
+        "banana": 1.3661912134921295e-07,
+        "pineapple": 2.729294976688834e-07,
+        "plain": 5.447053581519867e-07,
+        "unknown": 1.2025241176161217e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008239_obj004_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9683940410614014,
+      "true_prob": 0.9683940410614014,
+      "target_prob": 0.03159667178988457,
+      "probs": {
+        "apple": 0.9683940410614014,
+        "orange": 0.03159667178988457,
+        "banana": 8.061229550548887e-08,
+        "pineapple": 5.9052407408444196e-08,
+        "plain": 8.480789801978972e-06,
+        "unknown": 7.005451720942801e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008940_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.971224308013916,
+      "true_prob": 0.971224308013916,
+      "target_prob": 0.028773557394742966,
+      "probs": {
+        "apple": 0.971224308013916,
+        "orange": 0.028773557394742966,
+        "banana": 3.830873840371396e-09,
+        "pineapple": 6.149149633927209e-09,
+        "plain": 1.4013917279953603e-06,
+        "unknown": 7.958857963785704e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005247_obj003_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9725401401519775,
+      "true_prob": 0.9725401401519775,
+      "target_prob": 0.02744172140955925,
+      "probs": {
+        "apple": 0.9725401401519775,
+        "orange": 0.02744172140955925,
+        "banana": 1.646624667728247e-07,
+        "pineapple": 1.463435381765521e-07,
+        "plain": 9.456610314373393e-06,
+        "unknown": 8.405942935496569e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008803_obj002_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9726079106330872,
+      "true_prob": 0.9726079106330872,
+      "target_prob": 0.027210988104343414,
+      "probs": {
+        "apple": 0.9726079106330872,
+        "orange": 0.027210988104343414,
+        "banana": 5.7068042224273086e-05,
+        "pineapple": 2.7000925911124796e-05,
+        "plain": 7.168359297793359e-05,
+        "unknown": 2.5449588065384887e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\000525_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9729984402656555,
+      "true_prob": 0.9729984402656555,
+      "target_prob": 0.026984233409166336,
+      "probs": {
+        "apple": 0.9729984402656555,
+        "orange": 0.026984233409166336,
+        "banana": 1.3691965250473004e-07,
+        "pineapple": 3.807395501098654e-07,
+        "plain": 1.0248868420603685e-06,
+        "unknown": 1.5717165297246538e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005738_obj002_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9743412137031555,
+      "true_prob": 0.9743412137031555,
+      "target_prob": 0.02565259113907814,
+      "probs": {
+        "apple": 0.9743412137031555,
+        "orange": 0.02565259113907814,
+        "banana": 1.759798351486097e-06,
+        "pineapple": 3.850022878282289e-08,
+        "plain": 6.113025960985397e-07,
+        "unknown": 3.829213255812647e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001225_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9042932987213135,
+      "true_prob": 0.9042932987213135,
+      "target_prob": 0.02563522942364216,
+      "probs": {
+        "apple": 0.9042932987213135,
+        "orange": 0.02563522942364216,
+        "banana": 0.0691017135977745,
+        "pineapple": 7.309799548238516e-05,
+        "plain": 7.247956091305241e-05,
+        "unknown": 0.0008242274634540081
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\003207_obj006_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9752850532531738,
+      "true_prob": 0.9752850532531738,
+      "target_prob": 0.024611027911305428,
+      "probs": {
+        "apple": 0.9752850532531738,
+        "orange": 0.024611027911305428,
+        "banana": 9.680172752268845e-07,
+        "pineapple": 2.4690514237590833e-06,
+        "plain": 8.798906492302194e-05,
+        "unknown": 1.2469094144762494e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\008992_obj007_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9753148555755615,
+      "true_prob": 0.9753148555755615,
+      "target_prob": 0.024564215913414955,
+      "probs": {
+        "apple": 0.9753148555755615,
+        "orange": 0.024564215913414955,
+        "banana": 1.2098572369723115e-05,
+        "pineapple": 1.8312194924874348e-06,
+        "plain": 7.263257430167869e-05,
+        "unknown": 3.4347765904385597e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\001574_obj003_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9761511087417603,
+      "true_prob": 0.9761511087417603,
+      "target_prob": 0.02347545325756073,
+      "probs": {
+        "apple": 0.9761511087417603,
+        "orange": 0.02347545325756073,
+        "banana": 2.50861921813339e-06,
+        "pineapple": 0.0003605378442443907,
+        "plain": 7.625706530234311e-06,
+        "unknown": 2.731218046392314e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005281_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9784665703773499,
+      "true_prob": 0.9784665703773499,
+      "target_prob": 0.02150733396410942,
+      "probs": {
+        "apple": 0.9784665703773499,
+        "orange": 0.02150733396410942,
+        "banana": 3.661722587366967e-07,
+        "pineapple": 6.161949528404875e-08,
+        "plain": 1.3829645467922091e-05,
+        "unknown": 1.1854035619762726e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\003746_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9790557026863098,
+      "true_prob": 0.9790557026863098,
+      "target_prob": 0.02038578689098358,
+      "probs": {
+        "apple": 0.9790557026863098,
+        "orange": 0.02038578689098358,
+        "banana": 0.0005300935008563101,
+        "pineapple": 1.4427434962271946e-06,
+        "plain": 1.1076983810198726e-06,
+        "unknown": 2.590824806247838e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\003034_obj001_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9798929691314697,
+      "true_prob": 0.9798929691314697,
+      "target_prob": 0.02010619267821312,
+      "probs": {
+        "apple": 0.9798929691314697,
+        "orange": 0.02010619267821312,
+        "banana": 8.015587499299315e-11,
+        "pineapple": 1.7094814452889295e-10,
+        "plain": 2.3168571772202995e-07,
+        "unknown": 5.618187515210593e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\004923_obj000_face01_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9793622493743896,
+      "true_prob": 0.9793622493743896,
+      "target_prob": 0.0198287945240736,
+      "probs": {
+        "apple": 0.9793622493743896,
+        "orange": 0.0198287945240736,
+        "banana": 9.093671906157397e-06,
+        "pineapple": 0.00028114227461628616,
+        "plain": 7.458357140421867e-05,
+        "unknown": 0.0004440444172360003
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\003075_obj004_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9809213876724243,
+      "true_prob": 0.9809213876724243,
+      "target_prob": 0.019078396260738373,
+      "probs": {
+        "apple": 0.9809213876724243,
+        "orange": 0.019078396260738373,
+        "banana": 8.726157574301396e-09,
+        "pineapple": 7.81059272814133e-10,
+        "plain": 1.6475952691052953e-07,
+        "unknown": 1.6844711581143201e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\apple\\005182_obj000_face00_apple.jpg",
+      "true": "apple",
+      "pred": "apple",
+      "pred_prob": 0.9812144041061401,
+      "true_prob": 0.9812144041061401,
+      "target_prob": 0.018776115030050278,
+      "probs": {
+        "apple": 0.9812144041061401,
+        "orange": 0.018776115030050278,
+        "banana": 1.8095589382483013e-07,
+        "pineapple": 9.260794797683047e-09,
+        "plain": 4.072500203733398e-08,
+        "unknown": 9.263184438168537e-06
+      }
+    }
+  ],
+  "contact_sheet": "reports\\c_hard_mining_exp006_apple_to_orange\\contact_sheet.jpg"
+}

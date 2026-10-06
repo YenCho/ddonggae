@@ -30,7 +30,7 @@ def main():
     ap.add_argument("checkpoint", type=Path)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--imgsz", type=int, default=128)
-    ap.add_argument("--opset", type=int, default=13)
+    ap.add_argument("--opset", type=int, default=17)
     args = ap.parse_args()
 
     from train_face_mobilenetv3 import make_model  # noqa: E402
@@ -40,7 +40,8 @@ def main():
     if not classes:
         raise SystemExit("체크포인트에 classes 키가 없다 — 런타임이 순서를 못 정한다")
     state = ck.get("model", ck.get("state_dict"))
-    model, model_name, _ = make_model(len(classes), pretrained=False)
+    model, model_name, _ = make_model(len(classes), pretrained=False,
+                                    backbone=ck.get("model_name", "mobilenet_v3_small"))
     model.load_state_dict(state)
     model.eval()
 

@@ -1,0 +1,79 @@
+{
+  "model": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\runs\\segment\\cube_face_unified_yolo26n_seg_v1\\weights\\best.pt",
+  "data": "C:\\Users\\user\\Documents\\Data_Generation_Blender\\datasets\\cube_face_unified_finetune_wholefruit_plainhard_materialized_v2_balanced\\data.yaml",
+  "results_dict": {
+    "metrics/precision(B)": 0.9175838714538651,
+    "metrics/recall(B)": 0.8765527247295068,
+    "metrics/mAP50(B)": 0.9460758045895868,
+    "metrics/mAP50-95(B)": 0.8729069161427226,
+    "metrics/precision(M)": 0.9201817973287177,
+    "metrics/recall(M)": 0.8750347048916552,
+    "metrics/mAP50(M)": 0.9441492246222243,
+    "metrics/mAP50-95(M)": 0.8549892439266823,
+    "fitness": 1.727896160069405
+  },
+  "box_by_class": {
+    "apple": {
+      "precision": 0.9253050619885886,
+      "recall": 0.8866310160427807,
+      "mAP50": 0.9615333332659153,
+      "mAP50-95": 0.905637976176567
+    },
+    "orange": {
+      "precision": 0.9217111785960412,
+      "recall": 0.9006535947712418,
+      "mAP50": 0.9679137371483348,
+      "mAP50-95": 0.9018321367459009
+    },
+    "banana": {
+      "precision": 0.9317187249595239,
+      "recall": 0.896407058491892,
+      "mAP50": 0.9603584069559006,
+      "mAP50-95": 0.898141606948195
+    },
+    "pineapple": {
+      "precision": 0.8987872114418698,
+      "recall": 0.9110332803022957,
+      "mAP50": 0.962686671109247,
+      "mAP50-95": 0.8984414866031074
+    },
+    "plain": {
+      "precision": 0.9103971802833016,
+      "recall": 0.788038674039324,
+      "mAP50": 0.8778868744685371,
+      "mAP50-95": 0.7604813742398436
+    }
+  },
+  "mask_by_class": {
+    "apple": {
+      "precision": 0.9267487201947863,
+      "recall": 0.8844919786096257,
+      "mAP50": 0.9613934966291089,
+      "mAP50-95": 0.8862444259433346
+    },
+    "orange": {
+      "precision": 0.926978060869639,
+      "recall": 0.9006535947712418,
+      "mAP50": 0.9680096721536459,
+      "mAP50-95": 0.8850941187885265
+    },
+    "banana": {
+      "precision": 0.9326905527543764,
+      "recall": 0.8958487530359545,
+      "mAP50": 0.959748534726762,
+      "mAP50-95": 0.8817263942801177
+    },
+    "pineapple": {
+      "precision": 0.9007719377983637,
+      "recall": 0.9092872570194385,
+      "mAP50": 0.9624627893924418,
+      "mAP50-95": 0.8863343727944422
+    },
+    "plain": {
+      "precision": 0.9137197150264229,
+      "recall": 0.7848919410220158,
+      "mAP50": 0.8691316302091631,
+      "mAP50-95": 0.73554690782699
+    }
+  }
+}

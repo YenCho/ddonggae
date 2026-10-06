@@ -6,7 +6,7 @@ three minutes: **what shape is it**, and if it is a cube, **which fruit is print
 It answers them with a two-stage segmentation pipeline that was trained on
 **zero hand-labelled images** — true right up to the qualifiers. Both finals then ran a face weight fine-tuned overnight on photographs of the real arena objects, relabelled by eye. Every other weight that ran in competition was trained on
 BlenderProc-rendered synthetic scenes. How that data was made — and the three ways it
-failed before it worked — is in [`docs/synthetic-data.md`](docs/synthetic-data.md).
+failed before it worked — is in [`docs/synthetic-data-experiments.md`](docs/synthetic-data-experiments.md).
 
 ---
 
@@ -60,10 +60,10 @@ The real thing: white 3D-printed cubes with paper fruit faces, cut out by A1 at 
 through glare and motion blur, at icon sizes that vary a great deal between cubes. Two of
 the ten show a blank face — `plain` is a class, not a miss. Recognising the *small*-icon end
 of that range turned out to be a cliff rather than a slope, which is
-[honest result 3](docs/synthetic-data.md#9-honest-result-3--the-recognition-cliff).
+[honest result 3](docs/synthetic-data-experiments.md#9-honest-result-3--the-recognition-cliff).
 
 Both figures were made from the render sets and a real arena capture; the sources are the
-datasets in section 10 of [`docs/synthetic-data.md`](docs/synthetic-data.md).
+datasets in section 10 of [`docs/synthetic-data-experiments.md`](docs/synthetic-data-experiments.md).
 
 ---
 
@@ -132,7 +132,7 @@ Code:
    into the orange band, 0.0 % after the fix), a realism asymmetry in which only apple had
    photographic cutout textures, and — worst — every render machine using the same default
    seed, so only ~22.8 k of 53.7 k scenes were unique and duplicates leaked across the
-   train/val split. Details: [`docs/synthetic-data.md`](docs/synthetic-data.md) §7.
+   train/val split. Details: [`docs/synthetic-data-experiments.md`](docs/synthetic-data-experiments.md) §7.
 
 2. **`val = train` is not a number.** A1 read 0.9941 box mAP50 on a validation split that
    *was* its training set. A purpose-built held-out arena set (60 scenes, 573 objects) put
@@ -157,7 +157,9 @@ An offline 155-crop study says they help (+3 points); a robot-side 780-combinati
 | Document | Contents |
 |---|---|
 | [`docs/pipeline.md`](docs/pipeline.md) | Stage-by-stage detail, every threshold with its reason, measured timings |
-| [`docs/synthetic-data.md`](docs/synthetic-data.md) | How the training set was rendered in Blender, and the three failures that shaped it |
+| [`docs/synthetic-data.md`](docs/synthetic-data.md) | Renderer design, visibility labels and metadata contract |
+| [`docs/synthetic-data-reproduction.md`](docs/synthetic-data-reproduction.md) | Clean-checkout asset, render, split, export and training procedure |
+| [`docs/synthetic-data-experiments.md`](docs/synthetic-data-experiments.md) | Historical experiments, failures, and dataset provenance |
 | [`docs/models.md`](docs/models.md) | Weight standard, inference rules, Jetson `.engine`/`.pt` fallback, deprecation list |
 | [`docs/stitching-and-calibration.md`](docs/stitching-and-calibration.md) | The exact-inverse stitch, resolution-independent calibration, photometry lock |
 | [`docs/grid-voting.md`](docs/grid-voting.md) | 42-cell snapping and the asymmetric fruit vote |

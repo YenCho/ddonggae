@@ -42,7 +42,8 @@ def generate_launch_description():
                     [
                         FindPackageShare("arena_lightweight_control"),
                         "maps",
-                        "stadium.yaml",
+                        # [demo/arena-2m] 경기 stadium.yaml
+                        "demo2m.yaml",
                     ]
                 ),
             ),
@@ -90,8 +91,8 @@ def generate_launch_description():
             # 과거 기본값 -1.8,-1.8은 STORAGE 구역(x[-2.0,-1.6] y[-2.0,-1.6]) 좌표였음 —
             # 로봇이 물리적으로 START에 있어도 wall_range가 STORAGE에서 시작해
             # 국소탐색으로 서서히 이동하며 한동안 storage로 오분류되는 버그였다.
-            DeclareLaunchArgument("initial_pose_x", default_value="1.8"),
-            DeclareLaunchArgument("initial_pose_y", default_value="-1.8"),
+            DeclareLaunchArgument("initial_pose_x", default_value="0.8"),   # [demo/arena-2m] 경기 1.8
+            DeclareLaunchArgument("initial_pose_y", default_value="-0.8"),  # [demo/arena-2m] 경기 -1.8
             DeclareLaunchArgument("initial_pose_yaw", default_value="1.5708"),
             DeclareLaunchArgument("localization_max_beams", default_value="24"),
             DeclareLaunchArgument("localization_search_xy_m", default_value="0.12"),

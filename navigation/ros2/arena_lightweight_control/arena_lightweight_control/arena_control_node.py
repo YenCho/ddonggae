@@ -97,8 +97,10 @@ class ArenaControlNode(Node):
         self.declare_parameter("scan_min_period_sec", 0.05)
         # START 코너(우하단)·북향에서 기동 — wall_range는 정사각 대칭이라 시작점
         # prior가 틀리면 다른 코너 해로 수렴한다.
-        self.declare_parameter("initial_pose_x", 1.8)
-        self.declare_parameter("initial_pose_y", -1.8)
+        # [demo/arena-2m] 경기 1.8 / -1.8. 런치가 덮어쓰지만, 노드를
+        # 단독 기동할 때의 기본값도 같은 아레나를 가리켜야 한다.
+        self.declare_parameter("initial_pose_x", 0.8)
+        self.declare_parameter("initial_pose_y", -0.8)
         self.declare_parameter("initial_pose_yaw", 1.5708)
         self.declare_parameter("localization_max_beams", 24)
         self.declare_parameter("localization_search_xy_m", 0.12)
@@ -1335,7 +1337,7 @@ class ArenaControlNode(Node):
 # 아레나 맵 파일명. 런치의 map_yaml 기본값과 **같아야 한다** — 노드를
 # 단독 기동(ros2 run)하면 런치를 안 거치므로 이 값이 쓰인다. 둘이 갈리면
 # 런처로 띄울 때와 단독으로 띄울 때 서로 다른 아레나를 믿게 된다.
-DEFAULT_MAP_NAME = "stadium.yaml"
+DEFAULT_MAP_NAME = "demo2m.yaml"   # [demo/arena-2m] 경기 stadium.yaml
 MAP_REL_PATH = (Path("navigation") / "ros2" / "arena_lightweight_control"
                 / "maps" / DEFAULT_MAP_NAME)
 
