@@ -1,0 +1,1162 @@
+{
+    "upstream":  "https://github.com/jaeyoungi2006/Data_Generation_Blender",
+    "snapshot":  "User-supplied ZIP directory; upstream commit not available",
+    "excluded":  [
+                     "nested duplicate directory",
+                     "datasets",
+                     "weights",
+                     "binary reports",
+                     "private SMTP configuration"
+                 ],
+    "files":  [
+                  {
+                      "source":  "scripts/__init__.py",
+                      "sha256":  "557e322d6bb9010eacbd026fd3d9bbb2f500fe34f7cc1df37bd3bd40bd8e25fe"
+                  },
+                  {
+                      "source":  "scripts/add_facecls_unknown_hard_negatives.py",
+                      "sha256":  "19a53f1ed63d1f511799c856ea5a3afa470298b85a26c6821447c2bde848f6ca"
+                  },
+                  {
+                      "source":  "scripts/add_facecls_warm_plain_hard_negatives.py",
+                      "sha256":  "bf5564b3b902896836a90ce6db60a9fa7a323e117e8fa8017c8bdd3006e55d20"
+                  },
+                  {
+                      "source":  "scripts/audit_fruit_generation.py",
+                      "sha256":  "832c3b37c5b407f64e621bd507afbfc19a56cd744f8c11ef12ab3c7c758ac571"
+                  },
+                  {
+                      "source":  "scripts/benchmark_cube_face_unified_runtime.py",
+                      "sha256":  "b5d98d0c0f20b96274d05817b70111c70226fbbd702d2a5087cfd7d15815472d"
+                  },
+                  {
+                      "source":  "scripts/benchmark_cube_face_unified_video.py",
+                      "sha256":  "e6236256cc199fe72adbf5da672db1c0aac0d17bf33fa300297d2721fd7ef13b"
+                  },
+                  {
+                      "source":  "scripts/build_ai_fruit_booster_from_sheets.py",
+                      "sha256":  "acdaba1ce0da3ace3b95b2ff84f74778e0eb4d7e0d197c8e21f50ed194d47168"
+                  },
+                  {
+                      "source":  "scripts/build_ai_fruit_booster_pool.py",
+                      "sha256":  "41f2938403e1b9324ae2fc4ed04115ed1d57ac3b4ca272bfe6f2ee66d7260fcf"
+                  },
+                  {
+                      "source":  "scripts/build_ai_fruit_runtime_degraded_booster.py",
+                      "sha256":  "ea9e7507a693a9ee0beccc9f081346873cec90f7fad7bb06cd676a8549da0db6"
+                  },
+                  {
+                      "source":  "scripts/build_anti_apple_bias_texture_root_from_probe.py",
+                      "sha256":  "09a1a656fe48a63dd2b3fd42c8660571cf13ee7cc432b5962505f1b3ff2cc5fe"
+                  },
+                  {
+                      "source":  "scripts/build_arena_a1_eval.py",
+                      "sha256":  "3a42b098a1cd8f897ca199630d2467180d62b2ce3e4f2c9d5189a93ef5df96e4"
+                  },
+                  {
+                      "source":  "scripts/build_balanced_fruit_hardcase_texture_root_from_probe.py",
+                      "sha256":  "eb3637ed43d7aea2dc4e4e57db4779abfc63b4db67350b29454e09873f2ee074"
+                  },
+                  {
+                      "source":  "scripts/build_cube_face_hard_probe_subset.py",
+                      "sha256":  "1e7b866ffad21c66bdcdf25d6adf64c7afec4049ced0d0fffa06029b2c1be94d"
+                  },
+                  {
+                      "source":  "scripts/build_fruit_texture_training_candidate.py",
+                      "sha256":  "7a311d59a9c12a4c0c07073d5ef211e34a802139618afdbeea8c5cbfe6c7c370"
+                  },
+                  {
+                      "source":  "scripts/build_other_fruit_texture_set.py",
+                      "sha256":  "2be0851eba941aab1321ec95c747b58632e3c0748b27661b9cea04be3085cc9c"
+                  },
+                  {
+                      "source":  "scripts/build_targeted_fruit_texture_root_from_probe.py",
+                      "sha256":  "d4ea2ca5b1eaa40dd127c7d4175494342138f0dd3ee0c2eb018b7031c04686de"
+                  },
+                  {
+                      "source":  "scripts/clean_fruit_textures_by_color.py",
+                      "sha256":  "fa4331589093779dd823728fa84655143c1f1ac6210bf8702c61d0c0274e6828"
+                  },
+                  {
+                      "source":  "scripts/crawl_fruit_images_fast.py",
+                      "sha256":  "a109de449855e825e4443784a230281ebe7f23d3d933d24a9555d1f579cc1a1a"
+                  },
+                  {
+                      "source":  "scripts/download_coco128_backgrounds.py",
+                      "sha256":  "bf2276c059609f2d61c705e8c7e5b5f4d9ff754b3deb4dc3fd50b1a45f8533cd"
+                  },
+                  {
+                      "source":  "scripts/download_coco2017_backgrounds.py",
+                      "sha256":  "d8eab78229cd0e3f43e50d59b50f32849c8204f1b4af6e4b769b25d24c7406da"
+                  },
+                  {
+                      "source":  "scripts/download_generic_fruit_textures.py",
+                      "sha256":  "589659984a831b32be42bacd6d22f591dca07068c8bf142b7762a9f771786052"
+                  },
+                  {
+                      "source":  "scripts/download_orange_hard_textures.py",
+                      "sha256":  "7df670ffeaff85c26c792693c3f0b6b2f827206685d82a8af7f39396701d906b"
+                  },
+                  {
+                      "source":  "scripts/eval_a1_models_compare.py",
+                      "sha256":  "3282ba75ab259ccd6ca0621df31df610056640c2a4c09443a134af148108d402"
+                  },
+                  {
+                      "source":  "scripts/evaluate_c_target_crop.py",
+                      "sha256":  "6ea63010556663c204e88762d38c6926a63e75345ad6203bb844dc1545c41f35"
+                  },
+                  {
+                      "source":  "scripts/evaluate_cube_face_unified_dataset_confusion.py",
+                      "sha256":  "d52d0c1b85cff57a35af04433f0a8e3680a2e4121225ad2a67b6da628a09d1b3"
+                  },
+                  {
+                      "source":  "scripts/evaluate_cube_face_unified_runtime.py",
+                      "sha256":  "c3c8dfde9386e9594abe499194989ca34aaa6753acace8e6615423eb2d6a6f98"
+                  },
+                  {
+                      "source":  "scripts/export_arena_v3_probe_crops.py",
+                      "sha256":  "704ee6726e1d3ddcbec4b668ffddfdfb106de8e433352edb528e24474ebba742"
+                  },
+                  {
+                      "source":  "scripts/export_meta_v2_cube_face_unified_dataset.py",
+                      "sha256":  "5a76d371772af2825c076ba7f9dc06ccd63a1d6a033f1c44044792978f12db8c"
+                  },
+                  {
+                      "source":  "scripts/export_meta_v2_model_datasets.py",
+                      "sha256":  "728e83f4a05d68e23963b0472d71fbd8d41d8e35d08a43c25450316360c33c9d"
+                  },
+                  {
+                      "source":  "scripts/export_warped_face_dataset.py",
+                      "sha256":  "5d0c7433a499bc56895665622655339b1fed2509d92255b7a498a9ab0fedfacc"
+                  },
+                  {
+                      "source":  "scripts/extract_fruit_crops.py",
+                      "sha256":  "05cadcde3ea85cdb449c6439c4c8d67dc0a2622e55751b859ddc00f7d940b463"
+                  },
+                  {
+                      "source":  "scripts/extract_readd_coloroutlier_base_candidate.py",
+                      "sha256":  "f1b923142b27cf76bcca98ff5b154f6bed862373e13b247629a006c50c5e6286"
+                  },
+                  {
+                      "source":  "scripts/filter_a1_crop_jitter_booster_by_pruned_source.py",
+                      "sha256":  "848bd52114f15c597c35de175aa9461f87ff299cdd24a5989ac1e5976665abbd"
+                  },
+                  {
+                      "source":  "scripts/filter_fruit_textures_by_hue.py",
+                      "sha256":  "2cba66a9d385e7fb6caa1fc525c04626e9f9bef87ef6faae4d83a1b5010a8843"
+                  },
+                  {
+                      "source":  "scripts/filter_orange_texture_dataset.py",
+                      "sha256":  "43ad0d028408a79de449bae041c2f66bae05bb193a0dad10217802433cc50885"
+                  },
+                  {
+                      "source":  "scripts/generate_2d_face_mimic_dataset.py",
+                      "sha256":  "8013019ee96f5628d77061edac0adf97513fc05d2c117fad268f928537532a6e"
+                  },
+                  {
+                      "source":  "scripts/generate_c_anchor_pair_dataset.py",
+                      "sha256":  "4e0fde408a8f32887a096e77ea097887e2b1b1067abe98cc7de224c539effee4"
+                  },
+                  {
+                      "source":  "scripts/generate_challenge_yolo_scene.py",
+                      "sha256":  "6798a7f79f94748e89b26232207a73e8d3dbf0369b504132c2d660083dac945c"
+                  },
+                  {
+                      "source":  "scripts/generate_robot_scene.py",
+                      "sha256":  "b11ae564a777b1661667652bb5fcdd198af57af66b07f11155a2827473964d9e"
+                  },
+                  {
+                      "source":  "scripts/generate_yolo_coco_composite.py",
+                      "sha256":  "6f658e63281ade8b8eb9acc0c29d82c2ad9d1ed38b6b190c22d79c0e0f13d1d0"
+                  },
+                  {
+                      "source":  "scripts/make_arena_booster_preview_sheets.py",
+                      "sha256":  "d0f1db3e9dbd58fad7479465685d5165daf52d221068b8b9dd0dccb7a62be95d"
+                  },
+                  {
+                      "source":  "scripts/make_cube_face_unified_a1_crop_jitter_booster.py",
+                      "sha256":  "ac514273162da98df23efe817ef3c041065da8cb5c477e6cecc448ca5b07e5ec"
+                  },
+                  {
+                      "source":  "scripts/make_cube_face_unified_booster.py",
+                      "sha256":  "16665c729c384af76c2c89c4d8f080477637717e94a8e3f942a30ac01760aee3"
+                  },
+                  {
+                      "source":  "scripts/make_cube_face_unified_color_shift_booster.py",
+                      "sha256":  "56e1ffaad71390dc83583c6c8dbe4397b43fa7505d6f7d8730e9a8df6f348f11"
+                  },
+                  {
+                      "source":  "scripts/make_cube_face_unified_exposure_probe.py",
+                      "sha256":  "9ff402da7dfc4d7ef6b50bd762af5c66eb1611bf994982ba5d13720e86a1050b"
+                  },
+                  {
+                      "source":  "scripts/make_fruit_face_patch_dataset.py",
+                      "sha256":  "51e4978d8060187f4540a6a8542591ebc8a69d8013cd425d095db5c67e8ad112"
+                  },
+                  {
+                      "source":  "scripts/make_meta_v2_io_preview.py",
+                      "sha256":  "df9454a041ad6864e96676b8f8f727626d00311754610249293814f695e28013"
+                  },
+                  {
+                      "source":  "scripts/make_meta_v2_model_previews.py",
+                      "sha256":  "8e9fce9905d92895d4099ebb3847301e45035e3a680a500a2c20a2e76f649365"
+                  },
+                  {
+                      "source":  "scripts/make_mixed_finetune_dataset.py",
+                      "sha256":  "a1744f8130242159dd6a962a2548a1d2f9b1235f001329160a08361933d4007c"
+                  },
+                  {
+                      "source":  "scripts/make_mixed_fruit_textures.py",
+                      "sha256":  "818e7b66c034005456a9d14f0c52925201f63d3f9ff7db876046b8d9261d8009"
+                  },
+                  {
+                      "source":  "scripts/make_motionblur_aug_dataset.py",
+                      "sha256":  "789b60eb65e10c123eb99237319ed6bd88a75f7d7262b2bbc087a72d0deff6a4"
+                  },
+                  {
+                      "source":  "scripts/make_motionblur_preview_dataset.py",
+                      "sha256":  "36f27aac8f5e67f664c223b65e54e6e505f8f65cc93012713677cddfe09ea730"
+                  },
+                  {
+                      "source":  "scripts/make_polyhedron_objs.py",
+                      "sha256":  "fa6aec5517709e288be8e502bb55db2886b70657af6e68ffd363732a81ddc9cd"
+                  },
+                  {
+                      "source":  "scripts/make_texture_contact_sheets.py",
+                      "sha256":  "fe04fb0653a26ce81e8db09bd24a49c43b476ccd1e9e86302a8fe2fc5f692555"
+                  },
+                  {
+                      "source":  "scripts/make_yolo_bbox_preview.py",
+                      "sha256":  "02f6884b746a6e43cd45052037890059364bff92f432f83c5d2a8dae08986772"
+                  },
+                  {
+                      "source":  "scripts/materialize_cube_face_unified_finetune_mix.py",
+                      "sha256":  "f61d7c1a44f85314fd0f16247552fa68575d5c13bb5dc45642e69195ed35cff1"
+                  },
+                  {
+                      "source":  "scripts/merge_facecls_datasets.py",
+                      "sha256":  "30f25ac0b2a7ecc03c76f775247a4bce78562db3718d486e40f5210c842468d9"
+                  },
+                  {
+                      "source":  "scripts/mine_c_hard_confusions.py",
+                      "sha256":  "3a072b400f60f87ce1d78ded17945a767be80ad3cb7c95d316bfe879df3c0fb8"
+                  },
+                  {
+                      "source":  "scripts/monitor_meta_v2_pipeline_email_loop.ps1",
+                      "sha256":  "b6fac7febbd297cc6b08f6f1d67b9bd4e05a9ce6e01b35ee63a7112647e6301c"
+                  },
+                  {
+                      "source":  "scripts/monitor_yolo_training_email.ps1",
+                      "sha256":  "56e46863b6739e11791c67695ce178561a27b62d4a642632816f73eede8b1c10"
+                  },
+                  {
+                      "source":  "scripts/prepare_fruit_textures.py",
+                      "sha256":  "cd4ecaf654f9e0f605d0fcfc0b2f8533c1248772de2c5e2057d0998fc80ef2eb"
+                  },
+                  {
+                      "source":  "scripts/prepare_fruitseg30_textures.py",
+                      "sha256":  "6f922a70774f75701c10f79817f53787c29978b1cb41146e851f4c5eed48a0ca"
+                  },
+                  {
+                      "source":  "scripts/prepare_kaggle_fruits360_textures.py",
+                      "sha256":  "b9a0b1127bd977783bd9948744b099eac07409b71baf1e19d673dc84f3872a5e"
+                  },
+                  {
+                      "source":  "scripts/probe_cube_face_unified_boundary_variants.py",
+                      "sha256":  "e1a33e4f4b07f2e35595707c58dac9aabc0e4247ef7f1e7962b9b487d2dddf1e"
+                  },
+                  {
+                      "source":  "scripts/prune_cube_face_unified_dataset_by_rejected_textures.py",
+                      "sha256":  "8b39fb4884396d752d17885fe01cf156e95ed6f1db41258c9305942b3e180a5e"
+                  },
+                  {
+                      "source":  "scripts/render_context_conflict_blender_probe.py",
+                      "sha256":  "ef7cf4f47b417b227d384db82b6ac3640c82996f08da5d856945ac6d41171c38"
+                  },
+                  {
+                      "source":  "scripts/render_cube_face_unified_print_label_mimic_dataset.py",
+                      "sha256":  "42635606e1fe25f41416b19f8ccac5c5d5bca23ffd436b288792ad3adc611aac"
+                  },
+                  {
+                      "source":  "scripts/render_mimic_arena_scene.py",
+                      "sha256":  "6f1de275b0d88a716f9062eb258a985afd643934cbcdf107d4d3c2e411c3b325"
+                  },
+                  {
+                      "source":  "scripts/render_orange_box_mimic_blender_probe.py",
+                      "sha256":  "0bde27bbd095a8b2ca125167f0d1da3ba0dbb4b226f8cee8ec13a198d2c00a4a"
+                  },
+                  {
+                      "source":  "scripts/run_blenderproc_batch.py",
+                      "sha256":  "2ddd20850db69bf8bb85d449b05d88b2801aad56a9b418fa968ed417da892893"
+                  },
+                  {
+                      "source":  "scripts/run_c_apple_orange_balanced_experiment.ps1",
+                      "sha256":  "5303272912aa7aa5b39f9b6846495611d2cca2d036e053f8c7c8aca1b8f6960e"
+                  },
+                  {
+                      "source":  "scripts/run_c_mimic_100k_training_pipeline.ps1",
+                      "sha256":  "6332a45fe21da55e49602e53f4e90410741aa1201061e06f11062b0b8864928a"
+                  },
+                  {
+                      "source":  "scripts/run_c_orange_target_experiment.ps1",
+                      "sha256":  "34038f6d8d6d5087b0133d47b61bbd6dd89255fd7b4772a253c124aec57ad9b4"
+                  },
+                  {
+                      "source":  "scripts/run_challenge_yolo_batch.py",
+                      "sha256":  "b538fec0ca9b0bedc3f562a1bd2231114c8821f1f4ffbfb1b6e1cc8aa5473c97"
+                  },
+                  {
+                      "source":  "scripts/run_cube_face_unified_booster_finetune.ps1",
+                      "sha256":  "9efbd810bc6edf58959db052e669f0d4353981d76397404ed9caf758119459a5"
+                  },
+                  {
+                      "source":  "scripts/run_cube_face_unified_fruit_confusion_search.ps1",
+                      "sha256":  "6b015a078135ecfc3b6352592955c7ec709096f7383812fde67e8bf910980fe9"
+                  },
+                  {
+                      "source":  "scripts/run_cube_face_unified_orange_condition_probes.ps1",
+                      "sha256":  "db0736ab88971a283365d4e397ec43832e42302ed7065d2badbb17ef81f1c99f"
+                  },
+                  {
+                      "source":  "scripts/run_cube_face_unified_print_label_mimic_booster_finetune.ps1",
+                      "sha256":  "3d181014abe669cc68f58c2438c7811827cce430369a7d90fb728431ceaa42f9"
+                  },
+                  {
+                      "source":  "scripts/run_cube_face_unified_readd_gate_and_finetune.ps1",
+                      "sha256":  "44e2ba3e87305ab6f14a6821b79ab2dcb23a5cfd013513e3b59826f642685e5d"
+                  },
+                  {
+                      "source":  "scripts/run_cube_face_unified_realistic_a4_mild_coco_booster_probe.ps1",
+                      "sha256":  "f5e6f3e6afb45192d0955179efd8f830b310e0168ab582d4d8ef254983ef3bb0"
+                  },
+                  {
+                      "source":  "scripts/run_cube_face_unified_tape_edge_probe.ps1",
+                      "sha256":  "04b34a6e17e92fd1a231d62d52fc2cf327485c72752272921da6f7acc55d593d"
+                  },
+                  {
+                      "source":  "scripts/run_meta_v2_10000_training_pipeline.ps1",
+                      "sha256":  "c0063fbe2ba36bbec7c616d5176607e05181eadc0694590450b6505292a083cf"
+                  },
+                  {
+                      "source":  "scripts/run_meta_v2_50000_training_pipeline.ps1",
+                      "sha256":  "9d71586c413243841608a4c572be1948a5a54eae03b8197dc601644b4932e01e"
+                  },
+                  {
+                      "source":  "scripts/run_meta_v2_smoke_1000_pipeline.ps1",
+                      "sha256":  "81136c091668e91ab22622dd2446530f53c7c239d8040d8aeb89901ecc7a1e57"
+                  },
+                  {
+                      "source":  "scripts/run_next_c_orange_target_experiment.ps1",
+                      "sha256":  "068cb5b47d833843bc3acab3d80eeced205c03808e846ecb16ff76c64929ca34"
+                  },
+                  {
+                      "source":  "scripts/run_prevmodel_offdiag10_eval.bat",
+                      "sha256":  "e65625ca37a5d222b9730a43542bb129294553af0d31fc055a188061e1f4eedd"
+                  },
+                  {
+                      "source":  "scripts/run_yolo26_seg_1000_pipeline.ps1",
+                      "sha256":  "6da9cf15b08a9c89c2db4f41e3b1574ed931767e676414291b13935edd5a456f"
+                  },
+                  {
+                      "source":  "scripts/run_yolo26_seg_50000_pipeline.ps1",
+                      "sha256":  "0897eea4a1675d3d8b6455c593f7590aee6887cf6254cfe77585161d39bc495a"
+                  },
+                  {
+                      "source":  "scripts/run_yolo26_seg_pipeline.py",
+                      "sha256":  "3d7a705cdf3a59f7a829ee56e79216721281edbfcf68c9a3fc2fb03dca90cc20"
+                  },
+                  {
+                      "source":  "scripts/run_yolo_30000_pipeline.ps1",
+                      "sha256":  "ceebd400451a5e5eccfe18ab6aec92d9a49800ad4f5e244d9a29c00c9bedfba2"
+                  },
+                  {
+                      "source":  "scripts/run_yolo_50000_pipeline.ps1",
+                      "sha256":  "51f18f4a715a8e9cd92add2b63bf2dad6231783fefb76973583771a78a7d23e4"
+                  },
+                  {
+                      "source":  "scripts/run_yolo_coco_composite_batch.py",
+                      "sha256":  "26b681a1779a527f562a25eb7e7afc6eda287d3155147ed1912b06008cecd028"
+                  },
+                  {
+                      "source":  "scripts/run_yolo_parallel.py",
+                      "sha256":  "d174deca935683b89ecba4f1e7dc5e9f74fc09097df28a8b081c4250528cdc3a"
+                  },
+                  {
+                      "source":  "scripts/send_meta_v2_pipeline_status_email.py",
+                      "sha256":  "82b1d2aba2fc7b36f784fdf8b3030c22fc56be326c0107f91272306a76a7c9c1"
+                  },
+                  {
+                      "source":  "scripts/send_progress_email.py",
+                      "sha256":  "45667c989e6ea307040b4e8cb58526740e7c3423a1fa30a57921ad0e4a272939"
+                  },
+                  {
+                      "source":  "scripts/send_yolo_50000_status_email.py",
+                      "sha256":  "c9553d23bdab2dd84eee16ab4595cf84fca336f5d876cf70fe237519bf291ed0"
+                  },
+                  {
+                      "source":  "scripts/send_yolo_50000_status_email_loop.ps1",
+                      "sha256":  "a92032c9d8f6e665019eb4a3c03787dfd2e0137722d877398b3697c8caac7a7a"
+                  },
+                  {
+                      "source":  "scripts/summarize_cube_face_fruit_confusion_search.py",
+                      "sha256":  "479c5d3b328649515dedc48d3f647e5971e0efaea388ea707a89b43ed61fe56d"
+                  },
+                  {
+                      "source":  "scripts/summarize_cube_face_probe_conditions.py",
+                      "sha256":  "fb845078cc92f5d4bd118a913a1bcf998a7cf1da66c92dfe2651adca12a891c8"
+                  },
+                  {
+                      "source":  "scripts/train_face_mobilenetv3.py",
+                      "sha256":  "2cfdd752aa9b993ea30541ff8b3775d164e180522927c6f7315a2154e0fc7cca"
+                  },
+                  {
+                      "source":  "scripts/train_tiny_quadnet.py",
+                      "sha256":  "6b90c0905a2d86a8312a70b1fcbd75d5785933ac6ebbde42de02b978c41c0859"
+                  },
+                  {
+                      "source":  "scripts/train_yolo_with_email.py",
+                      "sha256":  "474156fe972bed6bc7f7b0a57819220a5d2b5884611897638740723a809713f6"
+                  },
+                  {
+                      "source":  "scripts/watch_generation_safety.ps1",
+                      "sha256":  "baf2f603b10428ed7ac2cf6758077eb337bec876b03ce6c46a89e78013aea816"
+                  },
+                  {
+                      "source":  "jetson/abc_inference.py",
+                      "sha256":  "9bdaec25c855774bb2487cf9669afe9218f4e68c82bbf1ae8a210b6025dc43e2"
+                  },
+                  {
+                      "source":  "jetson/ABC_model/cube_face_unified/preferred_v2/MODEL_VERSION.md",
+                      "sha256":  "4ce7b32e01524b0ee0aa911fd760fbef125eeb939f58b2a333884af3c9541ade"
+                  },
+                  {
+                      "source":  "jetson/abc_runtime_presets.py",
+                      "sha256":  "7904ca833c81aa2111b4270593765255d585f77ff7b74e53ffa95855ab91e91b"
+                  },
+                  {
+                      "source":  "jetson/jetson_readme.md",
+                      "sha256":  "34ba67de0ee700f98ed016a59505fa4ee30eb08f1921da48b9248b55fa91146d"
+                  },
+                  {
+                      "source":  "jetson/main.py",
+                      "sha256":  "b5108fcea865aee75816cf99566e5b93a7f0c004282bac2fc838e28d8478705d"
+                  },
+                  {
+                      "source":  "jetson/main2.py",
+                      "sha256":  "41f118c4edd256c17763f447d765aef1ddbc05987e061ae18f2c1619b162b16d"
+                  },
+                  {
+                      "source":  "jetson/main3.py",
+                      "sha256":  "0a83dcbd38952df926ced33906c0004a8aa3153e16914d7a8f03f3d1ab0ca17a"
+                  },
+                  {
+                      "source":  "jetson/OPTIMIZATION_EXPERIMENTS.md",
+                      "sha256":  "717aedca2f658ab65e854f2e8cd79908c2f98faef739caa2d7f9e8981cb24723"
+                  },
+                  {
+                      "source":  "jetson/README.md",
+                      "sha256":  "384168965075407e0a9babc7dc4a35e858686b72089d906074d01b24360a5338"
+                  },
+                  {
+                      "source":  "jetson/README_data_generation.md",
+                      "sha256":  "3e4ec8b12539307e475b9a5d000a5333d99dce2b9549a20a8b5c74218aee467f"
+                  },
+                  {
+                      "source":  "jetson/readme_specific.md",
+                      "sha256":  "a9dcffa2d7721e5ccaa2abd64cab61185a671457b5ad4e2a2cb802743143c8ad"
+                  },
+                  {
+                      "source":  "jetson/realtime_seg_cam.py",
+                      "sha256":  "e5738bb90dfd099812fc2f85fd3edd103c38f5737b0b0f736b09bf93a1d1e32d"
+                  },
+                  {
+                      "source":  "jetson/run_unified_video_frame_sort.ps1",
+                      "sha256":  "d893770bd4bfe9df2ffeb14aa648b93c14c173b6e1457dfdf287d4efe6baa9e4"
+                  },
+                  {
+                      "source":  "jetson/run_webcam_preview.ps1",
+                      "sha256":  "53a5c53dca0fc36efe15ff0e398456736c6930df896080e0674c76070d5d3f9c"
+                  },
+                  {
+                      "source":  "jetson/run_webcam_preview.sh",
+                      "sha256":  "a9cc8ce4b0704bbeac300091f592e2d4bce8a990adb5545be9879a5ef48e6716"
+                  },
+                  {
+                      "source":  "jetson/runtime_policy.py",
+                      "sha256":  "c66904a62d7224cba25a14b157ae0b0810bc523bccb25ffab8dc0d09aec54c3f"
+                  },
+                  {
+                      "source":  "jetson/scripts/__init__.py",
+                      "sha256":  "557e322d6bb9010eacbd026fd3d9bbb2f500fe34f7cc1df37bd3bd40bd8e25fe"
+                  },
+                  {
+                      "source":  "jetson/scripts/add_facecls_unknown_hard_negatives.py",
+                      "sha256":  "19a53f1ed63d1f511799c856ea5a3afa470298b85a26c6821447c2bde848f6ca"
+                  },
+                  {
+                      "source":  "jetson/scripts/audit_fruit_generation.py",
+                      "sha256":  "832c3b37c5b407f64e621bd507afbfc19a56cd744f8c11ef12ab3c7c758ac571"
+                  },
+                  {
+                      "source":  "jetson/scripts/benchmark_abc_runtime.py",
+                      "sha256":  "b6beeb3b16e08d042c05125db290e68f3385b26f604578bdff567e13a81419ef"
+                  },
+                  {
+                      "source":  "jetson/scripts/clean_fruit_textures_by_color.py",
+                      "sha256":  "fa4331589093779dd823728fa84655143c1f1ac6210bf8702c61d0c0274e6828"
+                  },
+                  {
+                      "source":  "jetson/scripts/crawl_fruit_images_fast.py",
+                      "sha256":  "a109de449855e825e4443784a230281ebe7f23d3d933d24a9555d1f579cc1a1a"
+                  },
+                  {
+                      "source":  "jetson/scripts/download_coco128_backgrounds.py",
+                      "sha256":  "bf2276c059609f2d61c705e8c7e5b5f4d9ff754b3deb4dc3fd50b1a45f8533cd"
+                  },
+                  {
+                      "source":  "jetson/scripts/download_coco2017_backgrounds.py",
+                      "sha256":  "d8eab78229cd0e3f43e50d59b50f32849c8204f1b4af6e4b769b25d24c7406da"
+                  },
+                  {
+                      "source":  "jetson/scripts/download_generic_fruit_textures.py",
+                      "sha256":  "589659984a831b32be42bacd6d22f591dca07068c8bf142b7762a9f771786052"
+                  },
+                  {
+                      "source":  "jetson/scripts/download_orange_hard_textures.py",
+                      "sha256":  "7df670ffeaff85c26c792693c3f0b6b2f827206685d82a8af7f39396701d906b"
+                  },
+                  {
+                      "source":  "jetson/scripts/evaluate_c_target_crop.py",
+                      "sha256":  "6ea63010556663c204e88762d38c6926a63e75345ad6203bb844dc1545c41f35"
+                  },
+                  {
+                      "source":  "jetson/scripts/export_c_classifier_onnx.py",
+                      "sha256":  "012c25a448337ccebc01cf81507d3714070bcf705e906e0d6a0f742d4b212a46"
+                  },
+                  {
+                      "source":  "jetson/scripts/export_meta_v2_model_datasets.py",
+                      "sha256":  "c77c4fec547b99b550d37eed4e591a6833fe33ea3e1b63b25bd543cd432a84ae"
+                  },
+                  {
+                      "source":  "jetson/scripts/export_warped_face_dataset.py",
+                      "sha256":  "5d0c7433a499bc56895665622655339b1fed2509d92255b7a498a9ab0fedfacc"
+                  },
+                  {
+                      "source":  "jetson/scripts/extract_fruit_crops.py",
+                      "sha256":  "05cadcde3ea85cdb449c6439c4c8d67dc0a2622e55751b859ddc00f7d940b463"
+                  },
+                  {
+                      "source":  "jetson/scripts/filter_orange_texture_dataset.py",
+                      "sha256":  "43ad0d028408a79de449bae041c2f66bae05bb193a0dad10217802433cc50885"
+                  },
+                  {
+                      "source":  "jetson/scripts/generate_2d_face_mimic_dataset.py",
+                      "sha256":  "8013019ee96f5628d77061edac0adf97513fc05d2c117fad268f928537532a6e"
+                  },
+                  {
+                      "source":  "jetson/scripts/generate_c_anchor_pair_dataset.py",
+                      "sha256":  "4e0fde408a8f32887a096e77ea097887e2b1b1067abe98cc7de224c539effee4"
+                  },
+                  {
+                      "source":  "jetson/scripts/generate_challenge_yolo_scene.py",
+                      "sha256":  "6798a7f79f94748e89b26232207a73e8d3dbf0369b504132c2d660083dac945c"
+                  },
+                  {
+                      "source":  "jetson/scripts/generate_robot_scene.py",
+                      "sha256":  "b11ae564a777b1661667652bb5fcdd198af57af66b07f11155a2827473964d9e"
+                  },
+                  {
+                      "source":  "jetson/scripts/generate_yolo_coco_composite.py",
+                      "sha256":  "38bb96dc6ec43852b5c35793f0d52d04a0812c2af90def52daef5f8c26eed4e2"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_arena_booster_preview_sheets.py",
+                      "sha256":  "d0f1db3e9dbd58fad7479465685d5165daf52d221068b8b9dd0dccb7a62be95d"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_fruit_face_patch_dataset.py",
+                      "sha256":  "51e4978d8060187f4540a6a8542591ebc8a69d8013cd425d095db5c67e8ad112"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_meta_v2_io_preview.py",
+                      "sha256":  "df9454a041ad6864e96676b8f8f727626d00311754610249293814f695e28013"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_meta_v2_model_previews.py",
+                      "sha256":  "8e9fce9905d92895d4099ebb3847301e45035e3a680a500a2c20a2e76f649365"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_mixed_finetune_dataset.py",
+                      "sha256":  "a1744f8130242159dd6a962a2548a1d2f9b1235f001329160a08361933d4007c"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_mixed_fruit_textures.py",
+                      "sha256":  "818e7b66c034005456a9d14f0c52925201f63d3f9ff7db876046b8d9261d8009"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_motionblur_aug_dataset.py",
+                      "sha256":  "789b60eb65e10c123eb99237319ed6bd88a75f7d7262b2bbc087a72d0deff6a4"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_motionblur_preview_dataset.py",
+                      "sha256":  "36f27aac8f5e67f664c223b65e54e6e505f8f65cc93012713677cddfe09ea730"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_polyhedron_objs.py",
+                      "sha256":  "fa6aec5517709e288be8e502bb55db2886b70657af6e68ffd363732a81ddc9cd"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_texture_contact_sheets.py",
+                      "sha256":  "fe04fb0653a26ce81e8db09bd24a49c43b476ccd1e9e86302a8fe2fc5f692555"
+                  },
+                  {
+                      "source":  "jetson/scripts/make_yolo_bbox_preview.py",
+                      "sha256":  "02f6884b746a6e43cd45052037890059364bff92f432f83c5d2a8dae08986772"
+                  },
+                  {
+                      "source":  "jetson/scripts/merge_facecls_datasets.py",
+                      "sha256":  "30f25ac0b2a7ecc03c76f775247a4bce78562db3718d486e40f5210c842468d9"
+                  },
+                  {
+                      "source":  "jetson/scripts/mine_c_hard_confusions.py",
+                      "sha256":  "3a072b400f60f87ce1d78ded17945a767be80ad3cb7c95d316bfe879df3c0fb8"
+                  },
+                  {
+                      "source":  "jetson/scripts/monitor_meta_v2_pipeline_email_loop.ps1",
+                      "sha256":  "b6fac7febbd297cc6b08f6f1d67b9bd4e05a9ce6e01b35ee63a7112647e6301c"
+                  },
+                  {
+                      "source":  "jetson/scripts/monitor_yolo_training_email.ps1",
+                      "sha256":  "56e46863b6739e11791c67695ce178561a27b62d4a642632816f73eede8b1c10"
+                  },
+                  {
+                      "source":  "jetson/scripts/prepare_fruit_textures.py",
+                      "sha256":  "cd4ecaf654f9e0f605d0fcfc0b2f8533c1248772de2c5e2057d0998fc80ef2eb"
+                  },
+                  {
+                      "source":  "jetson/scripts/prepare_fruitseg30_textures.py",
+                      "sha256":  "6f922a70774f75701c10f79817f53787c29978b1cb41146e851f4c5eed48a0ca"
+                  },
+                  {
+                      "source":  "jetson/scripts/prepare_kaggle_fruits360_textures.py",
+                      "sha256":  "b9a0b1127bd977783bd9948744b099eac07409b71baf1e19d673dc84f3872a5e"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_blenderproc_batch.py",
+                      "sha256":  "2ddd20850db69bf8bb85d449b05d88b2801aad56a9b418fa968ed417da892893"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_c_apple_orange_balanced_experiment.ps1",
+                      "sha256":  "5303272912aa7aa5b39f9b6846495611d2cca2d036e053f8c7c8aca1b8f6960e"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_c_mimic_100k_training_pipeline.ps1",
+                      "sha256":  "6332a45fe21da55e49602e53f4e90410741aa1201061e06f11062b0b8864928a"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_c_orange_target_experiment.ps1",
+                      "sha256":  "34038f6d8d6d5087b0133d47b61bbd6dd89255fd7b4772a253c124aec57ad9b4"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_challenge_yolo_batch.py",
+                      "sha256":  "b538fec0ca9b0bedc3f562a1bd2231114c8821f1f4ffbfb1b6e1cc8aa5473c97"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_meta_v2_10000_training_pipeline.ps1",
+                      "sha256":  "b2be5ab29aef2b7bef23a1085a94c16614748dd3996cb6903d00266de818e97f"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_meta_v2_50000_training_pipeline.ps1",
+                      "sha256":  "80fc1b9aa86ea1ffe78144b2f3c9d2003365b491e24b352861f22e71bd4108eb"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_meta_v2_smoke_1000_pipeline.ps1",
+                      "sha256":  "81136c091668e91ab22622dd2446530f53c7c239d8040d8aeb89901ecc7a1e57"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_next_c_orange_target_experiment.ps1",
+                      "sha256":  "068cb5b47d833843bc3acab3d80eeced205c03808e846ecb16ff76c64929ca34"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_yolo26_seg_1000_pipeline.ps1",
+                      "sha256":  "6da9cf15b08a9c89c2db4f41e3b1574ed931767e676414291b13935edd5a456f"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_yolo26_seg_50000_pipeline.ps1",
+                      "sha256":  "0897eea4a1675d3d8b6455c593f7590aee6887cf6254cfe77585161d39bc495a"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_yolo26_seg_pipeline.py",
+                      "sha256":  "e71c67ce7e05836650a1729f7f126dc1f3d2c6388ae46b1bd99975e2d35f24b1"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_yolo_30000_pipeline.ps1",
+                      "sha256":  "ceebd400451a5e5eccfe18ab6aec92d9a49800ad4f5e244d9a29c00c9bedfba2"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_yolo_50000_pipeline.ps1",
+                      "sha256":  "51f18f4a715a8e9cd92add2b63bf2dad6231783fefb76973583771a78a7d23e4"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_yolo_coco_composite_batch.py",
+                      "sha256":  "26b681a1779a527f562a25eb7e7afc6eda287d3155147ed1912b06008cecd028"
+                  },
+                  {
+                      "source":  "jetson/scripts/run_yolo_parallel.py",
+                      "sha256":  "da35e4ae6c97e117772ca18592dc5c991ccb9a6a668dda01ec4d8958813f438e"
+                  },
+                  {
+                      "source":  "jetson/scripts/send_meta_v2_pipeline_status_email.py",
+                      "sha256":  "82b1d2aba2fc7b36f784fdf8b3030c22fc56be326c0107f91272306a76a7c9c1"
+                  },
+                  {
+                      "source":  "jetson/scripts/send_progress_email.py",
+                      "sha256":  "45667c989e6ea307040b4e8cb58526740e7c3423a1fa30a57921ad0e4a272939"
+                  },
+                  {
+                      "source":  "jetson/scripts/send_yolo_50000_status_email.py",
+                      "sha256":  "e929eee6d36adb169f524a6adf71e46cd70a6a4db339e39b95d86442e2aff453"
+                  },
+                  {
+                      "source":  "jetson/scripts/send_yolo_50000_status_email_loop.ps1",
+                      "sha256":  "a92032c9d8f6e665019eb4a3c03787dfd2e0137722d877398b3697c8caac7a7a"
+                  },
+                  {
+                      "source":  "jetson/scripts/train_face_mobilenetv3.py",
+                      "sha256":  "2cfdd752aa9b993ea30541ff8b3775d164e180522927c6f7315a2154e0fc7cca"
+                  },
+                  {
+                      "source":  "jetson/scripts/train_tiny_quadnet.py",
+                      "sha256":  "6b90c0905a2d86a8312a70b1fcbd75d5785933ac6ebbde42de02b978c41c0859"
+                  },
+                  {
+                      "source":  "jetson/scripts/train_yolo_with_email.py",
+                      "sha256":  "fb38f108b170fc636a16206693f47d3532c3bcf158f643f261ad61e9b1a50fa0"
+                  },
+                  {
+                      "source":  "jetson/scripts/watch_generation_safety.ps1",
+                      "sha256":  "baf2f603b10428ed7ac2cf6758077eb337bec876b03ce6c46a89e78013aea816"
+                  },
+                  {
+                      "source":  "jetson/segment_folder_engine.py",
+                      "sha256":  "09f25154213d21133e97c9b93cdc663a2fe1cbddeedbeab8a126291781f2c6eb"
+                  },
+                  {
+                      "source":  "jetson/segment_folder_images.py",
+                      "sha256":  "c5ae1962a3a37301da9d0afdc31a7277336299139b647998f90822f73d4cd3f8"
+                  },
+                  {
+                      "source":  "jetson/segment_video.py",
+                      "sha256":  "92359cd4e587fd56192477bd5dc2741793c0eb6e40c841d23335781ff77e7ada"
+                  },
+                  {
+                      "source":  "jetson/sort_unified_video_frames.py",
+                      "sha256":  "e9f57ee4e3942994560b541bb09c1aea463739305d783dc0db8eb6e9778fb6ab"
+                  },
+                  {
+                      "source":  "docs/arena_final_environment.md",
+                      "sha256":  "699c84c27daba9f3f13520821a45325d1a45eb59be7f167364f4d464ed2ed917"
+                  },
+                  {
+                      "source":  "docs/DATA_GENERATION.md",
+                      "sha256":  "e09eefbea7b2aae9e56f044ddff09782c560459efe28d8827b3e8a2f9d5c2d5b"
+                  },
+                  {
+                      "source":  "docs/history/readme_full_20260623.md",
+                      "sha256":  "8e5e4fce06c4d25809604a06afb1ef25d2975da616becac8c3be933d03942fe5"
+                  },
+                  {
+                      "source":  "docs/history/readme_specific_full_20260702.md",
+                      "sha256":  "befc2c067509f06489a84a3993a86e500119ccbcb22e8d78e4b79031c6549c05"
+                  },
+                  {
+                      "source":  "docs/presentation/README.md",
+                      "sha256":  "6d32c7909d0f18fc63b64f208cfea0d6c104823d016b29da014e125e19894350"
+                  },
+                  {
+                      "source":  "reports/a1_eval_compare_v1/a1_eval_comparison.json",
+                      "sha256":  "b62ea0a4c6802fad943fd7b1cc45d32371dfbc019c8d5296ba470a23656a2321"
+                  },
+                  {
+                      "source":  "reports/a1_eval_compare_v1/summary.md",
+                      "sha256":  "76191ad98bead0fa3fd559bec701867c0348ecfa97a62631a711e601ce7aa9cb"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/artifacts/c_mobilenetv3small_runtimewarp_warmplain_ft.classes.json",
+                      "sha256":  "f9be615fef3c8dc4e44e0a33c3d07e4621d356a7d0ecb646fe15b07d4779d691"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp001_runtime_variants.json",
+                      "sha256":  "a5b3190c27c5d37969d64492fa4dca3f0312c231c2d3091390767d6e16854318"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp002_mask_cache.json",
+                      "sha256":  "4cf6b54b7c4a2dc2fb7ccdee1a1c4c4f7a4094ea98841fbbd410e50397deea17"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp003_restore_mask_path_timing.json",
+                      "sha256":  "6a451240b175f485c372025bde44356df8e6786cd1a05d4693c56028a0ece571"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp004_crop_space_occlusion_blacken.json",
+                      "sha256":  "fb5ee9b5cc73bccfd567f1ad158951f57d71d6344ddf78937baa8e2bab63a8a0"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp005_resolution_variants.json",
+                      "sha256":  "7e71aba967f5b4ddec1d8e1a5d06ef451656c81f0f56ac730a806886c70840ad"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp006_trace_bc.json",
+                      "sha256":  "ed51fddded9503534eacd1688de430fbef1b99bd4522727d77184b7a59f9d533"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp007_yolo_half.json",
+                      "sha256":  "0c8d608bae9118deaed5fe5f4db303d03430b15d4720f2cb5ea09690eee390d7"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp008_disable_c_input_capture.json",
+                      "sha256":  "44cb1370d9c70328d40e50a8f6a7765df7f9b593fea09143ac754723ac261acb"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp009_refine_fastpath_recheck.json",
+                      "sha256":  "1eeb4689952d7cbb7f0f24ebb3e321de0a6a09f0cbf3d54e5702d6fb7251acd9"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp010_bbox_only_a1_mask.json",
+                      "sha256":  "e9df3c8dbf8625c87e5119db7fd2930855907e1a65ffa1205d7a4e48ecd591c5"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp011_c_top1_transfer.json",
+                      "sha256":  "b9b2693f5b4fe049d5559f2d4ba7c656de92789049c147ffcc6a8be703cfd65d"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp012_c_onnx_runtime.json",
+                      "sha256":  "b00c34cca16a8d66b354bcaad20e1902d5a435f08652cc069d3b369ff544e638"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp013_ort_cuda_dependency_fix.json",
+                      "sha256":  "cfffe9c55c768754c28b82f558cb5680fb8c31ae0ca70bef70b95395120a09e6"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp013_ort_cuda_dll_fix.json",
+                      "sha256":  "32dbb46c8ef1303d10c1dc11ce32b7303751204f7a52f9d92daf3b8ce5e35bcc"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp014_a1_a2_onnx_runtime.json",
+                      "sha256":  "6e25f6aed3e123540e655062c283f3d4c4bcfb203c834df24b3ad30ef743b60a"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp015_no_refine_best_recheck.json",
+                      "sha256":  "cd9033a9e0cb03e7eec657d7ff182bab26b4ea42059771c8df2532951a3503db"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp015_stage_timing_profile.json",
+                      "sha256":  "3d8d54d2fc962d0949256fff0bb4b3670e43feb57733f851bbfed2ac0cf2edd3"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp016_refine_fastpath_profile.json",
+                      "sha256":  "3f13130e753006e48bda0df2855e577076580a65c9cb521486eb1dbc3a664c8f"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp016_refine_shared_edges_reuse.json",
+                      "sha256":  "dbc001ee3ee497e270cc9001bd6e4799eeedfb595f5f5930d32657a39f5b5706"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp017_polygon_iou_cache.json",
+                      "sha256":  "de1866e9433d9be8b02c6a87d5f606a4b2849279f4ada350e4cfe0dca9aa654b"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp018_c_warp_boundary_sweep.json",
+                      "sha256":  "71571c466e27f3df4cac03aeeca461a94288e3141481057d2403c6f178621635"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp018_c_warp_resolution_sweep.json",
+                      "sha256":  "c1b296a0c5f9b0f8e571102c1001a1780b45444d6804d92cc0df9bac087b3dc4"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp019_c_tensorrt_ep.json",
+                      "sha256":  "e350f004626a53e2bbfe2899d1257070226f291d9a16e69e0176f57cbf0499d5"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp020_occlusion_blacken_ablation.json",
+                      "sha256":  "02dc4130f7c7647005c187f1f5f072898170de7bef1159ec8b4c75e3209e4f98"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp021_a2_plain_face_fastpath.json",
+                      "sha256":  "5211dce5b0878f4dee9cb82fb389df630e2c2594d1fa38ec40194cc1c15cb247"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp021_a2_plain_face_threshold_sweep.json",
+                      "sha256":  "ea295a68aefd3b65c8b4cca88359fb12252702a889472de1443a21b11fa42205"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp022_a2_engine_runtime_b8.json",
+                      "sha256":  "505929866314c3923438ee8ee571eb9b41c3963b4faf547aa51fa4f546a7b286"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp023_a1_engine_runtime.json",
+                      "sha256":  "46955470572964427be81dc60ae9cb27259287cb574dc8b1a079781179da7366"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp024_c_crop_matrix_reuse.json",
+                      "sha256":  "b656e12e67edeea3541732cda497523189797b62acdcaa88b23ba05ec6ecb5dd"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp025_best_c_no_refine.json",
+                      "sha256":  "cfb6ca5ddc916de82459533dcaea5221153f48f3a141d661f19f20caae4d7190"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp026_pose_fruit_refine.json",
+                      "sha256":  "9f06e5fdcbbee80e159f1878102bab6be2cfed59611acff3a4f80d2772cd6f2e"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp027_pose_fast_iou.json",
+                      "sha256":  "94a1778aa77cdf152ce6b9b735ed22a82ff665e76b530c74af455d47af3d080e"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp028_a2_imgsz_sweep_best_c.json",
+                      "sha256":  "397c5bdb07deacab79c5856d8228bc1c77d1fc55868b15793a4ce8dca0e9f549"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp029_b_cpu_best_c.json",
+                      "sha256":  "f3ae12b43263c3e0bb16800176b34d3482854e992d29d419d3237b940474cc74"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp030_quad_metrics_fastpath.json",
+                      "sha256":  "c36bc7a4ca1761eae7a8841c59eae19fc8bdb43c64bfbe791dc95681a3be0359"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp031_trace_b_best_c.json",
+                      "sha256":  "d8ef619038b43eb9e305cda072c22caebec2c3658d5006bed9d35746078bd5ed"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp032_torch_cuda_fast_path.json",
+                      "sha256":  "ca832d4d18236a2c64ca7d77796e2954caebb662a6b6b0cc78c4484a58c8b613"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp033_frame_b_batch.json",
+                      "sha256":  "79c3e07d447357a8f8d5425cf35a1dd7f5237dd71b8293409b24055fea69d096"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp034_frame_bc_batch.json",
+                      "sha256":  "bac78e82779403de49a9b780d28ba959a5b347f4e49e1985b8727eef749bb1aa"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp035_final_frame_bc_goal_check.json",
+                      "sha256":  "14e0a7df20a4854d761e8ca1cddeddd5c6cb97c38bbfac5aa0bcfb850bb575d0"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp036_frame_bc_half_cuda.json",
+                      "sha256":  "319eca5d3ab0b2a52e2f247304f1ca4634ead62e4dd745c825c0cfdfcc7feab6"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp037_22fps_reindex_cwarp_sweep.json",
+                      "sha256":  "6c2ac49240984da3987892babcb4fee3ef96e822d420fe4341aea007ec049f34"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp038_22fps_a2_engine_frame_bc_sweep.json",
+                      "sha256":  "60d0407ad3b104210dd8d46db3589628373a273275c74b65e1c0ee29a9941fbe"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp039_22fps_geometry_cache.json",
+                      "sha256":  "2d4116de4839c8c561ad73a1bd06282542995048f5df850e2b41b72cfb43102f"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp040_22fps_refine_and_cconf_sweep.json",
+                      "sha256":  "9d4203624f218dd9eab03505b3774b7a43a8244e25b4ab59fe1f047258229b4a"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp041_22fps_projective_fallback_for_pose_fruit.json",
+                      "sha256":  "86996d9a18f8abfc1331977cf4999209acf88c79387cb5c6fae45f1c2665e783"
+                  },
+                  {
+                      "source":  "reports/abc_runtime_optimization/exp042_22fps_pose_fruit_combo_sweep.json",
+                      "sha256":  "1325cfac02123a7010d176fe2c6509b477c8d741199735baa57c9b430d994a9b"
+                  },
+                  {
+                      "source":  "reports/c_hard_mining_exp002_apple_to_orange/hard_confusions.json",
+                      "sha256":  "02231b4d3a19f00f212c09af1ed3f6512068b11c49be79b6c10c90af2f29a0ac"
+                  },
+                  {
+                      "source":  "reports/c_hard_mining_exp006_apple_to_orange/hard_confusions.json",
+                      "sha256":  "27ddb91c0b56cf658d3c3b9bfcd794990f43a65fe1cbd71a64beb47c63e9a9ed"
+                  },
+                  {
+                      "source":  "reports/c_hard_mining_exp006_orange_to_apple/hard_confusions.json",
+                      "sha256":  "9bb54a7f878345a48e6dc44d8dc6d7e01843411b800c41c066cc320332a4c647"
+                  },
+                  {
+                      "source":  "reports/c_orange_hard_case_experiment_log.md",
+                      "sha256":  "f3c4196e143d2f27a7edd1c10161281e176510f43ce6e013cbf77577d69c710d"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/a1_crop_jitter_context_v1/README.md",
+                      "sha256":  "50a772c2888b117eaf39c87641254d78b5246eb11556e638f36a7bd030c8c2c6"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/baseline_val_metrics.json",
+                      "sha256":  "ac96a16ca23178fe47749c8f39137c26690de48e930229fb81e7c5cda08a9a0a"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/hard_cases_baseline/report.json",
+                      "sha256":  "3c8a4a653474e85f2013ba903cafded21a79618a1e23ec743df778b1664daafb"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/hard_cases_v1_plainheavy/report.json",
+                      "sha256":  "d12b579c8aea37c4d4448f0f7d0fa7442c5dabe094824a143475f012f0671d72"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/hard_cases_v2_balanced/report.json",
+                      "sha256":  "248ebb39146dd9cbe5c528cebb4f99b8eac060b20f1eddea77bbe830cc6daf14"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/summary.md",
+                      "sha256":  "92bd456360483ec317ed8749a2edac9cc097b69331b7802eb365e8107b2e20cf"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/v1_plainheavy_val_metrics.json",
+                      "sha256":  "2447a8d9f4cda599414be19a3337608ab5357edabb7c2629c361372daf6be5db"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/v2_balanced_val_metrics.json",
+                      "sha256":  "ebb2dcb34ff3246a708fd2831e65d0affad770fa51c68b3b30699d85384fa041"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/balanced_v2_20260629/val_compare_summary.json",
+                      "sha256":  "6f47ad725963c18026492bbc24872ab1150a65ce5b4a8c9878e4b781823b8682"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/fruit_texture_color_filtered_v1/README.md",
+                      "sha256":  "f72439818aa5ed075629db3059f7157ac16a71f0fbd201e40cb5dfd8a0bb9e75"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/fruit_texture_color_filtered_v2/README.md",
+                      "sha256":  "8fb81e2d1593dc2cf7f6c6ca91a32158b5edbbd708315d35f3f085c29ae01ed6"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/orange_hardcase_pruned_coloroutlier_20260704/predictions.json",
+                      "sha256":  "0716efc283c1ab00fcb015ec8323eceb790a65da1f0bbecc53775a2264e4a439"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/pruned_coloroutlier_best_val_20260704/summary.md",
+                      "sha256":  "7a9229eea86ee266b599a357c2f893a684c2623d2a88b03f1d489d8bed050a34"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/recorded_hardset_120ep_20260708/summary.md",
+                      "sha256":  "488e062af2cdd415149622744cd7b1a02982866647f5ffb774b7e19327a8cb71"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/sparse_icon_probe_iterations_20260708/summary.md",
+                      "sha256":  "866719db41cf8e2e38d6c60293e19cc65f399f5fbc3d738011ef7cdd236e8308"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/unified_runtime_policy_bottleneck_20260703.md",
+                      "sha256":  "ad8d2cb849aed86dc27bd7130e4f66c55e3bda87750618bdd982f6673b7ac612"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/wholefruit_plainhard_20260629/baseline_val_metrics.json",
+                      "sha256":  "329eec3b622c9df184aa6afa26a01a4162e38d7b546b6811a40158071808ab1f"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/wholefruit_plainhard_20260629/fine_tuned_val_metrics.json",
+                      "sha256":  "bba8a527cb7b8a163512b40989d9cbcc059185c51517c7346f370efa57acd605"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/wholefruit_plainhard_20260629/hard_cases_baseline/report.json",
+                      "sha256":  "3c8a4a653474e85f2013ba903cafded21a79618a1e23ec743df778b1664daafb"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/wholefruit_plainhard_20260629/hard_cases_fine_tuned/report.json",
+                      "sha256":  "d12b579c8aea37c4d4448f0f7d0fa7442c5dabe094824a143475f012f0671d72"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/wholefruit_plainhard_20260629/summary.md",
+                      "sha256":  "d88c796f53ec7edbd64f1535a9f82e4f6a2c55d136ed42d6ea9ac186ccfd2774"
+                  },
+                  {
+                      "source":  "reports/cube_face_unified_eval/wholefruit_plainhard_20260629/val_compare_summary.json",
+                      "sha256":  "34378b07efa8fbf7fca1f1188f247a361549f80bfb965db6af629c977f57267a"
+                  },
+                  {
+                      "source":  "reports/integration_test_20260709/findings.md",
+                      "sha256":  "a1cb39c470701bfb7c20fdc46a5a782baa06caf55f992fba0c9287fa9293ab1d"
+                  },
+                  {
+                      "source":  "reports/jetson_runtime_batch_benchmark_current_pc.json",
+                      "sha256":  "b990817aa774bd96a9a59c360cdf4a94b0b7e78c39961f3d22ec1bd87012833f"
+                  },
+                  {
+                      "source":  "reports/jetson_runtime_batch_benchmark_current_pc_4cube12face.json",
+                      "sha256":  "8997f67ec86963d8501fc9ae3ebadfe815d7ba4f27adb0d4c85fbf666b9fe8ea"
+                  },
+                  {
+                      "source":  "reports/jetson_runtime_stage_overhead_current_pc_4cube12face.json",
+                      "sha256":  "9c6b61e65179cdf4711eeba68fdb5b11cc5f5b96509ddd1b06f4cbbba3aea54d"
+                  },
+                  {
+                      "source":  "reports/share/fair_30s_compare_20260702_155104/benchmark.json",
+                      "sha256":  "b031eda4a881edb48d8ed5fcc6a2adfe17300060388abad8489f2f98613dc48b"
+                  },
+                  {
+                      "source":  "reports/share/fair_30s_compare_20260702_155104/summary.md",
+                      "sha256":  "93486bf79972d2c6979a6c404ddbbb60524c14d11bd2c09cd60f01e7cfaaf94c"
+                  },
+                  {
+                      "source":  "reports/share/fair_webcam_compare_30s.py",
+                      "sha256":  "fd3bdb0e484505ecdd4b7d62c1a0860adbed22b47abaf45031a779068ba047fa"
+                  },
+                  {
+                      "source":  "reports/texture_policy_meta_v2_50000_20260623.md",
+                      "sha256":  "380c66c47ae4af4c5324efd4c62e74f9b7957e75d77995fc8758d453005d058a"
+                  },
+                  {
+                      "source":  "assets/generated/dodecahedron.obj",
+                      "sha256":  "59ced967005dd3df3679235ec31893d64dd4c35823ff781e8e1b6a9985d16556"
+                  },
+                  {
+                      "source":  "assets/generated/icosahedron.obj",
+                      "sha256":  "f080b7c98aa234c793d2509200e86a1a64439e7d55ff520d8115daa4922a799f"
+                  },
+                  {
+                      "source":  "assets/generated/octahedron.obj",
+                      "sha256":  "ef8303d27e05dff223957e3117b4da675991297f2dd8e181d369981348966e40"
+                  },
+                  {
+                      "source":  "assets/generated/plain_cube.obj",
+                      "sha256":  "86096f2a55aea6cff3dc6812d85244ed9fe3b8d9057eca8b618c8f795744d54f"
+                  },
+                  {
+                      "source":  "readme.md",
+                      "sha256":  "9e158b08f29282111da51f0995e41a376c01341f3f74e96cd3b27846faaad0d5"
+                  },
+                  {
+                      "source":  "readme_specific.md",
+                      "sha256":  "03c18bcf5914b433fb78bb6af3c59d0906b2c3375dab119e73b3bcb8c1eb856e"
+                  },
+                  {
+                      "source":  "HISTORY.md",
+                      "sha256":  "277253ed34f03e4202d19cc8733a0768cc0e6d09681dbeab19e0567ef36abd99"
+                  },
+                  {
+                      "source":  "EXPERIMENTS.md",
+                      "sha256":  "a8c72704c962a7e2ba75dd6a9d3da8e715540667c85f27e09200d66fcdb4a0ef"
+                  },
+                  {
+                      "source":  "BACKUP_MANIFEST.md",
+                      "sha256":  "5f2d4e2bee87001c1d241bd581357630bc547c62d2801a0650656a840ff5c0b1"
+                  },
+                  {
+                      "source":  "environment.yml",
+                      "sha256":  "c444bf4bea7e23fa5796bce32d37f1cb425232ae42eedc427e20a38d640ebfc6"
+                  },
+                  {
+                      "source":  "main.py",
+                      "sha256":  "3cf5a88e6f0099adccce2ca8cc2ebb3e54c8ea054798e72497a45db5767b2301"
+                  }
+              ],
+    "integration_changes":  [
+                                "generation/scripts/generate_yolo_coco_composite.py: FRUIT_FACE_NORMALS follows the final arena rule (fruit printed on +Z, +Y and -Y).",
+                                "generation/scripts/split_meta_v2_dataset.py and the exporter split_manifest support were added in ddonggae to keep all outputs from each scene in one train/val/test split.",
+                                "The public reproduction recipe uses a pinned Fruits-360 subset and procedural arena backgrounds; it does not claim byte-identical historical output."
+                            ]
+}

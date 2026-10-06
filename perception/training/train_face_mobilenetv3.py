@@ -97,7 +97,7 @@ class FaceClsDataset(Dataset):
         self.samples = []
         for class_id, class_name in enumerate(CLASSES):
             class_dir = self.root / split / class_name
-            for path in sorted(class_dir.glob("*.jpg")):
+            for path in sorted(p for p in class_dir.glob("*") if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".bmp"}):
                 self.samples.append((path, class_id))
         if not self.samples:
             raise RuntimeError(f"no C classifier samples found: {self.root / split}")
@@ -162,8 +162,7 @@ def make_model(num_classes, pretrained=True, backbone="mobilenet_v3_small"):
             raise ValueError(f"unknown backbone {backbone}")
         return m, backbone, bool(pretrained)
     except Exception as exc:
-        print(f"backbone {backbone} unavailable/pretrained load failed: {exc}", flush=True)
-        return MiniClassifier(num_classes), "mini_classifier_fallback", False
+        raise RuntimeError(f"Cannot construct {backbone}; check matching torch/torchvision versions") from exc
 
 
 class MiniClassifier(nn.Module):
@@ -265,7 +264,8 @@ def main():
     np.random.seed(args.seed)
     random.seed(args.seed)
     if torch.cuda.is_available():
-        torch.backends.cudnn.benchmark = True
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.deterministic = True
 
     run_dir = args.project / args.name
     weights_dir = run_dir / "weights"

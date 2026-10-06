@@ -115,9 +115,12 @@ What transfers is the whole method, documented in
 - the two runtime contracts, which are part of the model and not implementation details:
   face inference at `imgsz=224` (`perception/fieldlib.py:68`) and **BGR** numpy input.
 
-The scripts are in `perception/training/`. The texture pool and the rendered bundles are
-*not* redistributed for licensing reasons — the recipe, ratios, colour gates and a clean
-Wikimedia rebuild path are published instead.
+The integrated generation, export and training scripts plus a clean-checkout public-data
+recipe are in [`../perception/docs/synthetic-data-reproduction.md`](../perception/docs/synthetic-data-reproduction.md).
+The historical competition texture pool and rendered bundles are *not* redistributed.
+The public baseline rebuilds its textures from a pinned Fruits-360 snapshot and uses the
+renderer’s procedural arena background. It reproduces the method and split policy; it
+cannot recreate the private real-photo fine-tune or byte-identical historical weights.
 
 ### 1.5 The negative results
 

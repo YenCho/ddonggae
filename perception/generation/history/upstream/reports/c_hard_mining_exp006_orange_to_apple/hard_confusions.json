@@ -1,0 +1,1333 @@
+{
+  "checkpoint": "runs\\meta_v2_c_facecls\\c_mobilenetv3small_anchor_pair_exp006\\weights\\best.pt",
+  "data_root": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls",
+  "split": "train",
+  "true_class": "orange",
+  "target_class": "apple",
+  "num_images": 4346,
+  "top1_target_count": 11,
+  "top1_target_rate": 0.0025310630464795212,
+  "top_k": [
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002458_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.999749481678009,
+      "true_prob": 0.00024909223429858685,
+      "target_prob": 0.999749481678009,
+      "probs": {
+        "apple": 0.999749481678009,
+        "orange": 0.00024909223429858685,
+        "banana": 4.6675893372594146e-08,
+        "pineapple": 1.3763153106083337e-07,
+        "plain": 1.9974058318439347e-07,
+        "unknown": 1.0518741646592389e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0000_target0.9997_pred-apple_002458_obj000_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\000447_obj003_face01_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.9915914535522461,
+      "true_prob": 0.0027663656510412693,
+      "target_prob": 0.9915914535522461,
+      "probs": {
+        "apple": 0.9915914535522461,
+        "orange": 0.0027663656510412693,
+        "banana": 0.00012923270696774125,
+        "pineapple": 0.0045629628002643585,
+        "plain": 0.00024030049098655581,
+        "unknown": 0.0007097263005562127
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0001_target0.9916_pred-apple_000447_obj003_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008650_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.9850510358810425,
+      "true_prob": 0.014705939218401909,
+      "target_prob": 0.9850510358810425,
+      "probs": {
+        "apple": 0.9850510358810425,
+        "orange": 0.014705939218401909,
+        "banana": 5.1237868319731206e-05,
+        "pineapple": 5.775158206233755e-05,
+        "plain": 9.464915638091043e-05,
+        "unknown": 3.9460945117753e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0002_target0.9851_pred-apple_008650_obj000_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007516_obj001_face01_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.9647930264472961,
+      "true_prob": 0.034066636115312576,
+      "target_prob": 0.9647930264472961,
+      "probs": {
+        "apple": 0.9647930264472961,
+        "orange": 0.034066636115312576,
+        "banana": 0.0011276297736912966,
+        "pineapple": 8.510573366038443e-07,
+        "plain": 4.678048753703479e-06,
+        "unknown": 7.166946033976274e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0003_target0.9648_pred-apple_007516_obj001_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003304_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.9565038681030273,
+      "true_prob": 0.04347499832510948,
+      "target_prob": 0.9565038681030273,
+      "probs": {
+        "apple": 0.9565038681030273,
+        "orange": 0.04347499832510948,
+        "banana": 1.1826139598269947e-05,
+        "pineapple": 7.95415076026984e-07,
+        "plain": 4.411290774442023e-06,
+        "unknown": 4.040214207634563e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0004_target0.9565_pred-apple_003304_obj002_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004586_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.9559510350227356,
+      "true_prob": 0.04402332007884979,
+      "target_prob": 0.9559510350227356,
+      "probs": {
+        "apple": 0.9559510350227356,
+        "orange": 0.04402332007884979,
+        "banana": 1.4442889550991822e-05,
+        "pineapple": 6.604130248888396e-06,
+        "plain": 9.350931122753536e-07,
+        "unknown": 3.691286110552028e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0005_target0.9560_pred-apple_004586_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008328_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.8945580124855042,
+      "true_prob": 0.10543575882911682,
+      "target_prob": 0.8945580124855042,
+      "probs": {
+        "apple": 0.8945580124855042,
+        "orange": 0.10543575882911682,
+        "banana": 1.2939038640524814e-07,
+        "pineapple": 9.746373308416878e-08,
+        "plain": 2.1062799078208627e-06,
+        "unknown": 3.828703484032303e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0006_target0.8946_pred-apple_008328_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\000634_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.8932595252990723,
+      "true_prob": 0.0012505826307460666,
+      "target_prob": 0.8932595252990723,
+      "probs": {
+        "apple": 0.8932595252990723,
+        "orange": 0.0012505826307460666,
+        "banana": 0.00028110400307923555,
+        "pineapple": 0.10390430688858032,
+        "plain": 0.0010934260208159685,
+        "unknown": 0.00021107032080180943
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0007_target0.8933_pred-apple_000634_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003977_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.7455160021781921,
+      "true_prob": 0.25400876998901367,
+      "target_prob": 0.7455160021781921,
+      "probs": {
+        "apple": 0.7455160021781921,
+        "orange": 0.25400876998901367,
+        "banana": 1.617519956198521e-05,
+        "pineapple": 5.646060162689537e-05,
+        "plain": 0.00035118203959427774,
+        "unknown": 5.134132879902609e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0008_target0.7455_pred-apple_003977_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\000244_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.5540834665298462,
+      "true_prob": 0.1394413858652115,
+      "target_prob": 0.5540834665298462,
+      "probs": {
+        "apple": 0.5540834665298462,
+        "orange": 0.1394413858652115,
+        "banana": 0.000645340362098068,
+        "pineapple": 0.30433163046836853,
+        "plain": 0.0006771634216420352,
+        "unknown": 0.0008210017113015056
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0009_target0.5541_pred-apple_000244_obj000_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005596_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "apple",
+      "pred_prob": 0.49473243951797485,
+      "true_prob": 0.3773970603942871,
+      "target_prob": 0.49473243951797485,
+      "probs": {
+        "apple": 0.49473243951797485,
+        "orange": 0.3773970603942871,
+        "banana": 0.004706584382802248,
+        "pineapple": 0.12283581495285034,
+        "plain": 0.000193395433598198,
+        "unknown": 0.00013470579870045185
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0010_target0.4947_pred-apple_005596_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008027_obj003_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.5941789746284485,
+      "true_prob": 0.5941789746284485,
+      "target_prob": 0.40577876567840576,
+      "probs": {
+        "apple": 0.40577876567840576,
+        "orange": 0.5941789746284485,
+        "banana": 3.764729990507476e-05,
+        "pineapple": 9.795585675931306e-09,
+        "plain": 1.317593614658108e-06,
+        "unknown": 3.3329160942230374e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0011_target0.4058_pred-orange_008027_obj003_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\009672_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "banana",
+      "pred_prob": 0.4289948046207428,
+      "true_prob": 0.2627813220024109,
+      "target_prob": 0.3079661428928375,
+      "probs": {
+        "apple": 0.3079661428928375,
+        "orange": 0.2627813220024109,
+        "banana": 0.4289948046207428,
+        "pineapple": 1.1723300303856377e-05,
+        "plain": 0.00021946219203528017,
+        "unknown": 2.6508809241931885e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0012_target0.3080_pred-banana_009672_obj000_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005086_obj003_face00_orange.jpg",
+      "true": "orange",
+      "pred": "pineapple",
+      "pred_prob": 0.7282992005348206,
+      "true_prob": 0.0185516607016325,
+      "target_prob": 0.2489762008190155,
+      "probs": {
+        "apple": 0.2489762008190155,
+        "orange": 0.0185516607016325,
+        "banana": 0.003469003364443779,
+        "pineapple": 0.7282992005348206,
+        "plain": 9.30800088099204e-05,
+        "unknown": 0.0006108506349846721
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0013_target0.2490_pred-pineapple_005086_obj003_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003361_obj004_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.796942949295044,
+      "true_prob": 0.796942949295044,
+      "target_prob": 0.20265242457389832,
+      "probs": {
+        "apple": 0.20265242457389832,
+        "orange": 0.796942949295044,
+        "banana": 1.2659041885854094e-06,
+        "pineapple": 1.0062639375973959e-05,
+        "plain": 0.0003779034304898232,
+        "unknown": 1.5430181520059705e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0014_target0.2027_pred-orange_003361_obj004_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002309_obj004_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.8019635677337646,
+      "true_prob": 0.8019635677337646,
+      "target_prob": 0.19775573909282684,
+      "probs": {
+        "apple": 0.19775573909282684,
+        "orange": 0.8019635677337646,
+        "banana": 1.1663998520816676e-05,
+        "pineapple": 1.5308886531784083e-06,
+        "plain": 0.00023556097585242242,
+        "unknown": 3.1925923394737765e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0015_target0.1978_pred-orange_002309_obj004_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008001_obj004_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.8176078200340271,
+      "true_prob": 0.8176078200340271,
+      "target_prob": 0.1823681741952896,
+      "probs": {
+        "apple": 0.1823681741952896,
+        "orange": 0.8176078200340271,
+        "banana": 9.432039405510295e-06,
+        "pineapple": 8.89845921392407e-08,
+        "plain": 3.3465821616118774e-06,
+        "unknown": 1.1123074727947824e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0016_target0.1824_pred-orange_008001_obj004_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007569_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.8259811997413635,
+      "true_prob": 0.8259811997413635,
+      "target_prob": 0.1718502789735794,
+      "probs": {
+        "apple": 0.1718502789735794,
+        "orange": 0.8259811997413635,
+        "banana": 0.00042231730185449123,
+        "pineapple": 0.0005488484166562557,
+        "plain": 1.0363518413214479e-05,
+        "unknown": 0.0011870014714077115
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0017_target0.1719_pred-orange_007569_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\006998_obj004_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.8449378609657288,
+      "true_prob": 0.8449378609657288,
+      "target_prob": 0.15505285561084747,
+      "probs": {
+        "apple": 0.15505285561084747,
+        "orange": 0.8449378609657288,
+        "banana": 1.9422845980443526e-06,
+        "pineapple": 3.2404369676442e-07,
+        "plain": 8.859837521413283e-07,
+        "unknown": 6.164562364574522e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0018_target0.1551_pred-orange_006998_obj004_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008777_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.8618935346603394,
+      "true_prob": 0.8618935346603394,
+      "target_prob": 0.1377897709608078,
+      "probs": {
+        "apple": 0.1377897709608078,
+        "orange": 0.8618935346603394,
+        "banana": 4.56322186437319e-06,
+        "pineapple": 0.0001331228413619101,
+        "plain": 9.011752263177186e-05,
+        "unknown": 8.889993478078395e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0019_target0.1378_pred-orange_008777_obj002_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\001098_obj004_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.8908176422119141,
+      "true_prob": 0.8908176422119141,
+      "target_prob": 0.10917731374502182,
+      "probs": {
+        "apple": 0.10917731374502182,
+        "orange": 0.8908176422119141,
+        "banana": 3.2084756185213337e-07,
+        "pineapple": 2.8707823673812527e-08,
+        "plain": 6.49573507871537e-07,
+        "unknown": 4.040841758978786e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0020_target0.1092_pred-orange_001098_obj004_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005150_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9028664231300354,
+      "true_prob": 0.9028664231300354,
+      "target_prob": 0.09708547592163086,
+      "probs": {
+        "apple": 0.09708547592163086,
+        "orange": 0.9028664231300354,
+        "banana": 2.1217915673332755e-06,
+        "pineapple": 1.972180371012655e-06,
+        "plain": 3.258067954448052e-05,
+        "unknown": 1.1405503755668178e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0021_target0.0971_pred-orange_005150_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007871_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9168880581855774,
+      "true_prob": 0.9168880581855774,
+      "target_prob": 0.07996032387018204,
+      "probs": {
+        "apple": 0.07996032387018204,
+        "orange": 0.9168880581855774,
+        "banana": 0.00013321978622116148,
+        "pineapple": 0.0023830805439502,
+        "plain": 1.3348460925044492e-05,
+        "unknown": 0.0006218816270120442
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0022_target0.0800_pred-orange_007871_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008758_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.940105676651001,
+      "true_prob": 0.940105676651001,
+      "target_prob": 0.05974144861102104,
+      "probs": {
+        "apple": 0.05974144861102104,
+        "orange": 0.940105676651001,
+        "banana": 1.4867538084217813e-05,
+        "pineapple": 1.3504309208656196e-05,
+        "plain": 9.912822861224413e-05,
+        "unknown": 2.546578434703406e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0023_target0.0597_pred-orange_008758_obj002_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004131_obj003_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.935452938079834,
+      "true_prob": 0.935452938079834,
+      "target_prob": 0.05885716527700424,
+      "probs": {
+        "apple": 0.05885716527700424,
+        "orange": 0.935452938079834,
+        "banana": 0.004637998528778553,
+        "pineapple": 0.0007124192779883742,
+        "plain": 0.0001964586554095149,
+        "unknown": 0.00014295628352556378
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0024_target0.0589_pred-orange_004131_obj003_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\001035_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9421306848526001,
+      "true_prob": 0.9421306848526001,
+      "target_prob": 0.0578661784529686,
+      "probs": {
+        "apple": 0.0578661784529686,
+        "orange": 0.9421306848526001,
+        "banana": 1.9618109945440665e-06,
+        "pineapple": 8.335425860650503e-08,
+        "plain": 9.798820883588633e-07,
+        "unknown": 1.578600148377518e-07
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0025_target0.0579_pred-orange_001035_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005355_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "pineapple",
+      "pred_prob": 0.45203840732574463,
+      "true_prob": 0.1285046488046646,
+      "target_prob": 0.05364414304494858,
+      "probs": {
+        "apple": 0.05364414304494858,
+        "orange": 0.1285046488046646,
+        "banana": 0.30969974398612976,
+        "pineapple": 0.45203840732574463,
+        "plain": 0.05554022267460823,
+        "unknown": 0.0005728445830754936
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0026_target0.0536_pred-pineapple_005355_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005603_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9480336904525757,
+      "true_prob": 0.9480336904525757,
+      "target_prob": 0.05114328861236572,
+      "probs": {
+        "apple": 0.05114328861236572,
+        "orange": 0.9480336904525757,
+        "banana": 0.0008104006410576403,
+        "pineapple": 2.7398752422413963e-07,
+        "plain": 9.562324521539267e-06,
+        "unknown": 2.8083468350814655e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0027_target0.0511_pred-orange_005603_obj000_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003033_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9486398696899414,
+      "true_prob": 0.9486398696899414,
+      "target_prob": 0.0507158599793911,
+      "probs": {
+        "apple": 0.0507158599793911,
+        "orange": 0.9486398696899414,
+        "banana": 5.833758768858388e-05,
+        "pineapple": 2.3768354822095716e-06,
+        "plain": 0.0005752586876042187,
+        "unknown": 8.22710990178166e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0028_target0.0507_pred-orange_003033_obj000_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\009259_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9527536630630493,
+      "true_prob": 0.9527536630630493,
+      "target_prob": 0.04724625498056412,
+      "probs": {
+        "apple": 0.04724625498056412,
+        "orange": 0.9527536630630493,
+        "banana": 3.6816208415224594e-10,
+        "pineapple": 6.5963233139565425e-12,
+        "plain": 1.3405924370601952e-08,
+        "unknown": 1.1784580067342176e-07
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0029_target0.0472_pred-orange_009259_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\001543_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9000265002250671,
+      "true_prob": 0.9000265002250671,
+      "target_prob": 0.045361798256635666,
+      "probs": {
+        "apple": 0.045361798256635666,
+        "orange": 0.9000265002250671,
+        "banana": 0.0006454738904722035,
+        "pineapple": 0.002809294732287526,
+        "plain": 0.048950303345918655,
+        "unknown": 0.002206524834036827
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0030_target0.0454_pred-orange_001543_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\009007_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9551571011543274,
+      "true_prob": 0.9551571011543274,
+      "target_prob": 0.044666845351457596,
+      "probs": {
+        "apple": 0.044666845351457596,
+        "orange": 0.9551571011543274,
+        "banana": 4.2284871597075835e-05,
+        "pineapple": 4.7660407176408626e-07,
+        "plain": 1.6875834262464195e-05,
+        "unknown": 0.00011651078966679052
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0031_target0.0447_pred-orange_009007_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\006890_obj002_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9577217102050781,
+      "true_prob": 0.9577217102050781,
+      "target_prob": 0.04227498173713684,
+      "probs": {
+        "apple": 0.04227498173713684,
+        "orange": 0.9577217102050781,
+        "banana": 1.0744820428953972e-06,
+        "pineapple": 4.0737010209568325e-08,
+        "plain": 2.14137730836228e-06,
+        "unknown": 9.017426805257855e-08
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0032_target0.0423_pred-orange_006890_obj002_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004435_obj001_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9584119319915771,
+      "true_prob": 0.9584119319915771,
+      "target_prob": 0.04154239967465401,
+      "probs": {
+        "apple": 0.04154239967465401,
+        "orange": 0.9584119319915771,
+        "banana": 1.7456306522944942e-05,
+        "pineapple": 1.1999340131296776e-05,
+        "plain": 2.7112394036521437e-06,
+        "unknown": 1.3498826774593908e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0033_target0.0415_pred-orange_004435_obj001_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004469_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "pineapple",
+      "pred_prob": 0.8230676651000977,
+      "true_prob": 0.10162477940320969,
+      "target_prob": 0.04052324220538139,
+      "probs": {
+        "apple": 0.04052324220538139,
+        "orange": 0.10162477940320969,
+        "banana": 0.027060607448220253,
+        "pineapple": 0.8230676651000977,
+        "plain": 0.006761097814887762,
+        "unknown": 0.0009625820093788207
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0034_target0.0405_pred-pineapple_004469_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\006701_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9688494801521301,
+      "true_prob": 0.9688494801521301,
+      "target_prob": 0.031001320108771324,
+      "probs": {
+        "apple": 0.031001320108771324,
+        "orange": 0.9688494801521301,
+        "banana": 3.273625043220818e-05,
+        "pineapple": 5.972340773041651e-07,
+        "plain": 7.372072286671028e-05,
+        "unknown": 4.2151961679337546e-05
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0035_target0.0310_pred-orange_006701_obj000_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002359_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9687902927398682,
+      "true_prob": 0.9687902927398682,
+      "target_prob": 0.030298931524157524,
+      "probs": {
+        "apple": 0.030298931524157524,
+        "orange": 0.9687902927398682,
+        "banana": 0.00011244927009101957,
+        "pineapple": 8.331510616699234e-05,
+        "plain": 9.277167555410415e-05,
+        "unknown": 0.0006222868105396628
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0036_target0.0303_pred-orange_002359_obj001_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004509_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9697237610816956,
+      "true_prob": 0.9697237610816956,
+      "target_prob": 0.030263520777225494,
+      "probs": {
+        "apple": 0.030263520777225494,
+        "orange": 0.9697237610816956,
+        "banana": 2.6142790829908336e-06,
+        "pineapple": 1.0684720308518081e-07,
+        "plain": 1.7655364104030014e-07,
+        "unknown": 9.788249371922575e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0037_target0.0303_pred-orange_004509_obj000_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\006228_obj003_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9706507325172424,
+      "true_prob": 0.9706507325172424,
+      "target_prob": 0.029041964560747147,
+      "probs": {
+        "apple": 0.029041964560747147,
+        "orange": 0.9706507325172424,
+        "banana": 3.1170579859463032e-06,
+        "pineapple": 3.590198218716978e-07,
+        "plain": 0.00029548522434197366,
+        "unknown": 8.285166586574633e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0038_target0.0290_pred-orange_006228_obj003_face01_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\006218_obj003_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9731752276420593,
+      "true_prob": 0.9731752276420593,
+      "target_prob": 0.026814216747879982,
+      "probs": {
+        "apple": 0.026814216747879982,
+        "orange": 0.9731752276420593,
+        "banana": 7.91645334174973e-07,
+        "pineapple": 4.35409731380787e-07,
+        "plain": 3.866095354965182e-08,
+        "unknown": 9.223405868397094e-06
+      },
+      "copied_to": "reports\\c_hard_mining_exp006_orange_to_apple\\orange_toward_apple\\0039_target0.0268_pred-orange_006218_obj003_face00_orange.jpg"
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002315_obj001_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.973086953163147,
+      "true_prob": 0.973086953163147,
+      "target_prob": 0.02676571160554886,
+      "probs": {
+        "apple": 0.02676571160554886,
+        "orange": 0.973086953163147,
+        "banana": 0.00014191462832968682,
+        "pineapple": 4.869880854130315e-08,
+        "plain": 1.916789642564254e-06,
+        "unknown": 3.456960030234768e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002999_obj004_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9714531898498535,
+      "true_prob": 0.9714531898498535,
+      "target_prob": 0.02632453292608261,
+      "probs": {
+        "apple": 0.02632453292608261,
+        "orange": 0.9714531898498535,
+        "banana": 0.0012169880792498589,
+        "pineapple": 0.000831425713840872,
+        "plain": 0.00014111620839685202,
+        "unknown": 3.281067620264366e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007851_obj006_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.8387547731399536,
+      "true_prob": 0.8387547731399536,
+      "target_prob": 0.025697648525238037,
+      "probs": {
+        "apple": 0.025697648525238037,
+        "orange": 0.8387547731399536,
+        "banana": 0.002622532658278942,
+        "pineapple": 0.13279369473457336,
+        "plain": 0.00011737620661733672,
+        "unknown": 1.3922434845881071e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\001033_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9739809036254883,
+      "true_prob": 0.9739809036254883,
+      "target_prob": 0.02440439909696579,
+      "probs": {
+        "apple": 0.02440439909696579,
+        "orange": 0.9739809036254883,
+        "banana": 0.001546111423522234,
+        "pineapple": 3.833759365079459e-06,
+        "plain": 5.376996341510676e-05,
+        "unknown": 1.106464333133772e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\001064_obj001_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9755889177322388,
+      "true_prob": 0.9755889177322388,
+      "target_prob": 0.024378875270485878,
+      "probs": {
+        "apple": 0.024378875270485878,
+        "orange": 0.9755889177322388,
+        "banana": 1.6627504351163225e-07,
+        "pineapple": 4.966615207990799e-08,
+        "plain": 2.4995051717269234e-05,
+        "unknown": 7.115223979781149e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\001020_obj001_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9722017645835876,
+      "true_prob": 0.9722017645835876,
+      "target_prob": 0.02428833767771721,
+      "probs": {
+        "apple": 0.02428833767771721,
+        "orange": 0.9722017645835876,
+        "banana": 0.0011856011115014553,
+        "pineapple": 3.188126356690191e-05,
+        "plain": 0.00044995904318057,
+        "unknown": 0.001842542551457882
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007366_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9585043787956238,
+      "true_prob": 0.9585043787956238,
+      "target_prob": 0.024094337597489357,
+      "probs": {
+        "apple": 0.024094337597489357,
+        "orange": 0.9585043787956238,
+        "banana": 0.016732385382056236,
+        "pineapple": 0.00040283286944031715,
+        "plain": 0.000236645937548019,
+        "unknown": 2.944677726191003e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007102_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9757673144340515,
+      "true_prob": 0.9757673144340515,
+      "target_prob": 0.024037742987275124,
+      "probs": {
+        "apple": 0.024037742987275124,
+        "orange": 0.9757673144340515,
+        "banana": 0.00018330896273255348,
+        "pineapple": 4.320073632158028e-09,
+        "plain": 1.1381514752883959e-07,
+        "unknown": 1.1514327525219414e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003754_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9766142964363098,
+      "true_prob": 0.9766142964363098,
+      "target_prob": 0.02334580384194851,
+      "probs": {
+        "apple": 0.02334580384194851,
+        "orange": 0.9766142964363098,
+        "banana": 3.751255280803889e-05,
+        "pineapple": 6.637853999791332e-08,
+        "plain": 1.9529516066540964e-06,
+        "unknown": 3.369913201822783e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004124_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.976929783821106,
+      "true_prob": 0.976929783821106,
+      "target_prob": 0.021501639857888222,
+      "probs": {
+        "apple": 0.021501639857888222,
+        "orange": 0.976929783821106,
+        "banana": 0.0014528688043355942,
+        "pineapple": 5.389235229813494e-05,
+        "plain": 1.2570892067742534e-05,
+        "unknown": 4.9126108933705837e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004890_obj004_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9132946729660034,
+      "true_prob": 0.9132946729660034,
+      "target_prob": 0.020695189014077187,
+      "probs": {
+        "apple": 0.020695189014077187,
+        "orange": 0.9132946729660034,
+        "banana": 0.0021066563203930855,
+        "pineapple": 0.0009772101184353232,
+        "plain": 0.020355096086859703,
+        "unknown": 0.042571112513542175
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004114_obj002_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9721449613571167,
+      "true_prob": 0.9721449613571167,
+      "target_prob": 0.01959044300019741,
+      "probs": {
+        "apple": 0.01959044300019741,
+        "orange": 0.9721449613571167,
+        "banana": 0.004477102309465408,
+        "pineapple": 0.0015124189667403698,
+        "plain": 0.0020260533783584833,
+        "unknown": 0.000248967349762097
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004390_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9731189012527466,
+      "true_prob": 0.9731189012527466,
+      "target_prob": 0.01924026571214199,
+      "probs": {
+        "apple": 0.01924026571214199,
+        "orange": 0.9731189012527466,
+        "banana": 0.0012217285111546516,
+        "pineapple": 0.0017684465274214745,
+        "plain": 0.004571197554469109,
+        "unknown": 7.948168786242604e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003536_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9808206558227539,
+      "true_prob": 0.9808206558227539,
+      "target_prob": 0.019177410751581192,
+      "probs": {
+        "apple": 0.019177410751581192,
+        "orange": 0.9808206558227539,
+        "banana": 4.652043799069361e-07,
+        "pineapple": 7.517694484704407e-07,
+        "plain": 8.052455058304986e-08,
+        "unknown": 7.483574222533207e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002018_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9772169589996338,
+      "true_prob": 0.9772169589996338,
+      "target_prob": 0.018276743590831757,
+      "probs": {
+        "apple": 0.018276743590831757,
+        "orange": 0.9772169589996338,
+        "banana": 0.004164240788668394,
+        "pineapple": 0.00024374581698793918,
+        "plain": 3.8121022953419015e-05,
+        "unknown": 6.028461211826652e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007280_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9806406497955322,
+      "true_prob": 0.9806406497955322,
+      "target_prob": 0.017990639433264732,
+      "probs": {
+        "apple": 0.017990639433264732,
+        "orange": 0.9806406497955322,
+        "banana": 0.0012908095959573984,
+        "pineapple": 6.808324542362243e-06,
+        "plain": 3.0372742912732065e-05,
+        "unknown": 4.078696292708628e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005283_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9792212843894958,
+      "true_prob": 0.9792212843894958,
+      "target_prob": 0.017834587022662163,
+      "probs": {
+        "apple": 0.017834587022662163,
+        "orange": 0.9792212843894958,
+        "banana": 0.0029024810064584017,
+        "pineapple": 1.7570168608926906e-07,
+        "plain": 2.964690611406695e-05,
+        "unknown": 1.1750557860068511e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004311_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9829210638999939,
+      "true_prob": 0.9829210638999939,
+      "target_prob": 0.016996784135699272,
+      "probs": {
+        "apple": 0.016996784135699272,
+        "orange": 0.9829210638999939,
+        "banana": 7.6001335401088e-05,
+        "pineapple": 1.792923320920181e-08,
+        "plain": 4.623566837835824e-06,
+        "unknown": 1.476365355301823e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004189_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9841201901435852,
+      "true_prob": 0.9841201901435852,
+      "target_prob": 0.01586325280368328,
+      "probs": {
+        "apple": 0.01586325280368328,
+        "orange": 0.9841201901435852,
+        "banana": 1.562205761729274e-05,
+        "pineapple": 1.102124755902878e-07,
+        "plain": 2.492579653790017e-07,
+        "unknown": 6.032091732777189e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008104_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9839443564414978,
+      "true_prob": 0.9839443564414978,
+      "target_prob": 0.015850907191634178,
+      "probs": {
+        "apple": 0.015850907191634178,
+        "orange": 0.9839443564414978,
+        "banana": 0.00014630974328611046,
+        "pineapple": 9.007059702526021e-07,
+        "plain": 5.0479658966651186e-05,
+        "unknown": 6.988340373936808e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\001574_obj005_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9848049283027649,
+      "true_prob": 0.9848049283027649,
+      "target_prob": 0.015194215811789036,
+      "probs": {
+        "apple": 0.015194215811789036,
+        "orange": 0.9848049283027649,
+        "banana": 4.5438019924404216e-07,
+        "pineapple": 6.599348267855021e-08,
+        "plain": 4.148618870658538e-08,
+        "unknown": 2.1815337447605998e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008029_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9844763875007629,
+      "true_prob": 0.9844763875007629,
+      "target_prob": 0.015141477808356285,
+      "probs": {
+        "apple": 0.015141477808356285,
+        "orange": 0.9844763875007629,
+        "banana": 0.00026561348931863904,
+        "pineapple": 2.286537466034133e-07,
+        "plain": 0.00010737426055129617,
+        "unknown": 8.89018065208802e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\000995_obj003_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9847962856292725,
+      "true_prob": 0.9847962856292725,
+      "target_prob": 0.01511664129793644,
+      "probs": {
+        "apple": 0.01511664129793644,
+        "orange": 0.9847962856292725,
+        "banana": 1.1579728379729204e-05,
+        "pineapple": 4.770697159983683e-06,
+        "plain": 6.166515049699228e-06,
+        "unknown": 6.46070548100397e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\006514_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9847121238708496,
+      "true_prob": 0.9847121238708496,
+      "target_prob": 0.01465364545583725,
+      "probs": {
+        "apple": 0.01465364545583725,
+        "orange": 0.9847121238708496,
+        "banana": 0.0006053746910765767,
+        "pineapple": 1.6919024403705407e-08,
+        "plain": 3.5465202472551027e-06,
+        "unknown": 2.539089837227948e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005208_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9818697571754456,
+      "true_prob": 0.9818697571754456,
+      "target_prob": 0.012871303595602512,
+      "probs": {
+        "apple": 0.012871303595602512,
+        "orange": 0.9818697571754456,
+        "banana": 2.994070564454887e-05,
+        "pineapple": 0.005180340260267258,
+        "plain": 4.152615656494163e-05,
+        "unknown": 7.120098416635301e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005692_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9814292192459106,
+      "true_prob": 0.9814292192459106,
+      "target_prob": 0.012855324894189835,
+      "probs": {
+        "apple": 0.012855324894189835,
+        "orange": 0.9814292192459106,
+        "banana": 0.0046487972140312195,
+        "pineapple": 0.0006953125121071935,
+        "plain": 5.063627031631768e-05,
+        "unknown": 0.0003208170528523624
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\000630_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9579758048057556,
+      "true_prob": 0.9579758048057556,
+      "target_prob": 0.012308267876505852,
+      "probs": {
+        "apple": 0.012308267876505852,
+        "orange": 0.9579758048057556,
+        "banana": 0.0042645190842449665,
+        "pineapple": 0.02457239292562008,
+        "plain": 0.0007956650806590915,
+        "unknown": 8.324941882165149e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\009272_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9874465465545654,
+      "true_prob": 0.9874465465545654,
+      "target_prob": 0.012175180949270725,
+      "probs": {
+        "apple": 0.012175180949270725,
+        "orange": 0.9874465465545654,
+        "banana": 0.0003235079348087311,
+        "pineapple": 3.1205768209474627e-06,
+        "plain": 1.776778844941873e-05,
+        "unknown": 3.389204357517883e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\007111_obj002_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9875494241714478,
+      "true_prob": 0.9875494241714478,
+      "target_prob": 0.01199690718203783,
+      "probs": {
+        "apple": 0.01199690718203783,
+        "orange": 0.9875494241714478,
+        "banana": 0.00023406039690598845,
+        "pineapple": 0.00012167353997938335,
+        "plain": 7.884865772211924e-05,
+        "unknown": 1.9121323930448852e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002762_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9880110621452332,
+      "true_prob": 0.9880110621452332,
+      "target_prob": 0.01177951693534851,
+      "probs": {
+        "apple": 0.01177951693534851,
+        "orange": 0.9880110621452332,
+        "banana": 3.005055623361841e-05,
+        "pineapple": 3.091529288212769e-05,
+        "plain": 5.130212593940087e-05,
+        "unknown": 9.715251508168876e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\002100_obj000_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9856341481208801,
+      "true_prob": 0.9856341481208801,
+      "target_prob": 0.011486080475151539,
+      "probs": {
+        "apple": 0.011486080475151539,
+        "orange": 0.9856341481208801,
+        "banana": 0.00016237361705861986,
+        "pineapple": 0.0025265810545533895,
+        "plain": 0.00016777522978372872,
+        "unknown": 2.3178574338089675e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003429_obj004_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9896648526191711,
+      "true_prob": 0.9896648526191711,
+      "target_prob": 0.010330907069146633,
+      "probs": {
+        "apple": 0.010330907069146633,
+        "orange": 0.9896648526191711,
+        "banana": 5.593866490016808e-07,
+        "pineapple": 8.513484317518305e-08,
+        "plain": 3.1485899398830952e-06,
+        "unknown": 4.4583310909729335e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004373_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.969744861125946,
+      "true_prob": 0.969744861125946,
+      "target_prob": 0.010077694430947304,
+      "probs": {
+        "apple": 0.010077694430947304,
+        "orange": 0.969744861125946,
+        "banana": 0.0025042935740202665,
+        "pineapple": 0.01622896082699299,
+        "plain": 0.0009212262229993939,
+        "unknown": 0.0005229517701081932
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004007_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9900174736976624,
+      "true_prob": 0.9900174736976624,
+      "target_prob": 0.009923654608428478,
+      "probs": {
+        "apple": 0.009923654608428478,
+        "orange": 0.9900174736976624,
+        "banana": 5.3719231800641865e-05,
+        "pineapple": 3.5219851479695308e-09,
+        "plain": 1.4516218698190642e-06,
+        "unknown": 3.675533889690996e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008762_obj002_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9899029731750488,
+      "true_prob": 0.9899029731750488,
+      "target_prob": 0.009905720129609108,
+      "probs": {
+        "apple": 0.009905720129609108,
+        "orange": 0.9899029731750488,
+        "banana": 8.891453944670502e-06,
+        "pineapple": 0.0001734826946631074,
+        "plain": 6.06277399128885e-06,
+        "unknown": 2.944054585896083e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\005752_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9895390868186951,
+      "true_prob": 0.9895390868186951,
+      "target_prob": 0.009521995671093464,
+      "probs": {
+        "apple": 0.009521995671093464,
+        "orange": 0.9895390868186951,
+        "banana": 0.0004890248528681695,
+        "pineapple": 2.85606747638667e-05,
+        "plain": 2.4563780243624933e-05,
+        "unknown": 0.00039667682722210884
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004930_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9905319213867188,
+      "true_prob": 0.9905319213867188,
+      "target_prob": 0.009467730298638344,
+      "probs": {
+        "apple": 0.009467730298638344,
+        "orange": 0.9905319213867188,
+        "banana": 1.569666707723627e-08,
+        "pineapple": 7.799070722569468e-09,
+        "plain": 9.442426573968987e-08,
+        "unknown": 2.1506802738713304e-07
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\003120_obj000_face01_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9149009585380554,
+      "true_prob": 0.9149009585380554,
+      "target_prob": 0.009064090438187122,
+      "probs": {
+        "apple": 0.009064090438187122,
+        "orange": 0.9149009585380554,
+        "banana": 0.07588192075490952,
+        "pineapple": 3.4110686101485044e-05,
+        "plain": 4.2497325921431184e-05,
+        "unknown": 7.631870539626107e-05
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\008597_obj002_face00_orange.jpg",
+      "true": "orange",
+      "pred": "orange",
+      "pred_prob": 0.9909612536430359,
+      "true_prob": 0.9909612536430359,
+      "target_prob": 0.008932309225201607,
+      "probs": {
+        "apple": 0.008932309225201607,
+        "orange": 0.9909612536430359,
+        "banana": 8.024244016269222e-05,
+        "pineapple": 1.402685848006513e-05,
+        "plain": 4.575917046167888e-06,
+        "unknown": 7.574431037937757e-06
+      }
+    },
+    {
+      "path": "datasets\\meta_v2_10000_coco_v1_models\\c_facecls\\train\\orange\\004604_obj001_face00_orange.jpg",
+      "true": "orange",
+      "pred": "plain",
+      "pred_prob": 0.9911813735961914,
+      "true_prob": 4.2341773223597556e-05,
+      "target_prob": 0.008775305934250355,
+      "probs": {
+        "apple": 0.008775305934250355,
+        "orange": 4.2341773223597556e-05,
+        "banana": 1.794410309230443e-08,
+        "pineapple": 4.7806423708607326e-08,
+        "plain": 0.9911813735961914,
+        "unknown": 8.237950623879442e-07
+      }
+    }
+  ],
+  "contact_sheet": "reports\\c_hard_mining_exp006_orange_to_apple\\contact_sheet.jpg"
+}

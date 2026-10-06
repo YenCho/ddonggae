@@ -1,0 +1,15 @@
+# Host tools, Python 3.11. CUDA torch/torchvision are installed separately.
+blenderproc==2.8.0
+bpy==5.0.1
+numpy==1.26.4
+opencv-python==4.10.0.84
+Pillow==11.1.0
+PyYAML==6.0.2
+requests==2.32.3
+tqdm==4.67.1
+tzdata==2025.2
+ultralytics==8.4.54
+onnx==1.17.0
+onnxruntime==1.20.1
+torch==2.10.0
+torchvision==0.25.0

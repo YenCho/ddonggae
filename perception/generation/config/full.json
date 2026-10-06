@@ -1,0 +1,18 @@
+{
+  "recipe": "public_fruits360_arena_v1",
+  "images": 50000,
+  "seed": 31000000,
+  "split_seed": 20261006,
+  "width": 640,
+  "samples": 16,
+  "render_workers": 1,
+  "render_device": "gpu",
+  "texture_count": 256,
+  "a1_epochs": 140,
+  "face_epochs": 120,
+  "pair_epochs": 60,
+  "batch": 32,
+  "train_workers": 4,
+  "device": "0",
+  "initial_model": "yolo26s-seg.yaml"
+}
